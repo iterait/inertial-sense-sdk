@@ -66,6 +66,7 @@ target_compile_options(InertialSense PUBLIC -fPIC)
 
 add_library( InertialSense::libinertialsense ALIAS InertialSense )
 
+if(NOT CMAKE_CROSSCOMPILING)
 add_subdirectory(cltool)
 add_subdirectory(ExampleProjects)
-
+endif()
