@@ -1554,8 +1554,8 @@ enum eSysConfigBits
 	/** Prevent built-in test (BIT) from running automatically on startup */
 	SYS_CFG_BITS_DISABLE_AUTO_BIT_ON_STARTUP			= (int)0x00080000,
 
-	/** Disable rotation required to verify that the magnetometer calibration is valid */
-	SYS_CFG_BITS_DISABLE_MAG_CAL_ROTATION_CHECK			= (int)0x00100000,
+	/** Trust magnetometer calibration and disable rotation required to verify that the magnetometer calibration is valid */
+	SYS_CFG_BITS_FORCE_TRUST_MAG_CAL							= (int)0x00100000,
 
 	/** Disable packet encoding, binary data will have all bytes as is */
 	SYS_CFG_BITS_DISABLE_PACKET_ENCODING				= (int)0x00400000,
