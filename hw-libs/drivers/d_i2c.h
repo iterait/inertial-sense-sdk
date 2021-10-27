@@ -25,8 +25,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 extern "C" {
 #endif
 
-#define I2C_BUF_SIZE_TX	256	// MUST be a multiple of 4 (8-bit writes have to fit into 32-bit blocks for pre-tx cache clear to work)
-#define I2C_BUF_SIZE_RX 256	// MUST be a multiple of 4 (8-bit reads have to fit into 32-bit blocks for post-rx cache invalidate to work)
+#define I2C_BUF_SIZE	64	// MUST be a multiple of 4 (8-bit writes have to fit into 32-bit blocks for cache clear/invalidate to work)
 
 enum
 {
@@ -46,26 +45,36 @@ enum
 	I2C_RXSTATUS_ERROR,	
 };
 
-enum
+typedef struct
 {
-	I2C_STATUS_RXBUSY	= 0b00000001,
-	I2C_STATUS_TXBUSY	= 0b00000010,
-};
+	uint8_t 				addr;			// The current device we're communicating with - helps identify rx
+	
+	uint8_t					tx_buf[I2C_BUF_SIZE];	// Queue buffer
+	uint8_t 				tx_len;
+
+	uint8_t					*rx_buf_dest;	// Destination for data to be copied to after read
+	uint8_t					rx_len;
+} i2c_device_t;
+
 
 typedef struct
 {
 	Twihs 					*instance;
 	uint32_t				instance_id;
+	twihs_options_t 		cfg;
+
 	dma_channel_config_t 	rx_dma;
 	dma_channel_config_t	tx_dma;
-	twihs_options_t 		cfg;
-	uint8_t					tx_last_byte;
+	
 	volatile uint8_t		tx_status;
 	volatile uint8_t		rx_status;
+
+	i2c_device_t			device[I2C_NUM_DEVICES];		// Queue for each I2C slave on the bus
+	
+	uint8_t					buf[I2C_BUF_SIZE] __attribute__((aligned(32)));		// Common RX/TX buffer
+	uint8_t 				len;	
+	
 	uint8_t					*rx_buf_dest;	// Destination for data to be copied to after read
-	uint8_t					rx_len;
-	uint8_t					tx_buf[I2C_BUF_SIZE_TX] __attribute__((aligned(32)));
-	uint8_t					rx_buf[I2C_BUF_SIZE_RX] __attribute__((aligned(32)));
 } i2c_t;
 
 extern i2c_t sn_i2c;
@@ -73,8 +82,8 @@ extern i2c_t sn_i2c;
 int i2c_master_get_defaults(i2c_t *init);
 int i2c_master_init(i2c_t *init);
 
-int i2c_master_write(i2c_t *init, uint16_t addr, uint8_t *buf, uint8_t len);
-int i2c_master_read(i2c_t *init, uint16_t addr, uint8_t *buf, uint8_t len);
+int i2c_master_write(i2c_t *init, uint8_t dev, uint8_t *buf, uint8_t len);
+int i2c_master_read(i2c_t *init, uint8_t dev, uint8_t *buf, uint8_t len);
 
 uint8_t i2c_get_status(i2c_t *init);
 

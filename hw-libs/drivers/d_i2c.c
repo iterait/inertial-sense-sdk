@@ -44,9 +44,6 @@ int i2c_master_get_defaults(i2c_t *i2c_init)
 	i2c_init->cfg.speed = TWI_CLK;
 	i2c_init->cfg.chip = 0x40;
 	i2c_init->cfg.smbus = 0;
-	
-	i2c_init->tx_status = I2C_TXSTATUS_IDLE;
-	i2c_init->rx_status = I2C_RXSTATUS_IDLE;
 
 #ifdef __INERTIAL_SENSE_EVB_2__
 	i2c_init->rx_dma.chan = DMA_CH_EVB_I2C_SENSORS_RX;
@@ -71,7 +68,7 @@ int i2c_master_get_defaults(i2c_t *i2c_init)
 	i2c_init->rx_dma.xdmac.mbr_ubc = 0;
 	
 	i2c_init->tx_dma.xdmac.mbr_da = (uint32_t)&(i2c_init->instance->TWIHS_THR);
-	i2c_init->tx_dma.xdmac.mbr_sa = (uint32_t)i2c_init->tx_buf;
+	i2c_init->tx_dma.xdmac.mbr_sa = (uint32_t)i2c_init->buf;
 	i2c_init->tx_dma.xdmac.mbr_cfg =
 		XDMAC_CC_TYPE_PER_TRAN |
 		XDMAC_CC_MBSIZE_SINGLE |
@@ -101,9 +98,25 @@ int i2c_master_get_defaults(i2c_t *i2c_init)
 		i2c_init->rx_dma.xdmac.mbr_cfg |= XDMAC_CC_PERID(XDMAC_PERID_TWIHS2_RX);
 	}
 
+	i2c_init->len = 0;
+
+	i2c_init->tx_status = I2C_TXSTATUS_IDLE;
+	i2c_init->rx_status = I2C_RXSTATUS_IDLE;
+
+	for(int i = 0; i < I2C_NUM_DEVICES; i++)
+	{
+		i2c_init->device[i].rx_len = 0;
+		i2c_init->device[i].tx_len = 0;
+		i2c_init->device[i].addr = 0x40;
+	}
+
+	for(int i = 0; i < I2C_NUM_DEVICES; i++)
+	{
+		i2c_init->device[i].addr = 0;
+	}
+
 	return STATUS_OK;
 }
-
 
 static void i2c_master_dma_init_rx(i2c_t *i2c_init)
 {
@@ -137,7 +150,7 @@ static void i2c_master_dma_stop_rx(i2c_t *i2c_init)
 {
 	xdmac_channel_disable(XDMAC, i2c_init->rx_dma.chan);
 	
-	SCB_InvalidateDCache_by_Addr((uint32_t *)i2c_init->rx_buf, (i2c_init->rx_len+(4-1))/4);	// Round up
+	SCB_InvalidateDCache_by_Addr((uint32_t *)i2c_init->buf, I2C_BUF_SIZE/4);	// Round up
 }
 
 static void i2c_master_dma_init_tx(i2c_t *i2c_init)
@@ -156,17 +169,18 @@ static void i2c_master_dma_init_tx(i2c_t *i2c_init)
 
 static void i2c_master_dma_config_tx(i2c_t *i2c_init, uint8_t *buf, uint32_t len)
 {
-	if(len > I2C_BUF_SIZE_TX)
-		len = I2C_BUF_SIZE_TX;
+	if(len > (I2C_BUF_SIZE - 1))
+		len = (I2C_BUF_SIZE - 1);
 	
-	memcpy((uint8_t*)i2c_init->tx_buf, buf, len);
+	i2c_init->tx_dma.xdmac.mbr_sa = buf;
 	i2c_init->tx_dma.xdmac.mbr_ubc = len;
+
 	xdmac_configure_transfer(XDMAC, i2c_init->tx_dma.chan, &i2c_init->tx_dma.xdmac);
 }
 
 static void i2c_master_dma_start_tx(i2c_t *i2c_init)
 {
-	SCB_CleanDCache_by_Addr((uint32_t *)i2c_init->tx_buf, I2C_BUF_SIZE_TX/4);
+	SCB_CleanDCache_by_Addr((uint32_t *)i2c_init->buf, I2C_BUF_SIZE/4);
 	xdmac_channel_enable_no_cache(XDMAC, i2c_init->tx_dma.chan);
 }
 
@@ -174,7 +188,6 @@ static void i2c_master_dma_stop_tx(i2c_t *i2c_init)
 {
 	xdmac_channel_disable(XDMAC, i2c_init->tx_dma.chan);
 }
-
 
 /*
  *	Make sure to call i2c_get_defaults() first
@@ -217,7 +230,6 @@ int i2c_master_init(i2c_t *i2c_init)	// TODO: Rewrite this so it can be used for
 		NVIC_EnableIRQ(TWIHS2_IRQn);
 	}
 	
-	
 	i2c_master_dma_init_rx(i2c_init);
 	i2c_master_dma_init_tx(i2c_init);
 	
@@ -226,73 +238,205 @@ int i2c_master_init(i2c_t *i2c_init)	// TODO: Rewrite this so it can be used for
 	return 0;
 }
 
-int i2c_master_write(i2c_t *i2c_init, uint16_t addr, uint8_t *buf, uint8_t len)
+static bool i2c_master_is_busy(i2c_t *i2c_init)
 {
+	if(i2c_init->len > 0)
+	{
+		return true;
+	}
+
+	// If there is stuff in the queue, it will already have been serviced by the interrupt handler. No need to check here.
+
+	return false;
+}
+
+static bool i2c_master_is_write_buf_full(i2c_t *i2c_init, uint8_t dev)
+{
+	if(i2c_init->device[dev].tx_len > 0)
+	{
+		return true;
+	}
+
+	return false;
+}
+
+int i2c_master_write(i2c_t *i2c_init, uint8_t dev, uint8_t *buf, uint8_t len)
+{
+	i2c_device_t *device = &i2c_init->device[dev];
+
 	/* Check argument */
-	if (len == 0) {
+	if (len == 0 || device->addr == 0) {
 		return -1;
 	}
+
+	if(i2c_master_is_busy(i2c_init))
+	{
+		if(i2c_master_is_write_buf_full(i2c_init, dev))
+		{
+			return -1;
+		}
 	
-	if(!(i2c_init->instance->TWIHS_SR & TWIHS_SR_TXRDY))
+		// Add to queue
+		device->tx_len = len;
+		memcpy(device->tx_buf, buf, len);
+	}
+	else	// Start the write immediately 
+	{
+		if(!(i2c_init->instance->TWIHS_SR & TWIHS_SR_TXRDY))
+		{
+			return -1;
+		}
+
+		i2c_init->len = len;		// Do this as soon as possible to "lock" the peripheral
+
+		i2c_init->instance->TWIHS_MMR = TWIHS_MMR_DADR(device->addr);
+
+		// Bypass DMA for 1 byte transmissions
+		if (len == 1) {
+			i2c_init->instance->TWIHS_THR = buf[0];
+			i2c_init->instance->TWIHS_CR = TWIHS_CR_STOP;
+			i2c_init->len = 0;
+			return 0;
+		}
+		
+		memcpy((uint8_t*)i2c_init->buf, buf, len);
+
+		i2c_init->tx_status = I2C_TXSTATUS_TRANSMIT_DMA;
+
+		i2c_master_dma_config_tx(i2c_init, (uint8_t*)i2c_init->buf, i2c_init->len-1);	// Datasheet says we have to transmit last byte manually
+		i2c_master_dma_start_tx(i2c_init);
+	}
+
+	return 0;
+}
+
+/* Writes the next chunk of data from the queue, low numbered devices have priority */
+static int i2c_master_write_from_queue(i2c_t *i2c_init)
+{
+	if(i2c_master_is_busy(i2c_init))
 	{
 		return -1;
 	}
-	
-	// Bypass DMA
-	if (len == 1) {
-		i2c_init->instance->TWIHS_MMR = TWIHS_MMR_DADR(addr);
-		i2c_init->instance->TWIHS_THR = buf[0];
-		i2c_init->instance->TWIHS_CR = TWIHS_CR_STOP;
-		return 0;
-	}
-	
-	i2c_master_dma_config_tx(i2c_init, buf, len-1);	// Datasheet says we have to transmit last byte manually
-	i2c_init->tx_last_byte = buf[len-1];		// Last byte gets stored
 
-	/* Set write mode, slave address and 3 internal address byte lengths */
-	i2c_init->instance->TWIHS_MMR = TWIHS_MMR_DADR(addr);
-	
-	i2c_init->tx_status = I2C_TXSTATUS_TRANSMIT_DMA;
-	
-	i2c_master_dma_start_tx(i2c_init);
-	
-	return 0;
+	for(int i = 0; i < I2C_NUM_DEVICES; i++)
+	{
+		if(i2c_master_is_write_buf_full(i2c_init, i))
+		{
+			i2c_device_t *device = &i2c_init->device[i];
+
+			if(!(i2c_init->instance->TWIHS_SR & TWIHS_SR_TXRDY))
+			{
+				return -1;
+			}
+
+			// Bypass DMA for 1 byte transmissions
+			if (device->tx_len == 1) {
+				i2c_init->instance->TWIHS_THR = device->tx_buf[0];				
+				i2c_init->instance->TWIHS_CR = TWIHS_CR_STOP;
+				device->tx_len = 0;
+				return 0;
+			}
+
+			i2c_init->len = device->tx_len;				// Do this as soon as possible to "lock" the peripheral		
+			device->tx_len = 0;		// Clear the queue
+
+			i2c_init->instance->TWIHS_MMR = TWIHS_MMR_DADR(device->addr);		// Grab the address from the device struct, should be there from init
+			
+			memcpy((uint8_t*)i2c_init->buf, device->tx_buf, i2c_init->len);
+
+			i2c_master_dma_config_tx(i2c_init, (uint8_t*)i2c_init->buf, i2c_init->len - 1);	// Datasheet says we have to transmit last byte manually
+			i2c_master_dma_start_tx(i2c_init);
+
+			return 0;
+		}
+	}
 }
 
-int i2c_master_read(i2c_t *i2c_init, uint16_t addr, uint8_t *buf, uint8_t len)
+static bool i2c_master_is_read_buf_full(i2c_t *i2c_init, uint8_t dev)
 {
+	if(i2c_init->device[dev].rx_len > 0)
+	{
+		return true;
+	}
+
+	return false;
+}
+
+int i2c_master_read(i2c_t *i2c_init, uint8_t dev, uint8_t *buf, uint8_t len)
+{	
+	i2c_device_t *device = &i2c_init->device[dev];
+
 	/* Check argument */
-	if (len == 0) {
+	if (len == 0 || device->addr == 0) {
 		return -1;
 	}
 	
-	i2c_init->rx_len = len;
-	i2c_init->rx_buf_dest = buf;
+	if(i2c_master_is_busy(i2c_init))
+	{
+		if(i2c_master_is_read_buf_full(i2c_init, dev))
+		{
+			return -1;
+		}
 	
-	i2c_master_dma_config_rx(i2c_init, i2c_init->rx_buf, len-2);			// Datasheet says we have to read last 2 bytes manually
+		// Add to queue
+		device->rx_len = len;
+		device->rx_buf_dest = buf;
+	}
+	else	// Start the write immediately 
+	{
+		i2c_init->len = len;		// Do this as soon as possible to "lock" the peripheral
+		i2c_init->rx_buf_dest = buf;
 
-	/* Set write mode, slave address and 3 internal address byte lengths */
-	i2c_init->instance->TWIHS_MMR = TWIHS_MMR_DADR(addr) | TWIHS_MMR_MREAD;
+		i2c_init->instance->TWIHS_MMR = TWIHS_MMR_DADR(device->addr) | TWIHS_MMR_MREAD;
+
+		// TODO: Bypass DMA for 1 (maybe 2) byte writes. Uncommon but could happen.
+
+		i2c_master_dma_config_rx(i2c_init, (uint8_t*)i2c_init->buf, len-2);			// Datasheet says we have to read last 2 bytes manually
+		
+		i2c_init->rx_status = I2C_RXSTATUS_READ_DMA;
 	
-	i2c_init->rx_status = I2C_RXSTATUS_READ_DMA;
-	
-	i2c_master_dma_start_rx(i2c_init);
-	
-	i2c_init->instance->TWIHS_CR |= TWIHS_CR_START;
-	
+		i2c_master_dma_start_rx(i2c_init);
+		
+		i2c_init->instance->TWIHS_CR |= TWIHS_CR_START;
+	}
+
 	return 0;
 }
 
-uint8_t i2c_get_status(i2c_t *i2c_init)
+/* Writes the next chunk of data from the queue, low numbered devices have priority */
+static int i2c_master_read_from_queue(i2c_t *i2c_init)
 {
-	uint8_t status = 0;
-	
-	if(i2c_init->rx_status != I2C_RXSTATUS_IDLE)
-		status |= I2C_STATUS_RXBUSY;
-	if(i2c_init->tx_status != I2C_TXSTATUS_IDLE)
-		status |= I2C_STATUS_TXBUSY;
+	if(i2c_master_is_busy(i2c_init))
+	{
+		return -1;
+	}
+
+	for(int i = 0; i < I2C_NUM_DEVICES; i++)
+	{
+		if(i2c_master_is_read_buf_full(i2c_init, i))
+		{
+			i2c_device_t *device = &i2c_init->device[i];
+
+			i2c_init->instance->TWIHS_MMR = TWIHS_MMR_DADR(device->addr) | TWIHS_MMR_MREAD;		// Grab the address from the device struct, should be there from init
+
+			// TODO: Bypass DMA for 1 (maybe 2) byte writes. Uncommon but could happen.
+			
+			i2c_init->rx_buf_dest = device->rx_buf_dest;
+			i2c_init->len = device->rx_len;
+			device->rx_len = 0;		// Clear the queue
+
+			i2c_master_dma_config_rx(i2c_init, (uint8_t*)i2c_init->buf, i2c_init->len - 2);			// Datasheet says we have to read last 2 bytes manually
+			
+			i2c_init->rx_status = I2C_RXSTATUS_READ_DMA;
 		
-	return status;
+			i2c_master_dma_start_rx(i2c_init);
+			
+			i2c_init->instance->TWIHS_CR |= TWIHS_CR_START;
+
+			return 0;
+		}
+	}
+	
 }
 
 static void TWIHS_Handler(i2c_t *i2c_init)
@@ -310,8 +454,9 @@ static void TWIHS_Handler(i2c_t *i2c_init)
 		if(i2c_init->tx_status == I2C_TXSTATUS_TRANSMIT_DMA_WAIT_TXRDY)
 		{
 			i2c_init->instance->TWIHS_CR |= TWIHS_CR_STOP;
-			i2c_init->instance->TWIHS_THR = i2c_init->tx_last_byte;
+			i2c_init->instance->TWIHS_THR = i2c_init->buf[i2c_init->len - 1];	// Transmit the last byte
 
+			i2c_init->len = 0;		// Indicate we're done
 			i2c_init->tx_status = I2C_TXSTATUS_IDLE;
 		}
 	}
@@ -322,21 +467,28 @@ static void TWIHS_Handler(i2c_t *i2c_init)
 		{
 			i2c_init->instance->TWIHS_CR |= TWIHS_CR_STOP;
 			
-			i2c_init->rx_buf[i2c_init->rx_len - 2] = i2c_init->instance->TWIHS_RHR;
+			i2c_init->buf[i2c_init->len - 2] = i2c_init->instance->TWIHS_RHR;
 			
 			i2c_init->rx_status = I2C_RXSTATUS_READ_PENULTIMATE;
 		}
 		else if(i2c_init->rx_status == I2C_RXSTATUS_READ_PENULTIMATE)
 		{
-			i2c_init->rx_buf[i2c_init->rx_len - 1] = i2c_init->instance->TWIHS_RHR;
+			i2c_init->buf[i2c_init->len - 1] = i2c_init->instance->TWIHS_RHR;
 			
 			twihs_disable_interrupt(i2c_init->instance, TWIHS_IDR_RXRDY);
 			
-			memcpy(i2c_init->rx_buf_dest, i2c_init->rx_buf, i2c_init->rx_len);
-			
+			memcpy(i2c_init->rx_buf_dest, i2c_init->buf, i2c_init->len);	
+			i2c_init->len = 0;		// Indicate we're done
 			i2c_init->rx_status = I2C_RXSTATUS_IDLE;
 		}
 	}
+
+	if(i2c_init->rx_status == I2C_RXSTATUS_IDLE && i2c_init->tx_status == I2C_RXSTATUS_IDLE)
+	{
+		i2c_master_write_from_queue(i2c_init);
+		i2c_master_read_from_queue(i2c_init);
+	}
+
 }
 
 #ifdef __INERTIAL_SENSE_EVB_2__
