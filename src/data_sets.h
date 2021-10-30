@@ -1343,9 +1343,14 @@ typedef struct PACKED
 } sys_sensors_adc_t;
 
 #define NUM_COM_PORTS       4	// Number of communication ports.  (Ser0, Ser1, Ser2, and USB).
+
 #ifndef NUM_SERIAL_PORTS
+#ifdef uINS_5
+#define NUM_SERIAL_PORTS	4
+#else
 #define NUM_SERIAL_PORTS	6
-#endif
+#endif	// uINS_5
+#endif	// NUM_SERIAL_PORTS
 
 /** Realtime Message Controller (used in rmc_t). 
 	The data sets available through RMC are broadcast at the availability of the data.  A goal of RMC is 
