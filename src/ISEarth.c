@@ -30,8 +30,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 //_____ L O C A L   P R O T O T Y P E S ____________________________________
 
 //_____ F U N C T I O N S __________________________________________________
-static const double Ra = 6378137.0;			// (m) Earth equatorial radius
-// static const double Rb = 6356752.31424518;	// (m) Earth polar radius Rb = Ra * (1-f)   (from flattening, f = 1/298.257223563)
+static const float Ra = 6378137.0;			// (m) Earth equatorial radius
+// static const float Rb = 6356752.31424518;	// (m) Earth polar radius Rb = Ra * (1-f)   (from flattening, f = 1/298.257223563)
 
 #define POWA2	40680631590769.000	// = pow(6378137.0,2)
 #define POWB2	40408299984661.453	// = pow(6356752.31424518,2)
@@ -51,10 +51,10 @@ static const double Ra = 6378137.0;			// (m) Earth equatorial radius
 #define K5_GRAV 7.2e-14         //
 
 /* Coordinate transformation from ECEF coordinates to latitude/longitude/altitude (rad,rad,m) */
-void ecef2lla(const double *Pe, double *LLA, const int Niter)
+void ecef2lla(const float *Pe, float *LLA, const int Niter)
 {
     int i;
-    double s, Rn, sinmu, beta;
+    float s, Rn, sinmu, beta;
 
     // Earth equatorial radius
     // Re = 6378137; // m
@@ -88,10 +88,10 @@ void ecef2lla(const double *Pe, double *LLA, const int Niter)
 
 
 /* Coordinate transformation from latitude/longitude/altitude (rad,rad,m) to ECEF coordinates */
-void lla2ecef(const double *LLA, double *Pe)
+void lla2ecef(const float *LLA, float *Pe)
 {
-    //double e = 0.08181919084262;  // Earth first eccentricity: e = sqrt((R^2-b^2)/R^2);
-    double Rn, Smu, Cmu, Sl, Cl;
+    //float e = 0.08181919084262;  // Earth first eccentricity: e = sqrt((R^2-b^2)/R^2);
+    float Rn, Smu, Cmu, Sl, Cl;
 
     /* Earth equatorial and polar radii 
       (from flattening, f = 1/298.257223563; */
@@ -144,19 +144,19 @@ void lla2ned(ixVector3 llaRef, ixVector3 lla, ixVector3 result)
  *  lla[1] = longitude (rad)
  *  lla[2] = msl altitude (m)
  */
-void lla2ned_d(double llaRef[3], double lla[3], ixVector3 result)
+void lla2ned_d(float llaRef[3], float lla[3], ixVector3 result)
 {
     ixVector3 deltaLLA;
-    deltaLLA[0] = (f_t)(lla[0] - llaRef[0]);
-    deltaLLA[1] = (f_t)(lla[1] - llaRef[1]);
-    deltaLLA[2] = (f_t)(lla[2] - llaRef[2]);
+    deltaLLA[0] = (float)(lla[0] - llaRef[0]);
+    deltaLLA[1] = (float)(lla[1] - llaRef[1]);
+    deltaLLA[2] = (float)(lla[2] - llaRef[2]);
 
 	// Handle longitude wrapping in radians
 	UNWRAP_F32(deltaLLA[1]);
     
     // Find NED
 	result[0] =  deltaLLA[0] * EARTH_RADIUS_F;
-	result[1] =  deltaLLA[1] * EARTH_RADIUS_F * _COS( ((f_t)llaRef[0]) );
+	result[1] =  deltaLLA[1] * EARTH_RADIUS_F * _COS( ((float)llaRef[0]) );
 	result[2] = -deltaLLA[2];
 }
 
@@ -167,19 +167,19 @@ void lla2ned_d(double llaRef[3], double lla[3], ixVector3 result)
  *  lla[1] = longitude (deg)
  *  lla[2] = msl altitude (m)
  */
-void llaDeg2ned_d(double llaRef[3], double lla[3], ixVector3 result)
+void llaDeg2ned_d(float llaRef[3], float lla[3], ixVector3 result)
 {
     ixVector3 deltaLLA;
-    deltaLLA[0] = (f_t)(lla[0] - llaRef[0]);
-    deltaLLA[1] = (f_t)(lla[1] - llaRef[1]);
-    deltaLLA[2] = (f_t)(lla[2] - llaRef[2]);
+    deltaLLA[0] = (float)(lla[0] - llaRef[0]);
+    deltaLLA[1] = (float)(lla[1] - llaRef[1]);
+    deltaLLA[2] = (float)(lla[2] - llaRef[2]);
 
 	// Handle longitude wrapping 
 	UNWRAP_DEG_F32(deltaLLA[1]);
     
     // Find NED
 	result[0] =  deltaLLA[0] * DEG2RAD_EARTH_RADIUS_F;
-	result[1] =  deltaLLA[1] * DEG2RAD_EARTH_RADIUS_F * _COS( ((f_t)llaRef[0]) * C_DEG2RAD_F );
+	result[1] =  deltaLLA[1] * DEG2RAD_EARTH_RADIUS_F * _COS( ((float)llaRef[0]) * C_DEG2RAD_F );
 	result[2] = -deltaLLA[2];
 }
 
@@ -210,9 +210,9 @@ void ned2lla(ixVector3 ned, ixVector3 llaRef, ixVector3 result)
  *  lla[1] = longitude (rad)
  *  lla[2] = msl altitude (m)
  */
-void ned2lla_d(ixVector3 ned, double llaRef[3], double result[3])
+void ned2lla_d(ixVector3 ned, float llaRef[3], float result[3])
 {
-    double deltaLLA[3];
+    float deltaLLA[3];
     ned2DeltaLla_d( ned, llaRef, deltaLLA );
     
     // Find LLA
@@ -229,9 +229,9 @@ void ned2lla_d(ixVector3 ned, double llaRef[3], double result[3])
 *  lla[1] = longitude (degrees)
 *  lla[2] = msl altitude (m)
 */
-void ned2llaDeg_d(ixVector3 ned, double llaRef[3], double result[3])
+void ned2llaDeg_d(ixVector3 ned, float llaRef[3], float result[3])
 {
-	double deltaLLA[3];
+	float deltaLLA[3];
 	ned2DeltaLlaDeg_d(ned, llaRef, deltaLLA);
 
 	// Find LLA
@@ -248,12 +248,12 @@ void ned2llaDeg_d(ixVector3 ned, double llaRef[3], double result[3])
  *  baroKPa = (kPa) barometric pressure in kilopascals
  *  return = (m) msl altitude in meters
  */
-f_t baro2msl( f_t pKPa )
+float baro2msl( float pKPa )
 {
 	if( pKPa <= _ZERO )
 		return _ZERO;
 	else
-		return (f_t)C_NEG_KT0_DIV_MG_F * _LOG( pKPa * (f_t)C_INV_P0_KPA_F );
+		return (float)C_NEG_KT0_DIV_MG_F * _LOG( pKPa * (float)C_INV_P0_KPA_F );
 }
 
 
@@ -262,7 +262,7 @@ f_t baro2msl( f_t pKPa )
  *
  *  return = (m) distance in meters
  */
-f_t llaRadDistance( double lla1[3], double lla2[3] )
+float llaRadDistance( float lla1[3], float lla2[3] )
 {
 	ixVector3 ned;
 	
@@ -276,7 +276,7 @@ f_t llaRadDistance( double lla1[3], double lla2[3] )
  *
  *  return = (m) distance in meters
  */
-f_t llaDegDistance( double lla1[3], double lla2[3] )
+float llaDegDistance( float lla1[3], float lla2[3] )
 {
 	ixVector3 ned;
 	
@@ -288,26 +288,26 @@ f_t llaDegDistance( double lla1[3], double lla2[3] )
 void ned2DeltaLla(ixVector3 ned, ixVector3 llaRef, ixVector3 deltaLLA)
 {
 	deltaLLA[0] =  ned[0] * INV_EARTH_RADIUS_F;
-	deltaLLA[1] =  ned[1] * INV_EARTH_RADIUS_F / _COS(((f_t)llaRef[0]));
+	deltaLLA[1] =  ned[1] * INV_EARTH_RADIUS_F / _COS(((float)llaRef[0]));
 	deltaLLA[2] = -ned[2];
 }
 
-void ned2DeltaLla_d(ixVector3 ned, double llaRef[3], double deltaLLA[3])
+void ned2DeltaLla_d(ixVector3 ned, float llaRef[3], float deltaLLA[3])
 {
-	deltaLLA[0] = (double)( ned[0] * INV_EARTH_RADIUS_F);
-	deltaLLA[1] = (double)( ned[1] * INV_EARTH_RADIUS_F / _COS(((f_t)llaRef[0])) );
-	deltaLLA[2] = (double)(-ned[2]);
+	deltaLLA[0] = (float)( ned[0] * INV_EARTH_RADIUS_F);
+	deltaLLA[1] = (float)( ned[1] * INV_EARTH_RADIUS_F / _COS(((float)llaRef[0])) );
+	deltaLLA[2] = (float)(-ned[2]);
 }
 
-void ned2DeltaLlaDeg_d(ixVector3 ned, double llaRef[3], double deltaLLA[3])
+void ned2DeltaLlaDeg_d(ixVector3 ned, float llaRef[3], float deltaLLA[3])
 {
-	deltaLLA[0] = (double)(ned[0] * INV_EARTH_RADIUS_F * C_RAD2DEG_F);
-	deltaLLA[1] = (double)(ned[1] * INV_EARTH_RADIUS_F * C_RAD2DEG_F / _COS( (((f_t)llaRef[0])*C_DEG2RAD_F) ) );
-	deltaLLA[2] = (double)(-ned[2]);
+	deltaLLA[0] = (float)(ned[0] * INV_EARTH_RADIUS_F * C_RAD2DEG_F);
+	deltaLLA[1] = (float)(ned[1] * INV_EARTH_RADIUS_F * C_RAD2DEG_F / _COS( (((float)llaRef[0])*C_DEG2RAD_F) ) );
+	deltaLLA[2] = (float)(-ned[2]);
 }
 
 // Convert LLA from radians to degrees
-void lla_Rad2Deg_d(double result[3], double lla[3])
+void lla_Rad2Deg_d(float result[3], float lla[3])
 {
 	result[0] = C_RAD2DEG * lla[0];
 	result[1] = C_RAD2DEG * lla[1];
@@ -315,14 +315,14 @@ void lla_Rad2Deg_d(double result[3], double lla[3])
 }
 
 // Convert LLA from degrees to radians
-void lla_Deg2Rad_d(double result[3], double lla[3])
+void lla_Deg2Rad_d(float result[3], float lla[3])
 {
 	result[0] = C_DEG2RAD * lla[0];
 	result[1] = C_DEG2RAD * lla[1];
 	result[2] = lla[2];
 }
 
-void lla_Deg2Rad_d2(double result[3], double lat, double lon, double alt)
+void lla_Deg2Rad_d2(float result[3], float lat, float lon, float alt)
 {
 	result[0] = C_DEG2RAD * lat;
 	result[1] = C_DEG2RAD * lon;
@@ -334,7 +334,7 @@ void lla_Deg2Rad_d2(double result[3], double lat, double lon, double alt)
  *
  *  return 1 on success, 0 on failure.
  */
-int llaDegValid( double lla[3] )
+int llaDegValid( float lla[3] )
 {
     if( (lla[0]<-90.0)		|| (lla[0]>90.0) ||			// Lat
         (lla[1]<-180.0)		|| (lla[1]>180.0) ||		// Lon
@@ -349,16 +349,16 @@ int llaDegValid( double lla[3] )
 }
 
 /* IGF-80 gravity model with WGS-84 ellipsoid refinement */
-float gravity_igf80(double lat, double alt)
+float gravity_igf80(float lat, float alt)
 {
-    double g0, sinmu2;
+    float g0, sinmu2;
 
     // Equatorial gravity
     //float ge = 9.7803253359f;
     // Defined constant k = (b*gp - a*ge) / a / ge;
-    //double k = 0.00193185265241;
+    //float k = 0.00193185265241;
     // Square of first eccentricity e^2 = 1 - (1 - f)^2 = 1 - (b/a)^2;
-    //double e2 = 0.00669437999013;
+    //float e2 = 0.00669437999013;
 
     sinmu2 = sin(lat) * sin(lat);
     g0 = GEQ * (1.0 + K_GRAV * sinmu2) / sqrt(1.0 - E_SQ * sinmu2);
@@ -424,9 +424,9 @@ void qe2b2EulerNedEcef(ixVector3 eul, const ixVector4 qe2b, const ixVector3d ece
  * @param lat
  * @return
  */
-double primeRadius(const double lat)
+float primeRadius(const float lat)
 {
-    double slat = sin(lat);
+    float slat = sin(lat);
     return Ra/sqrt(1.0-E_SQ*slat*slat);
 }
 
@@ -436,10 +436,10 @@ double primeRadius(const double lat)
  * @param lat
  * @return
  */
-double meridonalRadius(const double lat)
+float meridonalRadius(const float lat)
 {
-    double slat = sin(lat);
-    double Rprime = primeRadius(lat);
+    float slat = sin(lat);
+    float Rprime = primeRadius(lat);
     return Rprime * (1-E_SQ) / (1.0-E_SQ*slat*slat);
 }
 
@@ -457,10 +457,10 @@ double meridonalRadius(const double lat)
  */
 void rangeBearing_from_lla(const ixVector3d lla1, const ixVector3d lla2, ixVector2d rb)
 {
-    double lat1 = lla1[0];
-    double lon1 = lla1[1];
-    double lat2 = lla2[0];
-    double lon2 = lla2[1];
+    float lat1 = lla1[0];
+    float lon1 = lla1[1];
+    float lat2 = lla2[0];
+    float lon2 = lla2[1];
     // Principle of osculating sphere: computing spherical angles on ellipsoids is very hard to do, so instead we compute them on a
     // sphere that is tangential to the ellipsoid at lat1 (i.e. has the same radius of curvature in both directions). By going to a sphere
     // the concept of latitude has some special conetations: the latitude is the spherical angle that the radius of curvature makes with
@@ -474,26 +474,26 @@ void rangeBearing_from_lla(const ixVector3d lla1, const ixVector3d lla2, ixVecto
     // This results in Rmeridional * (lat2 - lat1) = Rprime * (spherical_lat2 - lat1)
     // Then form this expression we can compute the spherical_lat2 value
     //
-    double Rprime = primeRadius(lat1);
-    double avgLat = 0.5*(lat1 + lat2);
-    double Rmeridional = meridonalRadius(avgLat);
-    double sphericalLat2 = lat1 + Rmeridional/Rprime*(lat2 - lat1);
+    float Rprime = primeRadius(lat1);
+    float avgLat = 0.5*(lat1 + lat2);
+    float Rmeridional = meridonalRadius(avgLat);
+    float sphericalLat2 = lat1 + Rmeridional/Rprime*(lat2 - lat1);
 
     // Now instead of using lat2, we are going to use spherical lat2, and pretend the earth is a perfect sphere and then we just
     // complete the spherical triangle through some standard highschool math.
     //
-    double deltaLon = lon2 - lon1;
-    double cosLat1 = cos(lat1);
-    double sinLat1 = sin(lat1);
-    double cosLat2 = cos(sphericalLat2);
-    double sinLat2 = sin(sphericalLat2);
-    double cosDeltaLon = cos(deltaLon);
+    float deltaLon = lon2 - lon1;
+    float cosLat1 = cos(lat1);
+    float sinLat1 = sin(lat1);
+    float cosLat2 = cos(sphericalLat2);
+    float sinLat2 = sin(sphericalLat2);
+    float cosDeltaLon = cos(deltaLon);
 
-    double x = cosLat1 * sinLat2 - sinLat1 * cosLat2 * cosDeltaLon;
-    double y = cosLat2 * sin(deltaLon);
-    double z = sinLat1 * sinLat2 + cosLat1 * cosLat2 * cosDeltaLon;
+    float x = cosLat1 * sinLat2 - sinLat1 * cosLat2 * cosDeltaLon;
+    float y = cosLat2 * sin(deltaLon);
+    float z = sinLat1 * sinLat2 + cosLat1 * cosLat2 * cosDeltaLon;
 
-    double angular_range = atan2(sqrt(x*x + y*y), z);
+    float angular_range = atan2(sqrt(x*x + y*y), z);
     rb[0] =  angular_range * Rprime;
     rb[1] = atan2(y,x);
 }

@@ -162,12 +162,12 @@ static void swapPacket(packet_t* pkt)
 			// swap entire packet body
 			flipEndianess32(pkt->body.ptr + sizeof(p_data_hdr_t), pkt->body.size - sizeof(p_data_hdr_t));
 
-			// flip doubles
+			// flip floats
 			uint16_t* offsets;
 			uint16_t offsetsLength;
 			uint8_t* dataBuf = pkt->body.ptr + sizeof(p_data_hdr_t);
 
-			// flip doubles back if needed
+			// flip floats back if needed
 			if ((offsets = getDoubleOffsets(dataHdr->id, &offsetsLength)))
 			{
 				flipDoubles(dataBuf, dataHdr->size, dataHdr->offset, offsets, offsetsLength);
@@ -802,7 +802,7 @@ int is_decode_binary_packet_byte(uint8_t** _ptrSrc, uint8_t** _ptrDest, uint32_t
 
 int is_encode_binary_packet(void* srcBuffer, unsigned int srcBufferLength, packet_hdr_t* hdr, uint8_t additionalPktFlags, void* encodedPacket, int encodedPacketLength)
 {
-	// Ensure data size is small enough, assuming packet size could double after encoding.
+	// Ensure data size is small enough, assuming packet size could float after encoding.
 	if (srcBufferLength > MAX_PKT_BODY_SIZE)
 	{
 		return -1;

@@ -1,7 +1,7 @@
 var searchData=
 [
   ['packed_7455',['PACKED',['../_i_s_constants_8h.html#a36d525cf4d116b2fe4ecc00222b256f1',1,'ISConstants.h']]],
-  ['parse_5fdouble_7456',['PARSE_DOUBLE',['../com__manager_8c.html#aae1426c5c3c8c473a70adcbd634eb8fc',1,'com_manager.c']]],
+  ['parse_5ffloat_7456',['PARSE_DOUBLE',['../com__manager_8c.html#aae1426c5c3c8c473a70adcbd634eb8fc',1,'com_manager.c']]],
   ['parse_5ffloat_7457',['PARSE_FLOAT',['../com__manager_8c.html#a686bc9b96dac380b2a986cf808056d15',1,'com_manager.c']]],
   ['pid_5fack_7458',['PID_ACK',['../_i_s_comm_8h.html#aa6a3b4bc4d7eefb123d1e6e954b7978b',1,'ISComm.h']]],
   ['pid_5fcount_7459',['PID_COUNT',['../_i_s_comm_8h.html#aa38b0dd3d2020209980367367daca38e',1,'ISComm.h']]],

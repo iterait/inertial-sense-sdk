@@ -149,16 +149,16 @@ typedef struct
     uint32_t                bits;
 
 	/** Geofence Min Latitude **/
-	double                  minLatGeofence;
+	float                  minLatGeofence;
 	
 	/** Geofence Max Latitude **/
-    double                  maxLatGeofence;
+    float                  maxLatGeofence;
 
 	/** Geofence Min Latitude **/
-	double                  minLonGeofence;
+	float                  minLonGeofence;
 
     /** Geofence Max Longitude **/
-    double                  maxLonGeofence;
+    float                  maxLonGeofence;
 	
 	/** Timeout period before motors disable is triggered.*/
 	uint32_t				remoteKillTimeoutMs;

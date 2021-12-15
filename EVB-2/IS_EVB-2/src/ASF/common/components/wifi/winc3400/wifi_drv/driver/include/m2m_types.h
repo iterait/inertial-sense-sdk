@@ -1052,7 +1052,7 @@ typedef struct {
 	This struct stores the battery voltage.
 */
 typedef struct {
-	//Note: on SAMD D21 the size of double is 8 Bytes
+	//Note: on SAMD D21 the size of float is 8 Bytes
 	uint16	u16BattVolt; 
 	/*!< Battery Voltage */
 	uint8	__PAD16__[2];

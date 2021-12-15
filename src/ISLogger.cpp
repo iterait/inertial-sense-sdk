@@ -375,7 +375,7 @@ bool cISLogger::LogData(unsigned int device, p_data_hdr_t* dataHdr, const uint8_
 #if 1
     else
     {
-        double timestamp = cISDataMappings::GetTimestamp(dataHdr, dataBuf);
+        float timestamp = cISDataMappings::GetTimestamp(dataHdr, dataBuf);
         m_logStats->LogDataAndTimestamp(dataHdr->id, timestamp);
 
         if (dataHdr->id == DID_DIAGNOSTIC_MESSAGE)
@@ -418,7 +418,7 @@ p_data_t* cISLogger::ReadData(unsigned int device)
 	}
 	if (data != NULL)
 	{
-        double timestamp = cISDataMappings::GetTimestamp(&data->hdr, data->buf);
+        float timestamp = cISDataMappings::GetTimestamp(&data->hdr, data->buf);
 		m_logStats->LogDataAndTimestamp(data->hdr.id, timestamp);
 	}
 	return data;
@@ -653,7 +653,7 @@ cLogStatDataId::cLogStatDataId()
 	timestampDropCount = 0;
 }
 
-void cLogStatDataId::LogTimestamp(double timestamp)
+void cLogStatDataId::LogTimestamp(float timestamp)
 {
     // check for corrupt data
     if (_ISNAN(timestamp) || timestamp < 0.0 || timestamp > 999999999999.0)
@@ -662,11 +662,11 @@ void cLogStatDataId::LogTimestamp(double timestamp)
     }
     else if (lastTimestamp > 0.0)
     {
-        double delta = fabs(timestamp - lastTimestamp);
+        float delta = fabs(timestamp - lastTimestamp);
         minTimestampDelta = _MIN(delta, minTimestampDelta);
         maxTimestampDelta = _MAX(delta, maxTimestampDelta);
         totalTimeDelta += delta;
-        averageTimeDelta = (totalTimeDelta / (double)++timestampDeltaCount);
+        averageTimeDelta = (totalTimeDelta / (float)++timestampDeltaCount);
         if (lastTimestampDelta != 0.0 && (fabs(delta - lastTimestampDelta) > (lastTimestampDelta * 0.5)))
         {
             timestampDropCount++;
@@ -725,7 +725,7 @@ void cLogStats::LogData(uint32_t dataId)
 	}
 }
 
-void cLogStats::LogDataAndTimestamp(uint32_t dataId, double timestamp)
+void cLogStats::LogDataAndTimestamp(uint32_t dataId, float timestamp)
 {
 	if (dataId < DID_COUNT)
 	{

@@ -90,8 +90,8 @@ void quatConjRot( ixVector3 result, const ixQuat q, const ixVector3 v );
  * Reference: http://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
  */
 void quat2euler(const ixQuat q, ixEuler theta);
-void quat2phiTheta(const ixQuat q, f_t *phi, f_t *theta);
-void quat2psi(const ixQuat q, f_t *psi);
+void quat2phiTheta(const ixQuat q, float *phi, float *theta);
+void quat2psi(const ixQuat q, float *psi);
 
 /*
  * This will convert from euler angles to quaternion vector
@@ -108,7 +108,7 @@ void euler2quat(const ixEuler euler, ixQuat q );
  * body = tBL(2,2)*NE
  *
  */
-void psiDCM(const f_t psi, ixMatrix2 m);
+void psiDCM(const float psi, ixMatrix2 m);
 
 /*
 * This will extract the psi euler angle from a direction cosine matrix in the
@@ -120,7 +120,7 @@ void psiDCM(const f_t psi, ixMatrix2 m);
 *
 * reference: http://en.wikipedia.org/wiki/Rotation_representation_%28mathematics%29
 */
-f_t DCMpsi(const f_t *m );
+float DCMpsi(const float *m );
 
 /*
  * This will construct a direction cosine matrix from

@@ -123,19 +123,19 @@ $(function() {
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keyword">const</span> uint32_t* w = (<span class="keyword">const</span> uint32_t*)(ptr);</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keyword">union</span></div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    {</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <span class="keywordtype">double</span> v;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <span class="keywordtype">float</span> v;</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        uint32_t w[2];</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    } u;</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    u.w[0] = w[1];</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    u.w[1] = w[0];</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    *(<span class="keywordtype">double</span>*)ptr = u.v;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    *(<span class="keywordtype">float</span>*)ptr = u.v;</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;}</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
-<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="data__sets_8h.html#a5454be85a9ae32de3118331684f10005">   60</a></span>&#160;<span class="keywordtype">double</span> <a class="code" href="data__sets_8c.html#a5454be85a9ae32de3118331684f10005">flipDoubleCopy</a>(<span class="keywordtype">double</span> val)</div>
+<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="data__sets_8h.html#a5454be85a9ae32de3118331684f10005">   60</a></span>&#160;<span class="keywordtype">float</span> <a class="code" href="data__sets_8c.html#a5454be85a9ae32de3118331684f10005">flipDoubleCopy</a>(<span class="keywordtype">float</span> val)</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;{</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keyword">union</span></div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    {</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="keywordtype">double</span> v;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="keywordtype">float</span> v;</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        uint32_t w[2];</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    } u1, u2;</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    u1.v = val;</div>
@@ -164,11 +164,11 @@ $(function() {
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
 <div class="line"><a name="l00091"></a><span class="lineno"><a class="line" href="data__sets_8h.html#a3d205623406f7dc69e5350bf8d55dc2c">   91</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="data__sets_8c.html#a3d205623406f7dc69e5350bf8d55dc2c">flipDoubles</a>(uint8_t* data, <span class="keywordtype">int</span> dataLength, <span class="keywordtype">int</span> offset, uint16_t* offsets, uint16_t offsetsLength)</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;{</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    uint16_t* doubleOffsetsEnd = offsets + offsetsLength;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    uint16_t* floatOffsetsEnd = offsets + offsetsLength;</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keywordtype">int</span> offsetToDouble;</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="keywordtype">int</span> maxDoubleOffset = dataLength - 8;</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keywordtype">int</span> isDouble;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="keywordflow">while</span> (offsets &lt; doubleOffsetsEnd)</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="keywordflow">while</span> (offsets &lt; floatOffsetsEnd)</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    {</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        offsetToDouble = (*offsets++);</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        isDouble = ((offsetToDouble &amp; 0x8000) == 0);</div>
@@ -296,7 +296,7 @@ $(function() {
 <div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;    <span class="keyword">static</span> uint16_t offsetsRmc[] =</div>
 <div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    {</div>
 <div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;        1, </div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;        <span class="comment">// 0x8000 denotes a 64 bit int vs a double</span></div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;        <span class="comment">// 0x8000 denotes a 64 bit int vs a float</span></div>
 <div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;        offsetof(<a class="code" href="struct_p_a_c_k_e_d.html">rmc_t</a>, bits) | 0x8000</div>
 <div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    };</div>
 <div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160; </div>
@@ -334,7 +334,7 @@ $(function() {
 <div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;        offsetof(<a class="code" href="structsurvey__in__t.html">survey_in_t</a>, lla[2])</div>
 <div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;    };</div>
 <div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160; </div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    <span class="keyword">static</span> uint16_t* s_doubleOffsets[] =</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    <span class="keyword">static</span> uint16_t* s_floatOffsets[] =</div>
 <div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;    {</div>
 <div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;        0,                      <span class="comment">//  0: DID_NULL</span></div>
 <div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;        0,                      <span class="comment">//  1: DID_DEV_INFO</span></div>
@@ -454,13 +454,13 @@ $(function() {
 <div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;        0                       <span class="comment">// 115:</span></div>
 <div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;    };</div>
 <div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160; </div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;    <a class="code" href="_i_s_constants_8h.html#a473ba2fb3326f5511ca976712d53612c">STATIC_ASSERT</a>(<a class="code" href="_i_s_constants_8h.html#ae165d3d36e78851434995cd9e9fc8d78">_ARRAY_ELEMENT_COUNT</a>(s_doubleOffsets) == <a class="code" href="data__sets_8h.html#a777819ed9aeeb6f96e9a74764d75064a">DID_COUNT</a>);</div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;    <a class="code" href="_i_s_constants_8h.html#a473ba2fb3326f5511ca976712d53612c">STATIC_ASSERT</a>(<a class="code" href="_i_s_constants_8h.html#ae165d3d36e78851434995cd9e9fc8d78">_ARRAY_ELEMENT_COUNT</a>(s_floatOffsets) == <a class="code" href="data__sets_8h.html#a777819ed9aeeb6f96e9a74764d75064a">DID_COUNT</a>);</div>
 <div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;    <a class="code" href="_i_s_constants_8h.html#a473ba2fb3326f5511ca976712d53612c">STATIC_ASSERT</a>((<a class="code" href="data__sets_8h.html#a777819ed9aeeb6f96e9a74764d75064a">DID_COUNT</a>%4) == 0);</div>
 <div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160; </div>
 <div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;    <span class="keywordflow">if</span> (dataId &lt; <a class="code" href="data__sets_8h.html#a777819ed9aeeb6f96e9a74764d75064a">DID_COUNT</a>)</div>
 <div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;    {</div>
 <div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;        uint16_t* offsets;</div>
-<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;        <span class="keywordflow">if</span> ((offsets = s_doubleOffsets[dataId]))</div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;        <span class="keywordflow">if</span> ((offsets = s_floatOffsets[dataId]))</div>
 <div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;        {</div>
 <div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;            *offsetsLength = (*offsets++);</div>
 <div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;            <span class="keywordflow">return</span> offsets;</div>
@@ -718,16 +718,16 @@ $(function() {
 <div class="line"><a name="l00644"></a><span class="lineno">  644</span>&#160;    }</div>
 <div class="line"><a name="l00645"></a><span class="lineno">  645</span>&#160;}</div>
 <div class="line"><a name="l00646"></a><span class="lineno">  646</span>&#160; </div>
-<div class="line"><a name="l00647"></a><span class="lineno"><a class="line" href="data__sets_8h.html#a749719b28f0ca0d469340af1fd120a28">  647</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="data__sets_8c.html#a749719b28f0ca0d469340af1fd120a28">julianToDate</a>(<span class="keywordtype">double</span> julian, int32_t* year, int32_t* month, int32_t* day, int32_t* hour, int32_t* minute, int32_t* second, int32_t* millisecond)</div>
+<div class="line"><a name="l00647"></a><span class="lineno"><a class="line" href="data__sets_8h.html#a749719b28f0ca0d469340af1fd120a28">  647</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="data__sets_8c.html#a749719b28f0ca0d469340af1fd120a28">julianToDate</a>(<span class="keywordtype">float</span> julian, int32_t* year, int32_t* month, int32_t* day, int32_t* hour, int32_t* minute, int32_t* second, int32_t* millisecond)</div>
 <div class="line"><a name="l00648"></a><span class="lineno">  648</span>&#160;{</div>
-<div class="line"><a name="l00649"></a><span class="lineno">  649</span>&#160;    <span class="keywordtype">double</span> j1, j2, j3, j4, j5;</div>
-<div class="line"><a name="l00650"></a><span class="lineno">  650</span>&#160;    <span class="keywordtype">double</span> intgr = floor(julian);</div>
-<div class="line"><a name="l00651"></a><span class="lineno">  651</span>&#160;    <span class="keywordtype">double</span> frac = julian - intgr;</div>
-<div class="line"><a name="l00652"></a><span class="lineno">  652</span>&#160;    <span class="keywordtype">double</span> gregjd = 2299161.0;</div>
+<div class="line"><a name="l00649"></a><span class="lineno">  649</span>&#160;    <span class="keywordtype">float</span> j1, j2, j3, j4, j5;</div>
+<div class="line"><a name="l00650"></a><span class="lineno">  650</span>&#160;    <span class="keywordtype">float</span> intgr = floor(julian);</div>
+<div class="line"><a name="l00651"></a><span class="lineno">  651</span>&#160;    <span class="keywordtype">float</span> frac = julian - intgr;</div>
+<div class="line"><a name="l00652"></a><span class="lineno">  652</span>&#160;    <span class="keywordtype">float</span> gregjd = 2299161.0;</div>
 <div class="line"><a name="l00653"></a><span class="lineno">  653</span>&#160;    <span class="keywordflow">if</span> (intgr &gt;= gregjd)</div>
 <div class="line"><a name="l00654"></a><span class="lineno">  654</span>&#160;    {</div>
 <div class="line"><a name="l00655"></a><span class="lineno">  655</span>&#160;        <span class="comment">//Gregorian calendar correction</span></div>
-<div class="line"><a name="l00656"></a><span class="lineno">  656</span>&#160;        <span class="keywordtype">double</span> tmp = floor(((intgr - 1867216.0) - 0.25) / 36524.25);</div>
+<div class="line"><a name="l00656"></a><span class="lineno">  656</span>&#160;        <span class="keywordtype">float</span> tmp = floor(((intgr - 1867216.0) - 0.25) / 36524.25);</div>
 <div class="line"><a name="l00657"></a><span class="lineno">  657</span>&#160;        j1 = intgr + 1.0 + tmp - floor(0.25 * tmp);</div>
 <div class="line"><a name="l00658"></a><span class="lineno">  658</span>&#160;    }</div>
 <div class="line"><a name="l00659"></a><span class="lineno">  659</span>&#160;    <span class="keywordflow">else</span></div>
@@ -736,7 +736,7 @@ $(function() {
 <div class="line"><a name="l00662"></a><span class="lineno">  662</span>&#160;    }</div>
 <div class="line"><a name="l00663"></a><span class="lineno">  663</span>&#160; </div>
 <div class="line"><a name="l00664"></a><span class="lineno">  664</span>&#160;    <span class="comment">//correction for half day offset</span></div>
-<div class="line"><a name="l00665"></a><span class="lineno">  665</span>&#160;    <span class="keywordtype">double</span> dayfrac = frac + 0.5;</div>
+<div class="line"><a name="l00665"></a><span class="lineno">  665</span>&#160;    <span class="keywordtype">float</span> dayfrac = frac + 0.5;</div>
 <div class="line"><a name="l00666"></a><span class="lineno">  666</span>&#160;    <span class="keywordflow">if</span> (dayfrac &gt;= 1.0)</div>
 <div class="line"><a name="l00667"></a><span class="lineno">  667</span>&#160;    {</div>
 <div class="line"><a name="l00668"></a><span class="lineno">  668</span>&#160;        dayfrac -= 1.0;</div>
@@ -748,13 +748,13 @@ $(function() {
 <div class="line"><a name="l00674"></a><span class="lineno">  674</span>&#160;    j4 = floor(j3 * 365.25);</div>
 <div class="line"><a name="l00675"></a><span class="lineno">  675</span>&#160;    j5 = floor((j2 - j4) / 30.6001);</div>
 <div class="line"><a name="l00676"></a><span class="lineno">  676</span>&#160; </div>
-<div class="line"><a name="l00677"></a><span class="lineno">  677</span>&#160;    <span class="keywordtype">double</span> d = floor(j2 - j4 - floor(j5 * 30.6001));</div>
-<div class="line"><a name="l00678"></a><span class="lineno">  678</span>&#160;    <span class="keywordtype">double</span> m = floor(j5 - 1);</div>
+<div class="line"><a name="l00677"></a><span class="lineno">  677</span>&#160;    <span class="keywordtype">float</span> d = floor(j2 - j4 - floor(j5 * 30.6001));</div>
+<div class="line"><a name="l00678"></a><span class="lineno">  678</span>&#160;    <span class="keywordtype">float</span> m = floor(j5 - 1);</div>
 <div class="line"><a name="l00679"></a><span class="lineno">  679</span>&#160;    <span class="keywordflow">if</span> (m &gt; 12)</div>
 <div class="line"><a name="l00680"></a><span class="lineno">  680</span>&#160;    {</div>
 <div class="line"><a name="l00681"></a><span class="lineno">  681</span>&#160;        m -= 12;</div>
 <div class="line"><a name="l00682"></a><span class="lineno">  682</span>&#160;    }</div>
-<div class="line"><a name="l00683"></a><span class="lineno">  683</span>&#160;    <span class="keywordtype">double</span> y = floor(j3 - 4715.0);</div>
+<div class="line"><a name="l00683"></a><span class="lineno">  683</span>&#160;    <span class="keywordtype">float</span> y = floor(j3 - 4715.0);</div>
 <div class="line"><a name="l00684"></a><span class="lineno">  684</span>&#160;    <span class="keywordflow">if</span> (m &gt; 2)</div>
 <div class="line"><a name="l00685"></a><span class="lineno">  685</span>&#160;    {</div>
 <div class="line"><a name="l00686"></a><span class="lineno">  686</span>&#160;        --y;</div>
@@ -767,10 +767,10 @@ $(function() {
 <div class="line"><a name="l00693"></a><span class="lineno">  693</span>&#160;    <span class="comment">//</span></div>
 <div class="line"><a name="l00694"></a><span class="lineno">  694</span>&#160;    <span class="comment">// get time of day from day fraction</span></div>
 <div class="line"><a name="l00695"></a><span class="lineno">  695</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00696"></a><span class="lineno">  696</span>&#160;    <span class="keywordtype">double</span> hr = floor(dayfrac * 24.0);</div>
-<div class="line"><a name="l00697"></a><span class="lineno">  697</span>&#160;    <span class="keywordtype">double</span> mn = floor((dayfrac * 24.0 - hr) * 60.0);</div>
-<div class="line"><a name="l00698"></a><span class="lineno">  698</span>&#160;    <span class="keywordtype">double</span> f = ((dayfrac * 24.0 - hr) * 60.0 - mn) * 60.0;</div>
-<div class="line"><a name="l00699"></a><span class="lineno">  699</span>&#160;    <span class="keywordtype">double</span> sc = f;</div>
+<div class="line"><a name="l00696"></a><span class="lineno">  696</span>&#160;    <span class="keywordtype">float</span> hr = floor(dayfrac * 24.0);</div>
+<div class="line"><a name="l00697"></a><span class="lineno">  697</span>&#160;    <span class="keywordtype">float</span> mn = floor((dayfrac * 24.0 - hr) * 60.0);</div>
+<div class="line"><a name="l00698"></a><span class="lineno">  698</span>&#160;    <span class="keywordtype">float</span> f = ((dayfrac * 24.0 - hr) * 60.0 - mn) * 60.0;</div>
+<div class="line"><a name="l00699"></a><span class="lineno">  699</span>&#160;    <span class="keywordtype">float</span> sc = f;</div>
 <div class="line"><a name="l00700"></a><span class="lineno">  700</span>&#160;    <span class="keywordflow">if</span> (f - sc &gt; 0.5)</div>
 <div class="line"><a name="l00701"></a><span class="lineno">  701</span>&#160;    {</div>
 <div class="line"><a name="l00702"></a><span class="lineno">  702</span>&#160;        ++sc;</div>
@@ -810,19 +810,19 @@ $(function() {
 <div class="line"><a name="l00736"></a><span class="lineno">  736</span>&#160;    }</div>
 <div class="line"><a name="l00737"></a><span class="lineno">  737</span>&#160;}</div>
 <div class="line"><a name="l00738"></a><span class="lineno">  738</span>&#160; </div>
-<div class="line"><a name="l00739"></a><span class="lineno"><a class="line" href="data__sets_8h.html#a4a39f7689edfe1d3467ddf13d633c9e6">  739</a></span>&#160;<span class="keywordtype">double</span> <a class="code" href="data__sets_8c.html#a4a39f7689edfe1d3467ddf13d633c9e6">gpsToUnix</a>(uint32_t gpsWeek, uint32_t gpsTimeofWeekMS, uint8_t leapSeconds)</div>
+<div class="line"><a name="l00739"></a><span class="lineno"><a class="line" href="data__sets_8h.html#a4a39f7689edfe1d3467ddf13d633c9e6">  739</a></span>&#160;<span class="keywordtype">float</span> <a class="code" href="data__sets_8c.html#a4a39f7689edfe1d3467ddf13d633c9e6">gpsToUnix</a>(uint32_t gpsWeek, uint32_t gpsTimeofWeekMS, uint8_t leapSeconds)</div>
 <div class="line"><a name="l00740"></a><span class="lineno">  740</span>&#160;{</div>
-<div class="line"><a name="l00741"></a><span class="lineno">  741</span>&#160;    <span class="keywordtype">double</span> gpsSeconds = gpsWeek * <a class="code" href="data__sets_8h.html#ac7581c009f2a6a7eaeabbc22875d3e88">SECONDS_PER_WEEK</a>;</div>
+<div class="line"><a name="l00741"></a><span class="lineno">  741</span>&#160;    <span class="keywordtype">float</span> gpsSeconds = gpsWeek * <a class="code" href="data__sets_8h.html#ac7581c009f2a6a7eaeabbc22875d3e88">SECONDS_PER_WEEK</a>;</div>
 <div class="line"><a name="l00742"></a><span class="lineno">  742</span>&#160;    gpsSeconds += (gpsTimeofWeekMS / 1000);</div>
-<div class="line"><a name="l00743"></a><span class="lineno">  743</span>&#160;    <span class="keywordtype">double</span> unixSeconds = gpsSeconds + <a class="code" href="data__sets_8h.html#a62e41936a89a150a77c8412a9bf9a7d0">GPS_TO_UNIX_OFFSET</a> - leapSeconds;</div>
+<div class="line"><a name="l00743"></a><span class="lineno">  743</span>&#160;    <span class="keywordtype">float</span> unixSeconds = gpsSeconds + <a class="code" href="data__sets_8h.html#a62e41936a89a150a77c8412a9bf9a7d0">GPS_TO_UNIX_OFFSET</a> - leapSeconds;</div>
 <div class="line"><a name="l00744"></a><span class="lineno">  744</span>&#160; </div>
 <div class="line"><a name="l00745"></a><span class="lineno">  745</span>&#160;    <span class="keywordflow">return</span> unixSeconds;</div>
 <div class="line"><a name="l00746"></a><span class="lineno">  746</span>&#160;}</div>
 <div class="line"><a name="l00747"></a><span class="lineno">  747</span>&#160; </div>
-<div class="line"><a name="l00748"></a><span class="lineno"><a class="line" href="data__sets_8h.html#a203cc0f0918751aa0ea9276329db328b">  748</a></span>&#160;<span class="keywordtype">double</span> <a class="code" href="data__sets_8c.html#a203cc0f0918751aa0ea9276329db328b">gpsToJulian</a>(int32_t gpsWeek, int32_t gpsMilliseconds, int32_t leapSeconds)</div>
+<div class="line"><a name="l00748"></a><span class="lineno"><a class="line" href="data__sets_8h.html#a203cc0f0918751aa0ea9276329db328b">  748</a></span>&#160;<span class="keywordtype">float</span> <a class="code" href="data__sets_8c.html#a203cc0f0918751aa0ea9276329db328b">gpsToJulian</a>(int32_t gpsWeek, int32_t gpsMilliseconds, int32_t leapSeconds)</div>
 <div class="line"><a name="l00749"></a><span class="lineno">  749</span>&#160;{</div>
-<div class="line"><a name="l00750"></a><span class="lineno">  750</span>&#160;    <span class="keywordtype">double</span> gpsDays = (double)gpsWeek * 7.0;</div>
-<div class="line"><a name="l00751"></a><span class="lineno">  751</span>&#160;    gpsDays += ((((double)gpsMilliseconds / 1000.0) - (double)leapSeconds) / 86400.0);</div>
+<div class="line"><a name="l00750"></a><span class="lineno">  750</span>&#160;    <span class="keywordtype">float</span> gpsDays = (float)gpsWeek * 7.0;</div>
+<div class="line"><a name="l00751"></a><span class="lineno">  751</span>&#160;    gpsDays += ((((float)gpsMilliseconds / 1000.0) - (float)leapSeconds) / 86400.0);</div>
 <div class="line"><a name="l00752"></a><span class="lineno">  752</span>&#160;    <span class="keywordflow">return</span> (2444244.500000) + gpsDays; <span class="comment">// 2444244.500000 Julian date for Jan 6, 1980 midnight - start of gps time</span></div>
 <div class="line"><a name="l00753"></a><span class="lineno">  753</span>&#160;}</div>
 <div class="line"><a name="l00754"></a><span class="lineno">  754</span>&#160; </div>
@@ -837,11 +837,11 @@ $(function() {
 <div class="line"><a name="l00763"></a><span class="lineno">  763</span>&#160;    *buffer += written;</div>
 <div class="line"><a name="l00764"></a><span class="lineno">  764</span>&#160;}</div>
 <div class="line"><a name="l00765"></a><span class="lineno">  765</span>&#160; </div>
-<div class="line"><a name="l00766"></a><span class="lineno">  766</span>&#160;<span class="keyword">static</span> <span class="keywordtype">void</span> appendGPSCoord(<span class="keyword">const</span> <a class="code" href="struct_p_a_c_k_e_d.html">gps_pos_t</a>* gps, <span class="keywordtype">char</span>** buffer, <span class="keywordtype">int</span>* bufferLength, <span class="keywordtype">double</span> v, <span class="keyword">const</span> <span class="keywordtype">char</span>* degreesFormat, <span class="keywordtype">char</span> posC, <span class="keywordtype">char</span> negC)</div>
+<div class="line"><a name="l00766"></a><span class="lineno">  766</span>&#160;<span class="keyword">static</span> <span class="keywordtype">void</span> appendGPSCoord(<span class="keyword">const</span> <a class="code" href="struct_p_a_c_k_e_d.html">gps_pos_t</a>* gps, <span class="keywordtype">char</span>** buffer, <span class="keywordtype">int</span>* bufferLength, <span class="keywordtype">float</span> v, <span class="keyword">const</span> <span class="keywordtype">char</span>* degreesFormat, <span class="keywordtype">char</span> posC, <span class="keywordtype">char</span> negC)</div>
 <div class="line"><a name="l00767"></a><span class="lineno">  767</span>&#160;{</div>
 <div class="line"><a name="l00768"></a><span class="lineno">  768</span>&#160;    (void)gps;</div>
 <div class="line"><a name="l00769"></a><span class="lineno">  769</span>&#160;    <span class="keywordtype">int</span> degrees = (int)(v);</div>
-<div class="line"><a name="l00770"></a><span class="lineno">  770</span>&#160;    <span class="keywordtype">double</span> minutes = (v - ((double)degrees)) * 60.0;</div>
+<div class="line"><a name="l00770"></a><span class="lineno">  770</span>&#160;    <span class="keywordtype">float</span> minutes = (v - ((float)degrees)) * 60.0;</div>
 <div class="line"><a name="l00771"></a><span class="lineno">  771</span>&#160; </div>
 <div class="line"><a name="l00772"></a><span class="lineno">  772</span>&#160;    <span class="keywordtype">int</span> written = <a class="code" href="_i_s_constants_8h.html#a770571e12ff9370899184528f4b4626d">SNPRINTF</a>(*buffer, *bufferLength, degreesFormat, abs(degrees));</div>
 <div class="line"><a name="l00773"></a><span class="lineno">  773</span>&#160;    *bufferLength -= written;</div>
@@ -976,7 +976,7 @@ $(function() {
 <div class="ttc" id="adata__sets_8h_html_ab26f0fc7bec05b255ee14b0d628ddb29"><div class="ttname"><a href="data__sets_8h.html#ab26f0fc7bec05b255ee14b0d628ddb29">MINPRNGLO</a></div><div class="ttdeci">#define MINPRNGLO</div><div class="ttdef"><b>Definition:</b> <a href="data__sets_8h_source.html#l03881">data_sets.h:3880</a></div></div>
 <div class="ttc" id="adata__sets_8h_html_a2b4442725aa286672b1c8e3a38386fdf"><div class="ttname"><a href="data__sets_8h.html#a2b4442725aa286672b1c8e3a38386fdf">RMC_BITS_GPS1_SAT</a></div><div class="ttdeci">#define RMC_BITS_GPS1_SAT</div><div class="ttdef"><b>Definition:</b> <a href="data__sets_8h_source.html#l01295">data_sets.h:1294</a></div></div>
 <div class="ttc" id="adata__sets_8h_html_adf3646113f28c2a7a596413fd879545a"><div class="ttname"><a href="data__sets_8h.html#adf3646113f28c2a7a596413fd879545a">MAX_TASK_NAME_LEN</a></div><div class="ttdeci">#define MAX_TASK_NAME_LEN</div><div class="ttdef"><b>Definition:</b> <a href="data__sets_8h_source.html#l03461">data_sets.h:3460</a></div></div>
-<div class="ttc" id="adata__sets_8c_html_a4a39f7689edfe1d3467ddf13d633c9e6"><div class="ttname"><a href="data__sets_8c.html#a4a39f7689edfe1d3467ddf13d633c9e6">gpsToUnix</a></div><div class="ttdeci">double gpsToUnix(uint32_t gpsWeek, uint32_t gpsTimeofWeekMS, uint8_t leapSeconds)</div><div class="ttdef"><b>Definition:</b> <a href="data__sets_8c_source.html#l00739">data_sets.c:739</a></div></div>
+<div class="ttc" id="adata__sets_8c_html_a4a39f7689edfe1d3467ddf13d633c9e6"><div class="ttname"><a href="data__sets_8c.html#a4a39f7689edfe1d3467ddf13d633c9e6">gpsToUnix</a></div><div class="ttdeci">float gpsToUnix(uint32_t gpsWeek, uint32_t gpsTimeofWeekMS, uint8_t leapSeconds)</div><div class="ttdef"><b>Definition:</b> <a href="data__sets_8c_source.html#l00739">data_sets.c:739</a></div></div>
 <div class="ttc" id="adata__sets_8c_html_a92f6edead84a44514c9c896af5f09fbe"><div class="ttname"><a href="data__sets_8c.html#a92f6edead84a44514c9c896af5f09fbe">didToRmcBit</a></div><div class="ttdeci">uint64_t didToRmcBit(uint32_t dataId, uint64_t defaultRmcBits)</div><div class="ttdef"><b>Definition:</b> <a href="data__sets_8c_source.html#l00603">data_sets.c:603</a></div></div>
 <div class="ttc" id="adata__sets_8h_html_a62e41936a89a150a77c8412a9bf9a7d0"><div class="ttname"><a href="data__sets_8h.html#a62e41936a89a150a77c8412a9bf9a7d0">GPS_TO_UNIX_OFFSET</a></div><div class="ttdeci">#define GPS_TO_UNIX_OFFSET</div><div class="ttdef"><b>Definition:</b> <a href="data__sets_8h_source.html#l03768">data_sets.h:3767</a></div></div>
 <div class="ttc" id="a_i_s_constants_8h_html_a7cd2c9c1af20d6c94350562b8cfe2700"><div class="ttname"><a href="_i_s_constants_8h.html#a7cd2c9c1af20d6c94350562b8cfe2700">_MEMBER_ARRAY_ELEMENT_COUNT</a></div><div class="ttdeci">#define _MEMBER_ARRAY_ELEMENT_COUNT(type, member)</div><div class="ttdef"><b>Definition:</b> <a href="_i_s_constants_8h_source.html#l00332">ISConstants.h:331</a></div></div>
@@ -989,7 +989,7 @@ $(function() {
 <div class="ttc" id="adata__sets_8h_html_a3d5fd01bfed703c441c1503fb98ad804"><div class="ttname"><a href="data__sets_8h.html#a3d5fd01bfed703c441c1503fb98ad804">DID_INS_2</a></div><div class="ttdeci">#define DID_INS_2</div><div class="ttdef"><b>Definition:</b> <a href="data__sets_8h_source.html#l00040">data_sets.h:39</a></div></div>
 <div class="ttc" id="a_i_s_constants_8h_html_a61d1368d1f9a0f6c0bebaacf28185652"><div class="ttname"><a href="_i_s_constants_8h.html#a61d1368d1f9a0f6c0bebaacf28185652">SWAP64</a></div><div class="ttdeci">#define SWAP64(v)</div><div class="ttdef"><b>Definition:</b> <a href="_i_s_constants_8h_source.html#l00288">ISConstants.h:287</a></div></div>
 <div class="ttc" id="adata__sets_8h_html_a9fcc2d0ede852d5c2f024fbffd476c6e"><div class="ttname"><a href="data__sets_8h.html#a9fcc2d0ede852d5c2f024fbffd476c6e">eDataIDs</a></div><div class="ttdeci">uint32_t eDataIDs</div><div class="ttdef"><b>Definition:</b> <a href="data__sets_8h_source.html#l00032">data_sets.h:32</a></div></div>
-<div class="ttc" id="adata__sets_8c_html_a203cc0f0918751aa0ea9276329db328b"><div class="ttname"><a href="data__sets_8c.html#a203cc0f0918751aa0ea9276329db328b">gpsToJulian</a></div><div class="ttdeci">double gpsToJulian(int32_t gpsWeek, int32_t gpsMilliseconds, int32_t leapSeconds)</div><div class="ttdef"><b>Definition:</b> <a href="data__sets_8c_source.html#l00748">data_sets.c:748</a></div></div>
+<div class="ttc" id="adata__sets_8c_html_a203cc0f0918751aa0ea9276329db328b"><div class="ttname"><a href="data__sets_8c.html#a203cc0f0918751aa0ea9276329db328b">gpsToJulian</a></div><div class="ttdeci">float gpsToJulian(int32_t gpsWeek, int32_t gpsMilliseconds, int32_t leapSeconds)</div><div class="ttdef"><b>Definition:</b> <a href="data__sets_8c_source.html#l00748">data_sets.c:748</a></div></div>
 <div class="ttc" id="adata__sets_8h_html_aa76db0073c61928c7efbe6b32bfdd9c7"><div class="ttname"><a href="data__sets_8h.html#aa76db0073c61928c7efbe6b32bfdd9c7">MINPRNGAL</a></div><div class="ttdeci">#define MINPRNGAL</div><div class="ttdef"><b>Definition:</b> <a href="data__sets_8h_source.html#l03892">data_sets.h:3891</a></div></div>
 <div class="ttc" id="adata__sets_8h_html_a8ad0e4894aa48cbc1dbbb21aecb5bab3"><div class="ttname"><a href="data__sets_8h.html#a8ad0e4894aa48cbc1dbbb21aecb5bab3">DID_STROBE_IN_TIME</a></div><div class="ttdeci">#define DID_STROBE_IN_TIME</div><div class="ttdef"><b>Definition:</b> <a href="data__sets_8h_source.html#l00103">data_sets.h:102</a></div></div>
 <div class="ttc" id="adata__sets_8h_html_a2225559af40cbd395cef5a000c548fb8"><div class="ttname"><a href="data__sets_8h.html#a2225559af40cbd395cef5a000c548fb8">DID_GPS2_RTK_CMP_REL</a></div><div class="ttdeci">#define DID_GPS2_RTK_CMP_REL</div><div class="ttdef"><b>Definition:</b> <a href="data__sets_8h_source.html#l00126">data_sets.h:125</a></div></div>
@@ -1012,7 +1012,7 @@ $(function() {
 <div class="ttc" id="adata__sets_8h_html_ae805de4fa8fac52ea9ed1e9c6fd6259f"><div class="ttname"><a href="data__sets_8h.html#ae805de4fa8fac52ea9ed1e9c6fd6259f">DID_GPS1_RAW</a></div><div class="ttdeci">#define DID_GPS1_RAW</div><div class="ttdef"><b>Definition:</b> <a href="data__sets_8h_source.html#l00104">data_sets.h:103</a></div></div>
 <div class="ttc" id="adata__sets_8h_html_ac7581c009f2a6a7eaeabbc22875d3e88"><div class="ttname"><a href="data__sets_8h.html#ac7581c009f2a6a7eaeabbc22875d3e88">SECONDS_PER_WEEK</a></div><div class="ttdeci">#define SECONDS_PER_WEEK</div><div class="ttdef"><b>Definition:</b> <a href="data__sets_8h_source.html#l03766">data_sets.h:3765</a></div></div>
 <div class="ttc" id="adata__sets_8h_html_abbdf7a001284bca28a4633d4a5be3cea"><div class="ttname"><a href="data__sets_8h.html#abbdf7a001284bca28a4633d4a5be3cea">DID_PREINTEGRATED_IMU</a></div><div class="ttdeci">#define DID_PREINTEGRATED_IMU</div><div class="ttdef"><b>Definition:</b> <a href="data__sets_8h_source.html#l00038">data_sets.h:37</a></div></div>
-<div class="ttc" id="adata__sets_8c_html_a5454be85a9ae32de3118331684f10005"><div class="ttname"><a href="data__sets_8c.html#a5454be85a9ae32de3118331684f10005">flipDoubleCopy</a></div><div class="ttdeci">double flipDoubleCopy(double val)</div><div class="ttdef"><b>Definition:</b> <a href="data__sets_8c_source.html#l00060">data_sets.c:60</a></div></div>
+<div class="ttc" id="adata__sets_8c_html_a5454be85a9ae32de3118331684f10005"><div class="ttname"><a href="data__sets_8c.html#a5454be85a9ae32de3118331684f10005">flipDoubleCopy</a></div><div class="ttdeci">float flipDoubleCopy(float val)</div><div class="ttdef"><b>Definition:</b> <a href="data__sets_8c_source.html#l00060">data_sets.c:60</a></div></div>
 <div class="ttc" id="adata__sets_8h_html_ac8192bc17519cbd08e8980545889618f"><div class="ttname"><a href="data__sets_8h.html#ac8192bc17519cbd08e8980545889618f">RMC_BITS_DUAL_IMU_MAG_RAW</a></div><div class="ttdeci">#define RMC_BITS_DUAL_IMU_MAG_RAW</div><div class="ttdef"><b>Definition:</b> <a href="data__sets_8h_source.html#l01313">data_sets.h:1312</a></div></div>
 <div class="ttc" id="adata__sets_8c_html_a41229d05e477e60e9cdea65ccd2cbc1d"><div class="ttname"><a href="data__sets_8c.html#a41229d05e477e60e9cdea65ccd2cbc1d">satNumCalc</a></div><div class="ttdeci">int satNumCalc(int gnssID, int svID)</div><div class="ttdef"><b>Definition:</b> <a href="data__sets_8c_source.html#l00845">data_sets.c:845</a></div></div>
 <div class="ttc" id="adata__sets_8h_html_a041d8f831490603aea136fa5d12f119c"><div class="ttname"><a href="data__sets_8h.html#a041d8f831490603aea136fa5d12f119c">DID_DUAL_IMU_RAW</a></div><div class="ttdeci">#define DID_DUAL_IMU_RAW</div><div class="ttdef"><b>Definition:</b> <a href="data__sets_8h_source.html#l00092">data_sets.h:91</a></div></div>
@@ -1034,7 +1034,7 @@ $(function() {
 <div class="ttc" id="adata__sets_8h_html_ad2798c3e27acd9013878bc86774aced7"><div class="ttname"><a href="data__sets_8h.html#ad2798c3e27acd9013878bc86774aced7">DID_DUAL_IMU</a></div><div class="ttdeci">#define DID_DUAL_IMU</div><div class="ttdef"><b>Definition:</b> <a href="data__sets_8h_source.html#l00093">data_sets.h:92</a></div></div>
 <div class="ttc" id="adata__sets_8h_html_a33a062ab26abd91fbba67fcde7ec3d22"><div class="ttname"><a href="data__sets_8h.html#a33a062ab26abd91fbba67fcde7ec3d22">DID_GPS1_RTK_POS</a></div><div class="ttdeci">#define DID_GPS1_RTK_POS</div><div class="ttdef"><b>Definition:</b> <a href="data__sets_8h_source.html#l00089">data_sets.h:88</a></div></div>
 <div class="ttc" id="adata__sets_8h_html_a1bdaff5a9e7a9ed6deab888fea940b80"><div class="ttname"><a href="data__sets_8h.html#a1bdaff5a9e7a9ed6deab888fea940b80">RMC_BITS_GPS1_RTK_POS_MISC</a></div><div class="ttdeci">#define RMC_BITS_GPS1_RTK_POS_MISC</div><div class="ttdef"><b>Definition:</b> <a href="data__sets_8h_source.html#l01306">data_sets.h:1305</a></div></div>
-<div class="ttc" id="astruct_p_a_c_k_e_d_html_a62b68fa976a686ca5e2670628543c4e7"><div class="ttname"><a href="struct_p_a_c_k_e_d.html#a62b68fa976a686ca5e2670628543c4e7">PACKED::time</a></div><div class="ttdeci">double time</div><div class="ttdef"><b>Definition:</b> <a href="data__sets_8h_source.html#l00615">data_sets.h:615</a></div></div>
+<div class="ttc" id="astruct_p_a_c_k_e_d_html_a62b68fa976a686ca5e2670628543c4e7"><div class="ttname"><a href="struct_p_a_c_k_e_d.html#a62b68fa976a686ca5e2670628543c4e7">PACKED::time</a></div><div class="ttdeci">float time</div><div class="ttdef"><b>Definition:</b> <a href="data__sets_8h_source.html#l00615">data_sets.h:615</a></div></div>
 <div class="ttc" id="adata__sets_8c_html_a48eedd91d1a0e8559475175b1b52f826"><div class="ttname"><a href="data__sets_8c.html#a48eedd91d1a0e8559475175b1b52f826">flipFloatCopy</a></div><div class="ttdeci">float flipFloatCopy(float val)</div><div class="ttdef"><b>Definition:</b> <a href="data__sets_8c_source.html#l00031">data_sets.c:31</a></div></div>
 <div class="ttc" id="adata__sets_8h_html_a02ae34828ad3b867d34dbd56fd13a9f5"><div class="ttname"><a href="data__sets_8h.html#a02ae34828ad3b867d34dbd56fd13a9f5">DID_INL2_NED_SIGMA</a></div><div class="ttdeci">#define DID_INL2_NED_SIGMA</div><div class="ttdef"><b>Definition:</b> <a href="data__sets_8h_source.html#l00102">data_sets.h:101</a></div></div>
 <div class="ttc" id="a_i_s_constants_8h_html_a770571e12ff9370899184528f4b4626d"><div class="ttname"><a href="_i_s_constants_8h.html#a770571e12ff9370899184528f4b4626d">SNPRINTF</a></div><div class="ttdeci">#define SNPRINTF</div><div class="ttdef"><b>Definition:</b> <a href="_i_s_constants_8h_source.html#l00148">ISConstants.h:147</a></div></div>
@@ -1056,7 +1056,7 @@ $(function() {
 <div class="ttc" id="adata__sets_8h_html_a777819ed9aeeb6f96e9a74764d75064a"><div class="ttname"><a href="data__sets_8h.html#a777819ed9aeeb6f96e9a74764d75064a">DID_COUNT</a></div><div class="ttdeci">#define DID_COUNT</div><div class="ttdef"><b>Definition:</b> <a href="data__sets_8h_source.html#l00139">data_sets.h:138</a></div></div>
 <div class="ttc" id="adata__sets_8h_html_ac3e957aece456dcb8acd44437e37cbf1"><div class="ttname"><a href="data__sets_8h.html#ac3e957aece456dcb8acd44437e37cbf1">SYS_CMP</a></div><div class="ttdeci">#define SYS_CMP</div><div class="ttdef"><b>Definition:</b> <a href="data__sets_8h_source.html#l03786">data_sets.h:3785</a></div></div>
 <div class="ttc" id="adata__sets_8c_html_adcdd50f7e9d7265441087789b611694d"><div class="ttname"><a href="data__sets_8c.html#adcdd50f7e9d7265441087789b611694d">ubxSys</a></div><div class="ttdeci">int ubxSys(int gnssID)</div><div class="ttdef"><b>Definition:</b> <a href="data__sets_8c_source.html#l00786">data_sets.c:786</a></div></div>
-<div class="ttc" id="adata__sets_8c_html_a749719b28f0ca0d469340af1fd120a28"><div class="ttname"><a href="data__sets_8c.html#a749719b28f0ca0d469340af1fd120a28">julianToDate</a></div><div class="ttdeci">void julianToDate(double julian, int32_t *year, int32_t *month, int32_t *day, int32_t *hour, int32_t *minute, int32_t *second, int32_t *millisecond)</div><div class="ttdef"><b>Definition:</b> <a href="data__sets_8c_source.html#l00647">data_sets.c:647</a></div></div>
+<div class="ttc" id="adata__sets_8c_html_a749719b28f0ca0d469340af1fd120a28"><div class="ttname"><a href="data__sets_8c.html#a749719b28f0ca0d469340af1fd120a28">julianToDate</a></div><div class="ttdeci">void julianToDate(float julian, int32_t *year, int32_t *month, int32_t *day, int32_t *hour, int32_t *minute, int32_t *second, int32_t *millisecond)</div><div class="ttdef"><b>Definition:</b> <a href="data__sets_8c_source.html#l00647">data_sets.c:647</a></div></div>
 <div class="ttc" id="adata__sets_8h_html_a4b4ad791ed0932898e1711154644729a"><div class="ttname"><a href="data__sets_8h.html#a4b4ad791ed0932898e1711154644729a">RMC_BITS_GPS1_RAW</a></div><div class="ttdeci">#define RMC_BITS_GPS1_RAW</div><div class="ttdef"><b>Definition:</b> <a href="data__sets_8h_source.html#l01293">data_sets.h:1292</a></div></div>
 <div class="ttc" id="adata__sets_8h_html_ac6b5e6c0f5eb5b33d617390c1fbc6b9b"><div class="ttname"><a href="data__sets_8h.html#ac6b5e6c0f5eb5b33d617390c1fbc6b9b">RMC_BITS_GPS2_RAW</a></div><div class="ttdeci">#define RMC_BITS_GPS2_RAW</div><div class="ttdef"><b>Definition:</b> <a href="data__sets_8h_source.html#l01294">data_sets.h:1293</a></div></div>
 <div class="ttc" id="adata__sets_8h_html_aaa71deca82de4cea6f5ae7aabc092c60"><div class="ttname"><a href="data__sets_8h.html#aaa71deca82de4cea6f5ae7aabc092c60">RMC_BITS_INS1</a></div><div class="ttdeci">#define RMC_BITS_INS1</div><div class="ttdef"><b>Definition:</b> <a href="data__sets_8h_source.html#l01281">data_sets.h:1280</a></div></div>

@@ -107,7 +107,7 @@ bool cDeviceLog::SaveData(p_data_hdr_t *dataHdr, const uint8_t* dataBuf)
 {
     if (dataHdr != NULL)
     {
-        double timestamp = cISDataMappings::GetTimestamp(dataHdr, dataBuf);
+        float timestamp = cISDataMappings::GetTimestamp(dataHdr, dataBuf);
         m_logStats->LogDataAndTimestamp(dataHdr->id, timestamp);
 	}
     return true;
@@ -268,7 +268,7 @@ void cDeviceLog::OnReadData(p_data_t* data)
 {
     if (data != NULL)
     {
-        double timestamp = cISDataMappings::GetTimestamp(&data->hdr, data->buf);
+        float timestamp = cISDataMappings::GetTimestamp(&data->hdr, data->buf);
         m_logStats->LogDataAndTimestamp(data->hdr.id, timestamp);
     }
 }

@@ -706,7 +706,7 @@ uint32_t dateToWeekDay(uint32_t ul_year, uint32_t ul_month, uint32_t ul_day)
     return ul_week;
 }
 
-gen_1axis_sensor_t gen1AxisSensorData(double time, const float val)
+gen_1axis_sensor_t gen1AxisSensorData(float time, const float val)
 {
     gen_1axis_sensor_t data;
     data.time = time;
@@ -714,7 +714,7 @@ gen_1axis_sensor_t gen1AxisSensorData(double time, const float val)
     return data;
 }
 
-gen_3axis_sensor_t gen3AxisSensorData(double time, const float val[3])
+gen_3axis_sensor_t gen3AxisSensorData(float time, const float val[3])
 {
     gen_3axis_sensor_t data;
     data.time = time;
@@ -724,7 +724,7 @@ gen_3axis_sensor_t gen3AxisSensorData(double time, const float val[3])
     return data;
 }
 
-gen_dual_3axis_sensor_t genDual3AxisSensorData(double time, const float val1[3], const float val2[3])
+gen_dual_3axis_sensor_t genDual3AxisSensorData(float time, const float val1[3], const float val2[3])
 {
     gen_dual_3axis_sensor_t data;
     data.time = time;
@@ -737,7 +737,7 @@ gen_dual_3axis_sensor_t genDual3AxisSensorData(double time, const float val1[3],
     return data;
 }
 
-gen_3axis_sensord_t gen3AxisSensorDataD(double time, const double val[3])
+gen_3axis_sensord_t gen3AxisSensorDataD(float time, const float val[3])
 {
     gen_3axis_sensord_t data;
     data.time = time;

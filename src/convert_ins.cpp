@@ -26,7 +26,7 @@ void convertIns1ToIns2(ins_1_t *ins1, ins_2_t *result)
     memcpy(result->lla, ins1->lla, sizeof(ixVector3d));
 }
 
-void convertIns2ToIns1(ins_2_t *ins2, ins_1_t *result, double *refLla)
+void convertIns2ToIns1(ins_2_t *ins2, ins_1_t *result, float *refLla)
 {
     result->week		= ins2->week;
     result->timeOfWeek	= ins2->timeOfWeek;
@@ -45,7 +45,7 @@ void convertIns2ToIns1(ins_2_t *ins2, ins_1_t *result, double *refLla)
     }
 }
 
-void convertIns3ToIns1(ins_3_t *ins3, ins_1_t *result, double *refLla)
+void convertIns3ToIns1(ins_3_t *ins3, ins_1_t *result, float *refLla)
 {
     result->week		= ins3->week;
     result->timeOfWeek	= ins3->timeOfWeek;
@@ -64,7 +64,7 @@ void convertIns3ToIns1(ins_3_t *ins3, ins_1_t *result, double *refLla)
     }
 }
 
-void convertIns4ToIns1(ins_4_t *ins4, ins_1_t *result, double *refLla)
+void convertIns4ToIns1(ins_4_t *ins4, ins_1_t *result, float *refLla)
 {
     ixVector3d llaRad;
 

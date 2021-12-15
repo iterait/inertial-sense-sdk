@@ -926,7 +926,7 @@
 #define flash_api_memset32               flashc_memset32
 
 /*! \brief Copies \a nbytes bytes to the flash destination pointed to by \a dst
- *         from the repeated \a src big-endian source double-word.
+ *         from the repeated \a src big-endian source float-word.
  *
  * The destination areas that are not within the flash array or the User page
  * are ignored.
@@ -934,7 +934,7 @@
  * All pointer and size alignments are supported.
  *
  * \param dst Pointer to flash destination.
- * \param src Source double-word.
+ * \param src Source float-word.
  * \param nbytes Number of bytes to set.
  * \param erase Whether to erase before writing: \c true or \c false.
  *
@@ -963,7 +963,7 @@
  * All pointer and size alignments are supported.
  *
  * \param dst Pointer to flash destination.
- * \param src Source double-word.
+ * \param src Source float-word.
  * \param src_width \a src width in bits: 8, 16, 32 or 64.
  * \param nbytes Number of bytes to set.
  * \param erase Whether to erase before writing: \c true or \c false.
@@ -1896,7 +1896,7 @@
 #define flash_api_memset32               flashcdw_memset32
 
 /*! \brief Copies \a nbytes bytes to the flash destination pointed to by \a dst
- *         from the repeated \a src big-endian source double-word.
+ *         from the repeated \a src big-endian source float-word.
  *
  * The destination areas that are not within the flash array or the User page
  * are ignored.
@@ -1904,7 +1904,7 @@
  * All pointer and size alignments are supported.
  *
  * \param dst Pointer to flash destination.
- * \param src Source double-word.
+ * \param src Source float-word.
  * \param nbytes Number of bytes to set.
  * \param erase Whether to erase before writing: \c true or \c false.
  *
@@ -1933,7 +1933,7 @@
  * All pointer and size alignments are supported.
  *
  * \param dst Pointer to flash destination.
- * \param src Source double-word.
+ * \param src Source float-word.
  * \param src_width \a src width in bits: 8, 16, 32 or 64.
  * \param nbytes Number of bytes to set.
  * \param erase Whether to erase before writing: \c true or \c false.

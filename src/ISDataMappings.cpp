@@ -59,7 +59,7 @@ CONST_EXPRESSION uint32_t s_eDataTypeSizes[DataTypeCount] =
 	(uint32_t)sizeof(int64_t),
 	(uint32_t)sizeof(uint64_t),
 	(uint32_t)sizeof(float),
-	(uint32_t)sizeof(double),
+	(uint32_t)sizeof(float),
     (uint32_t)0, // string, must be set to actual size by caller
     (uint32_t)0  // binary, must be set to actual size by caller
 };
@@ -244,7 +244,7 @@ static void PopulateIMUMappings(map_name_to_info_t mappings[DID_COUNT], uint32_t
 	typedef imu_t MAP_TYPE;
 	map_name_to_info_t& m = mappings[dataId];
 	uint32_t totalSize = 0;
-    ADD_MAP(m, totalSize, "time", time, 0, DataTypeDouble, double, 0);
+    ADD_MAP(m, totalSize, "time", time, 0, DataTypeDouble, float, 0);
     ADD_MAP(m, totalSize, "pqr[0]", I.pqr[0], 0, DataTypeFloat, float&, 0);
     ADD_MAP(m, totalSize, "pqr[1]", I.pqr[1], 0, DataTypeFloat, float&, 0);
     ADD_MAP(m, totalSize, "pqr[2]", I.pqr[2], 0, DataTypeFloat, float&, 0);
@@ -261,7 +261,7 @@ static void PopulateIMU3Mappings(map_name_to_info_t mappings[DID_COUNT], uint32_
 	typedef imu3_t MAP_TYPE;
 	map_name_to_info_t& m = mappings[dataId];
 	uint32_t totalSize = 0;
-    ADD_MAP(m, totalSize, "time", time, 0, DataTypeDouble, double, 0);
+    ADD_MAP(m, totalSize, "time", time, 0, DataTypeDouble, float, 0);
     ADD_MAP(m, totalSize, "pqr1[0]", I[0].pqr[0], 0, DataTypeFloat, float&, 0);
     ADD_MAP(m, totalSize, "pqr1[1]", I[0].pqr[1], 0, DataTypeFloat, float&, 0);
     ADD_MAP(m, totalSize, "pqr1[2]", I[0].pqr[2], 0, DataTypeFloat, float&, 0);
@@ -299,7 +299,7 @@ static void PopulateSysParamsMappings(map_name_to_info_t mappings[DID_COUNT])
     ADD_MAP(m, totalSize, "reserved1", reserved1, 0, DataTypeFloat, float, 0);
 	ADD_MAP(m, totalSize, "imuPeriodMs", imuPeriodMs, 0, DataTypeUInt32, uint32_t, 0);
     ADD_MAP(m, totalSize, "navPeriodMs", navPeriodMs, 0, DataTypeUInt32, uint32_t, 0);
-	ADD_MAP(m, totalSize, "sensorTruePeriod", sensorTruePeriod, 0, DataTypeDouble, double, 0);
+	ADD_MAP(m, totalSize, "sensorTruePeriod", sensorTruePeriod, 0, DataTypeDouble, float, 0);
 	ADD_MAP(m, totalSize, "reserved2[0]", reserved2[0], 0, DataTypeFloat, float&, 0);
 	ADD_MAP(m, totalSize, "reserved2[1]", reserved2[1], 0, DataTypeFloat, float&, 0);
 	ADD_MAP(m, totalSize, "genFaultCode", genFaultCode, 0, DataTypeUInt32, uint32_t, DataFlagsDisplayHex);
@@ -312,7 +312,7 @@ static void PopulateSysSensorsMappings(map_name_to_info_t mappings[DID_COUNT])
 	typedef sys_sensors_t MAP_TYPE;
 	map_name_to_info_t& m = mappings[DID_SYS_SENSORS];
 	uint32_t totalSize = 0;
-    ADD_MAP(m, totalSize, "time", time, 0, DataTypeDouble, double, 0);
+    ADD_MAP(m, totalSize, "time", time, 0, DataTypeDouble, float, 0);
     ADD_MAP(m, totalSize, "temp", temp, 0, DataTypeFloat, float, 0);
     ADD_MAP(m, totalSize, "pqr[0]", pqr[0], 0, DataTypeFloat, float&, 0);
     ADD_MAP(m, totalSize, "pqr[1]", pqr[1], 0, DataTypeFloat, float&, 0);
@@ -341,7 +341,7 @@ static void PopulateINS1Mappings(map_name_to_info_t mappings[DID_COUNT])
 	map_name_to_info_t& m = mappings[DID_INS_1];
 	uint32_t totalSize = 0;
     ADD_MAP(m, totalSize, "week", week, 0, DataTypeUInt32, uint32_t, 0);
-    ADD_MAP(m, totalSize, "timeOfWeek", timeOfWeek, 0, DataTypeDouble, double, 0);
+    ADD_MAP(m, totalSize, "timeOfWeek", timeOfWeek, 0, DataTypeDouble, float, 0);
     ADD_MAP(m, totalSize, "insStatus", insStatus, 0, DataTypeUInt32, uint32_t, DataFlagsDisplayHex);
     ADD_MAP(m, totalSize, "hdwStatus", hdwStatus, 0, DataTypeUInt32, uint32_t, DataFlagsDisplayHex);
     ADD_MAP(m, totalSize, "theta[0]", theta[0], 0, DataTypeFloat, float&, 0);
@@ -350,9 +350,9 @@ static void PopulateINS1Mappings(map_name_to_info_t mappings[DID_COUNT])
     ADD_MAP(m, totalSize, "uvw[0]", uvw[0], 0, DataTypeFloat, float&, 0);
     ADD_MAP(m, totalSize, "uvw[1]", uvw[1], 0, DataTypeFloat, float&, 0);
     ADD_MAP(m, totalSize, "uvw[2]", uvw[2], 0, DataTypeFloat, float&, 0);
-    ADD_MAP(m, totalSize, "lla[0]", lla[0], 0, DataTypeDouble, double&, 0);
-    ADD_MAP(m, totalSize, "lla[1]", lla[1], 0, DataTypeDouble, double&, 0);
-    ADD_MAP(m, totalSize, "lla[2]", lla[2], 0, DataTypeDouble, double&, 0);
+    ADD_MAP(m, totalSize, "lla[0]", lla[0], 0, DataTypeDouble, float&, 0);
+    ADD_MAP(m, totalSize, "lla[1]", lla[1], 0, DataTypeDouble, float&, 0);
+    ADD_MAP(m, totalSize, "lla[2]", lla[2], 0, DataTypeDouble, float&, 0);
     ADD_MAP(m, totalSize, "ned[0]", ned[0], 0, DataTypeFloat, float&, 0);
     ADD_MAP(m, totalSize, "ned[1]", ned[1], 0, DataTypeFloat, float&, 0);
     ADD_MAP(m, totalSize, "ned[2]", ned[2], 0, DataTypeFloat, float&, 0);
@@ -366,7 +366,7 @@ static void PopulateINS2Mappings(map_name_to_info_t mappings[DID_COUNT])
 	map_name_to_info_t& m = mappings[DID_INS_2];
 	uint32_t totalSize = 0;
     ADD_MAP(m, totalSize, "week", week, 0, DataTypeUInt32, uint32_t, 0);
-    ADD_MAP(m, totalSize, "timeOfWeek", timeOfWeek, 0, DataTypeDouble, double, 0);
+    ADD_MAP(m, totalSize, "timeOfWeek", timeOfWeek, 0, DataTypeDouble, float, 0);
     ADD_MAP(m, totalSize, "insStatus", insStatus, 0, DataTypeUInt32, uint32_t, DataFlagsDisplayHex);
     ADD_MAP(m, totalSize, "hdwStatus", hdwStatus, 0, DataTypeUInt32, uint32_t, DataFlagsDisplayHex);
     ADD_MAP(m, totalSize, "qn2b[0]", qn2b[0], 0, DataTypeFloat, float&, 0);
@@ -376,9 +376,9 @@ static void PopulateINS2Mappings(map_name_to_info_t mappings[DID_COUNT])
     ADD_MAP(m, totalSize, "uvw[0]", uvw[0], 0, DataTypeFloat, float&, 0);
     ADD_MAP(m, totalSize, "uvw[1]", uvw[1], 0, DataTypeFloat, float&, 0);
     ADD_MAP(m, totalSize, "uvw[2]", uvw[2], 0, DataTypeFloat, float&, 0);
-    ADD_MAP(m, totalSize, "lla[0]", lla[0], 0, DataTypeDouble, double&, 0);
-    ADD_MAP(m, totalSize, "lla[1]", lla[1], 0, DataTypeDouble, double&, 0);
-    ADD_MAP(m, totalSize, "lla[2]", lla[2], 0, DataTypeDouble, double&, 0);
+    ADD_MAP(m, totalSize, "lla[0]", lla[0], 0, DataTypeDouble, float&, 0);
+    ADD_MAP(m, totalSize, "lla[1]", lla[1], 0, DataTypeDouble, float&, 0);
+    ADD_MAP(m, totalSize, "lla[2]", lla[2], 0, DataTypeDouble, float&, 0);
 
     ASSERT_SIZE(totalSize);
 }
@@ -389,7 +389,7 @@ static void PopulateINS3Mappings(map_name_to_info_t mappings[DID_COUNT])
 	map_name_to_info_t& m = mappings[DID_INS_3];
 	uint32_t totalSize = 0;
 	ADD_MAP(m, totalSize, "week", week, 0, DataTypeUInt32, uint32_t, 0);
-	ADD_MAP(m, totalSize, "timeOfWeek", timeOfWeek, 0, DataTypeDouble, double, 0);
+	ADD_MAP(m, totalSize, "timeOfWeek", timeOfWeek, 0, DataTypeDouble, float, 0);
 	ADD_MAP(m, totalSize, "insStatus", insStatus, 0, DataTypeUInt32, uint32_t, DataFlagsDisplayHex);
 	ADD_MAP(m, totalSize, "hdwStatus", hdwStatus, 0, DataTypeUInt32, uint32_t, DataFlagsDisplayHex);
 	ADD_MAP(m, totalSize, "qn2b[0]", qn2b[0], 0, DataTypeFloat, float&, 0);
@@ -399,9 +399,9 @@ static void PopulateINS3Mappings(map_name_to_info_t mappings[DID_COUNT])
 	ADD_MAP(m, totalSize, "uvw[0]", uvw[0], 0, DataTypeFloat, float&, 0);
 	ADD_MAP(m, totalSize, "uvw[1]", uvw[1], 0, DataTypeFloat, float&, 0);
 	ADD_MAP(m, totalSize, "uvw[2]", uvw[2], 0, DataTypeFloat, float&, 0);
-	ADD_MAP(m, totalSize, "lla[0]", lla[0], 0, DataTypeDouble, double&, 0);
-	ADD_MAP(m, totalSize, "lla[1]", lla[1], 0, DataTypeDouble, double&, 0);
-	ADD_MAP(m, totalSize, "lla[2]", lla[2], 0, DataTypeDouble, double&, 0);
+	ADD_MAP(m, totalSize, "lla[0]", lla[0], 0, DataTypeDouble, float&, 0);
+	ADD_MAP(m, totalSize, "lla[1]", lla[1], 0, DataTypeDouble, float&, 0);
+	ADD_MAP(m, totalSize, "lla[2]", lla[2], 0, DataTypeDouble, float&, 0);
 	ADD_MAP(m, totalSize, "msl", msl, 0, DataTypeFloat, float, 0);
 
 	ASSERT_SIZE(totalSize);
@@ -413,7 +413,7 @@ static void PopulateINS4Mappings(map_name_to_info_t mappings[DID_COUNT])
 	map_name_to_info_t& m = mappings[DID_INS_4];
 	uint32_t totalSize = 0;
     ADD_MAP(m, totalSize, "week", week, 0, DataTypeUInt32, uint32_t, 0);
-    ADD_MAP(m, totalSize, "timeOfWeek", timeOfWeek, 0, DataTypeDouble, double, 0);
+    ADD_MAP(m, totalSize, "timeOfWeek", timeOfWeek, 0, DataTypeDouble, float, 0);
     ADD_MAP(m, totalSize, "insStatus", insStatus, 0, DataTypeUInt32, uint32_t, DataFlagsDisplayHex);
     ADD_MAP(m, totalSize, "hdwStatus", hdwStatus, 0, DataTypeUInt32, uint32_t, DataFlagsDisplayHex);
     ADD_MAP(m, totalSize, "qe2b[0]", qe2b[0], 0, DataTypeFloat, float&, 0);
@@ -423,9 +423,9 @@ static void PopulateINS4Mappings(map_name_to_info_t mappings[DID_COUNT])
     ADD_MAP(m, totalSize, "ve[0]", ve[0], 0, DataTypeFloat, float&, 0);
     ADD_MAP(m, totalSize, "ve[1]", ve[1], 0, DataTypeFloat, float&, 0);
     ADD_MAP(m, totalSize, "ve[2]", ve[2], 0, DataTypeFloat, float&, 0);
-    ADD_MAP(m, totalSize, "ecef[0]", ecef[0], 0, DataTypeDouble, double&, 0);
-    ADD_MAP(m, totalSize, "ecef[1]", ecef[1], 0, DataTypeDouble, double&, 0);
-    ADD_MAP(m, totalSize, "ecef[2]", ecef[2], 0, DataTypeDouble, double&, 0);
+    ADD_MAP(m, totalSize, "ecef[0]", ecef[0], 0, DataTypeDouble, float&, 0);
+    ADD_MAP(m, totalSize, "ecef[1]", ecef[1], 0, DataTypeDouble, float&, 0);
+    ADD_MAP(m, totalSize, "ecef[2]", ecef[2], 0, DataTypeDouble, float&, 0);
 
     ASSERT_SIZE(totalSize);
 }
@@ -438,18 +438,18 @@ static void PopulateGpsPosMappings(map_name_to_info_t mappings[DID_COUNT], uint3
     ADD_MAP(m, totalSize, "week", week, 0, DataTypeUInt32, uint32_t, 0);
     ADD_MAP(m, totalSize, "timeOfWeekMs", timeOfWeekMs, 0, DataTypeUInt32, uint32_t, 0);
     ADD_MAP(m, totalSize, "status", status, 0, DataTypeUInt32, uint32_t, DataFlagsDisplayHex);
-	ADD_MAP(m, totalSize, "ecef[0]", ecef[0], 0, DataTypeDouble, double&, 0);
-	ADD_MAP(m, totalSize, "ecef[1]", ecef[1], 0, DataTypeDouble, double&, 0);
-	ADD_MAP(m, totalSize, "ecef[2]", ecef[2], 0, DataTypeDouble, double&, 0);
-	ADD_MAP(m, totalSize, "lla[0]", lla[0], 0, DataTypeDouble, double&, 0);
-    ADD_MAP(m, totalSize, "lla[1]", lla[1], 0, DataTypeDouble, double&, 0);
-    ADD_MAP(m, totalSize, "lla[2]", lla[2], 0, DataTypeDouble, double&, 0);
+	ADD_MAP(m, totalSize, "ecef[0]", ecef[0], 0, DataTypeDouble, float&, 0);
+	ADD_MAP(m, totalSize, "ecef[1]", ecef[1], 0, DataTypeDouble, float&, 0);
+	ADD_MAP(m, totalSize, "ecef[2]", ecef[2], 0, DataTypeDouble, float&, 0);
+	ADD_MAP(m, totalSize, "lla[0]", lla[0], 0, DataTypeDouble, float&, 0);
+    ADD_MAP(m, totalSize, "lla[1]", lla[1], 0, DataTypeDouble, float&, 0);
+    ADD_MAP(m, totalSize, "lla[2]", lla[2], 0, DataTypeDouble, float&, 0);
     ADD_MAP(m, totalSize, "hMSL", hMSL, 0, DataTypeFloat, float, 0);
     ADD_MAP(m, totalSize, "hAcc", hAcc, 0, DataTypeFloat, float, 0);
     ADD_MAP(m, totalSize, "vAcc", vAcc, 0, DataTypeFloat, float, 0);
     ADD_MAP(m, totalSize, "pDop", pDop, 0, DataTypeFloat, float, 0);
 	ADD_MAP(m, totalSize, "cnoMean", cnoMean, 0, DataTypeFloat, float, 0);
-	ADD_MAP(m, totalSize, "towOffset", towOffset, 0, DataTypeDouble, double, 0);
+	ADD_MAP(m, totalSize, "towOffset", towOffset, 0, DataTypeDouble, float, 0);
 	ADD_MAP(m, totalSize, "leapS", leapS, 0, DataTypeUInt8, uint8_t, 0);
 	ADD_MAP(m, totalSize, "reserved[0]", reserved[0], 0, DataTypeUInt8, uint8_t&, 0);
 	ADD_MAP(m, totalSize, "reserved[1]", reserved[1], 0, DataTypeUInt8, uint8_t&, 0);
@@ -589,7 +589,7 @@ static void PopulateMagnetometerMappings(map_name_to_info_t mappings[DID_COUNT])
 	typedef magnetometer_t MAP_TYPE;
 	map_name_to_info_t& m = mappings[DID_MAGNETOMETER];
 	uint32_t totalSize = 0;
-    ADD_MAP(m, totalSize, "time", time, 0, DataTypeDouble, double, 0);
+    ADD_MAP(m, totalSize, "time", time, 0, DataTypeDouble, float, 0);
     ADD_MAP(m, totalSize, "mag[0]", mag[0], 0, DataTypeFloat, float&, 0);
     ADD_MAP(m, totalSize, "mag[1]", mag[1], 0, DataTypeFloat, float&, 0);
     ADD_MAP(m, totalSize, "mag[2]", mag[2], 0, DataTypeFloat, float&, 0);
@@ -602,7 +602,7 @@ static void PopulateBarometerMappings(map_name_to_info_t mappings[DID_COUNT])
 	typedef barometer_t MAP_TYPE;
 	map_name_to_info_t& m = mappings[DID_BAROMETER];
 	uint32_t totalSize = 0;
-    ADD_MAP(m, totalSize, "time", time, 0, DataTypeDouble, double, 0);
+    ADD_MAP(m, totalSize, "time", time, 0, DataTypeDouble, float, 0);
     ADD_MAP(m, totalSize, "bar", bar, 0, DataTypeFloat, float, 0);
     ADD_MAP(m, totalSize, "mslBar", mslBar, 0, DataTypeFloat, float, 0);
     ADD_MAP(m, totalSize, "barTemp", barTemp, 0, DataTypeFloat, float, 0);
@@ -616,7 +616,7 @@ static void PopulateIMUDeltaThetaVelocityMappings(map_name_to_info_t mappings[DI
 	typedef preintegrated_imu_t MAP_TYPE;
 	map_name_to_info_t& m = mappings[DID_PREINTEGRATED_IMU];
 	uint32_t totalSize = 0;
-    ADD_MAP(m, totalSize, "time", time, 0, DataTypeDouble, double, 0);
+    ADD_MAP(m, totalSize, "time", time, 0, DataTypeDouble, float, 0);
     ADD_MAP(m, totalSize, "theta[0]", theta[0], 0, DataTypeFloat, float&, 0);
     ADD_MAP(m, totalSize, "theta[1]", theta[1], 0, DataTypeFloat, float&, 0);
     ADD_MAP(m, totalSize, "theta[2]", theta[2], 0, DataTypeFloat, float&, 0);
@@ -634,7 +634,7 @@ static void PopulateIMUDeltaThetaVelocityMagMappings(map_name_to_info_t mappings
 	typedef pimu_mag_t MAP_TYPE;
 	map_name_to_info_t& m = mappings[DID_PREINTEGRATED_IMU_MAG];
 	uint32_t totalSize = 0;
-	ADD_MAP(m, totalSize, "imutime", pimu.time, 0, DataTypeDouble, double, 0);
+	ADD_MAP(m, totalSize, "imutime", pimu.time, 0, DataTypeDouble, float, 0);
 	ADD_MAP(m, totalSize, "theta[0]", pimu.theta[0], 0, DataTypeFloat, float&, 0);
 	ADD_MAP(m, totalSize, "theta[1]", pimu.theta[1], 0, DataTypeFloat, float&, 0);
 	ADD_MAP(m, totalSize, "theta[2]", pimu.theta[2], 0, DataTypeFloat, float&, 0);
@@ -643,7 +643,7 @@ static void PopulateIMUDeltaThetaVelocityMagMappings(map_name_to_info_t mappings
 	ADD_MAP(m, totalSize, "vel[2]", pimu.vel[2], 0, DataTypeFloat, float&, 0);
 	ADD_MAP(m, totalSize, "dt", pimu.dt, 0, DataTypeFloat, float, 0);
 	ADD_MAP(m, totalSize, "imustatus", pimu.status, 0, DataTypeUInt32, uint32_t, 0);
-	ADD_MAP(m, totalSize, "magtime", mag.time, 0, DataTypeDouble, double, 0);
+	ADD_MAP(m, totalSize, "magtime", mag.time, 0, DataTypeDouble, float, 0);
 	ADD_MAP(m, totalSize, "mag[0]", mag.mag[0], 0, DataTypeFloat, float&, 0);
 	ADD_MAP(m, totalSize, "mag[1]", mag.mag[1], 0, DataTypeFloat, float&, 0);
 	ADD_MAP(m, totalSize, "mag[2]", mag.mag[2], 0, DataTypeFloat, float&, 0);
@@ -656,7 +656,7 @@ static void PopulateIMU3MagnetometerMappings(map_name_to_info_t mappings[DID_COU
 	typedef imu3_mag_t MAP_TYPE;
 	map_name_to_info_t& m = mappings[DID_IMU3_MAG];
 	uint32_t totalSize = 0;
-	ADD_MAP(m, totalSize, "time", imu.time, 0, DataTypeDouble, double, 0);
+	ADD_MAP(m, totalSize, "time", imu.time, 0, DataTypeDouble, float, 0);
 	ADD_MAP(m, totalSize, "pqr1[0]", imu.I[0].pqr[0], 0, DataTypeFloat, float&, 0);
 	ADD_MAP(m, totalSize, "pqr1[1]", imu.I[0].pqr[1], 0, DataTypeFloat, float&, 0);
 	ADD_MAP(m, totalSize, "pqr1[2]", imu.I[0].pqr[2], 0, DataTypeFloat, float&, 0);
@@ -676,7 +676,7 @@ static void PopulateIMU3MagnetometerMappings(map_name_to_info_t mappings[DID_COU
 	ADD_MAP(m, totalSize, "acc3[1]", imu.I[2].acc[1], 0, DataTypeFloat, float&, 0);
 	ADD_MAP(m, totalSize, "acc3[2]", imu.I[2].acc[2], 0, DataTypeFloat, float&, 0);
 	ADD_MAP(m, totalSize, "imustatus", imu.status, 0, DataTypeUInt32, uint32_t, 0);
-	ADD_MAP(m, totalSize, "magtime", mag.time, 0, DataTypeDouble, double, 0);
+	ADD_MAP(m, totalSize, "magtime", mag.time, 0, DataTypeDouble, float, 0);
 	ADD_MAP(m, totalSize, "mag[0]", mag.mag[0], 0, DataTypeFloat, float&, 0);
 	ADD_MAP(m, totalSize, "mag[1]", mag.mag[1], 0, DataTypeFloat, float&, 0);
 	ADD_MAP(m, totalSize, "mag[2]", mag.mag[2], 0, DataTypeFloat, float&, 0);
@@ -689,7 +689,7 @@ static void PopulateWheelEncoderMappings(map_name_to_info_t mappings[DID_COUNT])
     typedef wheel_encoder_t MAP_TYPE;
     map_name_to_info_t& m = mappings[DID_WHEEL_ENCODER];
     uint32_t totalSize = 0;
-    ADD_MAP(m, totalSize, "timeOfWeek", timeOfWeek, 0, DataTypeDouble, double, 0);
+    ADD_MAP(m, totalSize, "timeOfWeek", timeOfWeek, 0, DataTypeDouble, float, 0);
     ADD_MAP(m, totalSize, "status", status, 0, DataTypeUInt32, uint32_t, DataFlagsDisplayHex);
     ADD_MAP(m, totalSize, "theta_l", theta_l, 0, DataTypeFloat, float, 0);
     ADD_MAP(m, totalSize, "omega_l", omega_l, 0, DataTypeFloat, float, 0);
@@ -764,12 +764,12 @@ static void PopulateFlashConfigMappings(map_name_to_info_t mappings[DID_COUNT])
 	ADD_MAP(m, totalSize, "reserved", reserved, 0, DataTypeUInt8, uint8_t, 0);
 	ADD_MAP(m, totalSize, "gnssSatSigConst", gnssSatSigConst, 0, DataTypeUInt16, uint16_t, DataFlagsDisplayHex);
 	ADD_MAP(m, totalSize, "sysCfgBits", sysCfgBits, 0, DataTypeUInt32, uint32_t, DataFlagsDisplayHex);
-    ADD_MAP(m, totalSize, "refLla[0]", refLla[0], 0, DataTypeDouble, double&, 0);
-    ADD_MAP(m, totalSize, "refLla[1]", refLla[1], 0, DataTypeDouble, double&, 0);
-    ADD_MAP(m, totalSize, "refLla[2]", refLla[2], 0, DataTypeDouble, double&, 0);
-    ADD_MAP(m, totalSize, "lastLla[0]", lastLla[0], 0, DataTypeDouble, double&, 0);
-    ADD_MAP(m, totalSize, "lastLla[1]", lastLla[1], 0, DataTypeDouble, double&, 0);
-    ADD_MAP(m, totalSize, "lastLla[2]", lastLla[2], 0, DataTypeDouble, double&, 0);
+    ADD_MAP(m, totalSize, "refLla[0]", refLla[0], 0, DataTypeDouble, float&, 0);
+    ADD_MAP(m, totalSize, "refLla[1]", refLla[1], 0, DataTypeDouble, float&, 0);
+    ADD_MAP(m, totalSize, "refLla[2]", refLla[2], 0, DataTypeDouble, float&, 0);
+    ADD_MAP(m, totalSize, "lastLla[0]", lastLla[0], 0, DataTypeDouble, float&, 0);
+    ADD_MAP(m, totalSize, "lastLla[1]", lastLla[1], 0, DataTypeDouble, float&, 0);
+    ADD_MAP(m, totalSize, "lastLla[2]", lastLla[2], 0, DataTypeDouble, float&, 0);
     ADD_MAP(m, totalSize, "lastLlaTimeOfWeekMs", lastLlaTimeOfWeekMs, 0, DataTypeUInt32, uint32_t, 0);
     ADD_MAP(m, totalSize, "lastLlaWeek", lastLlaWeek, 0, DataTypeUInt32, uint32_t, 0);
     ADD_MAP(m, totalSize, "lastLlaUpdateDistance", lastLlaUpdateDistance, 0, DataTypeFloat, float, 0);
@@ -922,9 +922,9 @@ static void PopulateDebugArrayMappings(map_name_to_info_t mappings[DID_COUNT], u
     ADD_MAP(m, totalSize, "f[6]", f[6], 0, DataTypeFloat, float&, 0);
     ADD_MAP(m, totalSize, "f[7]", f[7], 0, DataTypeFloat, float&, 0);
     ADD_MAP(m, totalSize, "f[8]", f[8], 0, DataTypeFloat, float&, 0);
-    ADD_MAP(m, totalSize, "lf[0]", lf[0], 0, DataTypeDouble, double&, 0);
-    ADD_MAP(m, totalSize, "lf[1]", lf[1], 0, DataTypeDouble, double&, 0);
-    ADD_MAP(m, totalSize, "lf[2]", lf[2], 0, DataTypeDouble, double&, 0);
+    ADD_MAP(m, totalSize, "lf[0]", lf[0], 0, DataTypeDouble, float&, 0);
+    ADD_MAP(m, totalSize, "lf[1]", lf[1], 0, DataTypeDouble, float&, 0);
+    ADD_MAP(m, totalSize, "lf[2]", lf[2], 0, DataTypeDouble, float&, 0);
 
     ASSERT_SIZE(totalSize);
 }
@@ -940,10 +940,10 @@ static void PopulateEvbLunaFlashCfgMappings(map_name_to_info_t mappings[DID_COUN
     ADD_MAP(m, totalSize, "checksum", checksum, 0, DataTypeUInt32, uint32_t, 0);
     ADD_MAP(m, totalSize, "key", key, 0, DataTypeUInt32, uint32_t, 0);
     ADD_MAP(m, totalSize, "bits", bits, 0, DataTypeUInt32, uint32_t, DataFlagsDisplayHex);
-    ADD_MAP(m, totalSize, "minLatGeofence", minLatGeofence, 0, DataTypeDouble, double, 0);
-    ADD_MAP(m, totalSize, "maxLatGeofence", maxLatGeofence, 0, DataTypeDouble, double, 0);
-    ADD_MAP(m, totalSize, "minLonGeofence", minLonGeofence, 0, DataTypeDouble, double, 0);
-    ADD_MAP(m, totalSize, "maxLonGeofence", maxLonGeofence, 0, DataTypeDouble, double, 0);
+    ADD_MAP(m, totalSize, "minLatGeofence", minLatGeofence, 0, DataTypeDouble, float, 0);
+    ADD_MAP(m, totalSize, "maxLatGeofence", maxLatGeofence, 0, DataTypeDouble, float, 0);
+    ADD_MAP(m, totalSize, "minLonGeofence", minLonGeofence, 0, DataTypeDouble, float, 0);
+    ADD_MAP(m, totalSize, "maxLonGeofence", maxLonGeofence, 0, DataTypeDouble, float, 0);
 	ADD_MAP(m, totalSize, "remoteKillTimeoutMs", remoteKillTimeoutMs, 0, DataTypeUInt32, uint32_t, 0);
     ADD_MAP(m, totalSize, "bumpSensitivity", bumpSensitivity, 0, DataTypeFloat, float, 0);
     ADD_MAP(m, totalSize, "minProxDistance", minProxDistance, 0, DataTypeFloat, float, 0);
@@ -1114,9 +1114,9 @@ static void PopulateGpsRtkMiscMappings(map_name_to_info_t mappings[DID_COUNT], u
     ADD_MAP(m, totalSize, "gDop", gDop, 0, DataTypeFloat, float, 0);
     ADD_MAP(m, totalSize, "hDop", hDop, 0, DataTypeFloat, float, 0);
     ADD_MAP(m, totalSize, "vDop", vDop, 0, DataTypeFloat, float, 0);
-    ADD_MAP(m, totalSize, "baseLla[0]", baseLla[0], 0, DataTypeDouble, double&, 0);
-    ADD_MAP(m, totalSize, "baseLla[1]", baseLla[1], 0, DataTypeDouble, double&, 0);
-    ADD_MAP(m, totalSize, "baseLla[2]", baseLla[2], 0, DataTypeDouble, double&, 0);
+    ADD_MAP(m, totalSize, "baseLla[0]", baseLla[0], 0, DataTypeDouble, float&, 0);
+    ADD_MAP(m, totalSize, "baseLla[1]", baseLla[1], 0, DataTypeDouble, float&, 0);
+    ADD_MAP(m, totalSize, "baseLla[2]", baseLla[2], 0, DataTypeDouble, float&, 0);
     ADD_MAP(m, totalSize, "cycleSlipCount", cycleSlipCount, 0, DataTypeUInt32, uint32_t, 0);
     ADD_MAP(m, totalSize, "roverGpsObservationCount", roverGpsObservationCount, 0, DataTypeUInt32, uint32_t, 0);
     ADD_MAP(m, totalSize, "baseGpsObservationCount", baseGpsObservationCount, 0, DataTypeUInt32, uint32_t, 0);
@@ -1191,7 +1191,7 @@ static void PopulateRtosInfoMappings(map_name_to_info_t mappings[DID_COUNT])
     ADD_MAP(m, totalSize, "maxRunTimeUs[0]", task[0].maxRunTimeUs, 0, DataTypeUInt32, uint32_t, 0);
     ADD_MAP(m, totalSize, "averageRunTimeUs[0]", task[0].averageRunTimeUs, 0, DataTypeFloat, float, 0);
     ADD_MAP(m, totalSize, "gapCount[0]", task[0].gapCount, 0, DataTypeUInt32, uint32_t, 0);
-    ADD_MAP(m, totalSize, "cpuUsage[0]", task[0].cpuUsage, 0, DataTypeFloat, f_t, 0);
+    ADD_MAP(m, totalSize, "cpuUsage[0]", task[0].cpuUsage, 0, DataTypeFloat, float, 0);
     ADD_MAP(m, totalSize, "handle[0]", task[0].handle, 0, DataTypeUInt32, uint32_t, 0);
 
     ADD_MAP(m, totalSize, "name[1]", task[1].name, MAX_TASK_NAME_LEN, DataTypeString, char[MAX_TASK_NAME_LEN], 0);
@@ -1202,7 +1202,7 @@ static void PopulateRtosInfoMappings(map_name_to_info_t mappings[DID_COUNT])
     ADD_MAP(m, totalSize, "maxRunTimeUs[1]", task[1].maxRunTimeUs, 0, DataTypeUInt32, uint32_t, 0);
     ADD_MAP(m, totalSize, "averageRunTimeUs[1]", task[1].averageRunTimeUs, 0, DataTypeFloat, float, 0);
     ADD_MAP(m, totalSize, "gapCount[1]", task[1].gapCount, 0, DataTypeUInt32, uint32_t, 0);
-    ADD_MAP(m, totalSize, "cpuUsage[1]", task[1].cpuUsage, 0, DataTypeFloat, f_t, 0);
+    ADD_MAP(m, totalSize, "cpuUsage[1]", task[1].cpuUsage, 0, DataTypeFloat, float, 0);
     ADD_MAP(m, totalSize, "handle[1]", task[1].handle, 0, DataTypeUInt32, uint32_t, 0);
 
     ADD_MAP(m, totalSize, "name[2]", task[2].name, MAX_TASK_NAME_LEN, DataTypeString, char[MAX_TASK_NAME_LEN], 0);
@@ -1213,7 +1213,7 @@ static void PopulateRtosInfoMappings(map_name_to_info_t mappings[DID_COUNT])
     ADD_MAP(m, totalSize, "maxRunTimeUs[2]", task[2].maxRunTimeUs, 0, DataTypeUInt32, uint32_t, 0);
     ADD_MAP(m, totalSize, "averageRunTimeUs[2]", task[2].averageRunTimeUs, 0, DataTypeFloat, float, 0);
     ADD_MAP(m, totalSize, "gapCount[2]", task[2].gapCount, 0, DataTypeUInt32, uint32_t, 0);
-    ADD_MAP(m, totalSize, "cpuUsage[2]", task[2].cpuUsage, 0, DataTypeFloat, f_t, 0);
+    ADD_MAP(m, totalSize, "cpuUsage[2]", task[2].cpuUsage, 0, DataTypeFloat, float, 0);
     ADD_MAP(m, totalSize, "handle[2]", task[2].handle, 0, DataTypeUInt32, uint32_t, 0);
 
     ADD_MAP(m, totalSize, "name[3]", task[3].name, MAX_TASK_NAME_LEN, DataTypeString, char[MAX_TASK_NAME_LEN], 0);
@@ -1224,7 +1224,7 @@ static void PopulateRtosInfoMappings(map_name_to_info_t mappings[DID_COUNT])
     ADD_MAP(m, totalSize, "maxRunTimeUs[3]", task[3].maxRunTimeUs, 0, DataTypeUInt32, uint32_t, 0);
     ADD_MAP(m, totalSize, "averageRunTimeUs[3]", task[3].averageRunTimeUs, 0, DataTypeFloat, float, 0);
     ADD_MAP(m, totalSize, "gapCount[3]", task[3].gapCount, 0, DataTypeUInt32, uint32_t, 0);
-    ADD_MAP(m, totalSize, "cpuUsage[3]", task[3].cpuUsage, 0, DataTypeFloat, f_t, 0);
+    ADD_MAP(m, totalSize, "cpuUsage[3]", task[3].cpuUsage, 0, DataTypeFloat, float, 0);
     ADD_MAP(m, totalSize, "handle[3]", task[3].handle, 0, DataTypeUInt32, uint32_t, 0);
 
     ADD_MAP(m, totalSize, "name[4]", task[4].name, MAX_TASK_NAME_LEN, DataTypeString, char[MAX_TASK_NAME_LEN], 0);
@@ -1235,7 +1235,7 @@ static void PopulateRtosInfoMappings(map_name_to_info_t mappings[DID_COUNT])
     ADD_MAP(m, totalSize, "maxRunTimeUs[4]", task[4].maxRunTimeUs, 0, DataTypeUInt32, uint32_t, 0);
     ADD_MAP(m, totalSize, "averageRunTimeUs[4]", task[4].averageRunTimeUs, 0, DataTypeFloat, float, 0);
     ADD_MAP(m, totalSize, "gapCount[4]", task[4].gapCount, 0, DataTypeUInt32, uint32_t, 0);
-    ADD_MAP(m, totalSize, "cpuUsage[4]", task[4].cpuUsage, 0, DataTypeFloat, f_t, 0);
+    ADD_MAP(m, totalSize, "cpuUsage[4]", task[4].cpuUsage, 0, DataTypeFloat, float, 0);
     ADD_MAP(m, totalSize, "handle[4]", task[4].handle, 0, DataTypeUInt32, uint32_t, 0);
 
     ADD_MAP(m, totalSize, "name[5]", task[5].name, MAX_TASK_NAME_LEN, DataTypeString, char[MAX_TASK_NAME_LEN], 0);
@@ -1246,7 +1246,7 @@ static void PopulateRtosInfoMappings(map_name_to_info_t mappings[DID_COUNT])
     ADD_MAP(m, totalSize, "maxRunTimeUs[5]", task[5].maxRunTimeUs, 0, DataTypeUInt32, uint32_t, 0);
     ADD_MAP(m, totalSize, "averageRunTimeUs[5]", task[5].averageRunTimeUs, 0, DataTypeFloat, float, 0);
     ADD_MAP(m, totalSize, "gapCount[5]", task[5].gapCount, 0, DataTypeUInt32, uint32_t, 0);
-    ADD_MAP(m, totalSize, "cpuUsage[5]", task[5].cpuUsage, 0, DataTypeFloat, f_t, 0);
+    ADD_MAP(m, totalSize, "cpuUsage[5]", task[5].cpuUsage, 0, DataTypeFloat, float, 0);
     ADD_MAP(m, totalSize, "handle[5]", task[5].handle, 0, DataTypeUInt32, uint32_t, 0);
 
     ADD_MAP(m, totalSize, "freeHeapSize", freeHeapSize, 0, DataTypeUInt32, uint32_t, 0);
@@ -1335,7 +1335,7 @@ static void PopulateSensorsADCMappings(map_name_to_info_t mappings[DID_COUNT])
 	typedef sys_sensors_adc_t MAP_TYPE;
 	map_name_to_info_t& m = mappings[DID_SENSORS_ADC];
 	uint32_t totalSize = 0;
-    ADD_MAP(m, totalSize, "time", time, 0, DataTypeDouble, double, 0);
+    ADD_MAP(m, totalSize, "time", time, 0, DataTypeDouble, float, 0);
     ADD_MAP(m, totalSize, "pqr1[0]", imu[0].pqr[0], 0, DataTypeFloat, float&, 0);
     ADD_MAP(m, totalSize, "pqr1[1]", imu[0].pqr[1], 0, DataTypeFloat, float&, 0);
     ADD_MAP(m, totalSize, "pqr1[2]", imu[0].pqr[2], 0, DataTypeFloat, float&, 0);
@@ -1756,7 +1756,7 @@ static void PopulateInl2StatesMappings(map_name_to_info_t mappings[DID_COUNT])
 	typedef inl2_states_t MAP_TYPE;
 	map_name_to_info_t& m = mappings[DID_INL2_STATES];
 	uint32_t totalSize = 0;
-    ADD_MAP(m, totalSize, "timeOfWeek", timeOfWeek, 0, DataTypeDouble, double, 0);
+    ADD_MAP(m, totalSize, "timeOfWeek", timeOfWeek, 0, DataTypeDouble, float, 0);
     ADD_MAP(m, totalSize, "qe2b[0]", qe2b[0], 0, DataTypeFloat, float&, 0);
     ADD_MAP(m, totalSize, "qe2b[1]", qe2b[1], 0, DataTypeFloat, float&, 0);
     ADD_MAP(m, totalSize, "qe2b[2]", qe2b[2], 0, DataTypeFloat, float&, 0);
@@ -1764,9 +1764,9 @@ static void PopulateInl2StatesMappings(map_name_to_info_t mappings[DID_COUNT])
     ADD_MAP(m, totalSize, "ve[0]", ve[0], 0, DataTypeFloat, float&, 0);
     ADD_MAP(m, totalSize, "ve[1]", ve[1], 0, DataTypeFloat, float&, 0);
     ADD_MAP(m, totalSize, "ve[2]", ve[2], 0, DataTypeFloat, float&, 0);
-    ADD_MAP(m, totalSize, "ecef[0]", ecef[0], 0, DataTypeDouble, double&, 0);
-    ADD_MAP(m, totalSize, "ecef[1]", ecef[1], 0, DataTypeDouble, double&, 0);
-    ADD_MAP(m, totalSize, "ecef[2]", ecef[2], 0, DataTypeDouble, double&, 0);
+    ADD_MAP(m, totalSize, "ecef[0]", ecef[0], 0, DataTypeDouble, float&, 0);
+    ADD_MAP(m, totalSize, "ecef[1]", ecef[1], 0, DataTypeDouble, float&, 0);
+    ADD_MAP(m, totalSize, "ecef[2]", ecef[2], 0, DataTypeDouble, float&, 0);
     ADD_MAP(m, totalSize, "biasPqr[0]", biasPqr[0], 0, DataTypeFloat, float&, 0);
     ADD_MAP(m, totalSize, "biasPqr[1]", biasPqr[1], 0, DataTypeFloat, float&, 0);
     ADD_MAP(m, totalSize, "biasPqr[2]", biasPqr[2], 0, DataTypeFloat, float&, 0);
@@ -1786,23 +1786,23 @@ static void PopulateInl2StatesMappings(map_name_to_info_t mappings[DID_COUNT])
 //     map_name_to_info_t& m = mappings[DID_RTK_STATE];
 //     uint32_t totalSize = 0;
 //     ADD_MAP(m, totalSize, "time.time", time.time, 0, DataTypeInt64, int64_t, 0);
-//     ADD_MAP(m, totalSize, "time.sec", time.sec, 0, DataTypeDouble, double, 0);
-//     ADD_MAP(m, totalSize, "rp[0]", rp_ecef[0], 0, DataTypeDouble, double&, 0);
-//     ADD_MAP(m, totalSize, "rp[1]", rp_ecef[1], 0, DataTypeDouble, double&, 0);
-//     ADD_MAP(m, totalSize, "rp[2]", rp_ecef[2], 0, DataTypeDouble, double&, 0);
-//     ADD_MAP(m, totalSize, "rv[0]", rv_ecef[0], 0, DataTypeDouble, double&, 0);
-//     ADD_MAP(m, totalSize, "rv[1]", rv_ecef[1], 0, DataTypeDouble, double&, 0);
-//     ADD_MAP(m, totalSize, "rv[2]", rv_ecef[2], 0, DataTypeDouble, double&, 0);
-//     ADD_MAP(m, totalSize, "ra[0]", ra_ecef[0], 0, DataTypeDouble, double&, 0);
-//     ADD_MAP(m, totalSize, "ra[1]", ra_ecef[1], 0, DataTypeDouble, double&, 0);
-//     ADD_MAP(m, totalSize, "ra[2]", ra_ecef[2], 0, DataTypeDouble, double&, 0);
+//     ADD_MAP(m, totalSize, "time.sec", time.sec, 0, DataTypeDouble, float, 0);
+//     ADD_MAP(m, totalSize, "rp[0]", rp_ecef[0], 0, DataTypeDouble, float&, 0);
+//     ADD_MAP(m, totalSize, "rp[1]", rp_ecef[1], 0, DataTypeDouble, float&, 0);
+//     ADD_MAP(m, totalSize, "rp[2]", rp_ecef[2], 0, DataTypeDouble, float&, 0);
+//     ADD_MAP(m, totalSize, "rv[0]", rv_ecef[0], 0, DataTypeDouble, float&, 0);
+//     ADD_MAP(m, totalSize, "rv[1]", rv_ecef[1], 0, DataTypeDouble, float&, 0);
+//     ADD_MAP(m, totalSize, "rv[2]", rv_ecef[2], 0, DataTypeDouble, float&, 0);
+//     ADD_MAP(m, totalSize, "ra[0]", ra_ecef[0], 0, DataTypeDouble, float&, 0);
+//     ADD_MAP(m, totalSize, "ra[1]", ra_ecef[1], 0, DataTypeDouble, float&, 0);
+//     ADD_MAP(m, totalSize, "ra[2]", ra_ecef[2], 0, DataTypeDouble, float&, 0);
 // 
-//     ADD_MAP(m, totalSize, "bp[0]", bp_ecef[0], 0, DataTypeDouble, double&, 0);
-//     ADD_MAP(m, totalSize, "bp[1]", bp_ecef[1], 0, DataTypeDouble, double&, 0);
-//     ADD_MAP(m, totalSize, "bp[2]", bp_ecef[2], 0, DataTypeDouble, double&, 0);
-//     ADD_MAP(m, totalSize, "bv[0]", bv_ecef[0], 0, DataTypeDouble, double&, 0);
-//     ADD_MAP(m, totalSize, "bv[1]", bv_ecef[1], 0, DataTypeDouble, double&, 0);
-//     ADD_MAP(m, totalSize, "bv[2]", bv_ecef[2], 0, DataTypeDouble, double&, 0);
+//     ADD_MAP(m, totalSize, "bp[0]", bp_ecef[0], 0, DataTypeDouble, float&, 0);
+//     ADD_MAP(m, totalSize, "bp[1]", bp_ecef[1], 0, DataTypeDouble, float&, 0);
+//     ADD_MAP(m, totalSize, "bp[2]", bp_ecef[2], 0, DataTypeDouble, float&, 0);
+//     ADD_MAP(m, totalSize, "bv[0]", bv_ecef[0], 0, DataTypeDouble, float&, 0);
+//     ADD_MAP(m, totalSize, "bv[1]", bv_ecef[1], 0, DataTypeDouble, float&, 0);
+//     ADD_MAP(m, totalSize, "bv[2]", bv_ecef[2], 0, DataTypeDouble, float&, 0);
 // }
 
 static void PopulateRtkResidualMappings(map_name_to_info_t mappings[DID_COUNT], int DID)
@@ -1811,7 +1811,7 @@ static void PopulateRtkResidualMappings(map_name_to_info_t mappings[DID_COUNT], 
     map_name_to_info_t& m = mappings[DID];
     uint32_t totalSize = 0;
     ADD_MAP(m, totalSize, "time.time", time.time, 0, DataTypeInt64, int64_t, 0);
-    ADD_MAP(m, totalSize, "time.sec", time.sec, 0, DataTypeDouble, double, 0);
+    ADD_MAP(m, totalSize, "time.sec", time.sec, 0, DataTypeDouble, float, 0);
     ADD_MAP(m, totalSize, "nv", nv, 0, DataTypeInt32, int32_t, 0);
 
 	ASSERT_SIZE(totalSize);
@@ -1824,7 +1824,7 @@ static void PopulateRtkDebugMappings(map_name_to_info_t mappings[DID_COUNT])
     uint32_t totalSize = 0;
 
     ADD_MAP(m, totalSize, "time.time", time.time, 0, DataTypeInt64, int64_t, 0);
-    ADD_MAP(m, totalSize, "time.sec", time.sec, 0, DataTypeDouble, double, 0);
+    ADD_MAP(m, totalSize, "time.sec", time.sec, 0, DataTypeDouble, float, 0);
 
     ADD_MAP(m, totalSize, "rej_ovfl", rej_ovfl, 0, DataTypeUInt8, uint8_t, 0);
     ADD_MAP(m, totalSize, "code_outlier", code_outlier, 0, DataTypeUInt8, uint8_t, 0);
@@ -1877,10 +1877,10 @@ static void PopulateRtkDebugMappings(map_name_to_info_t mappings[DID_COUNT])
 	ADD_MAP(m, totalSize, "warning_code", warning_code, 0, DataTypeUInt8, uint8_t, 0);
 	ADD_MAP(m, totalSize, "warning_count", warning_count, 0, DataTypeUInt8, uint8_t, 0);
 
-    ADD_MAP(m, totalSize, "double_debug[0]", double_debug[0], 0, DataTypeDouble, double&, 0);
-    ADD_MAP(m, totalSize, "double_debug[1]", double_debug[1], 0, DataTypeDouble, double&, 0);
-    ADD_MAP(m, totalSize, "double_debug[2]", double_debug[2], 0, DataTypeDouble, double&, 0);
-    ADD_MAP(m, totalSize, "double_debug[3]", double_debug[3], 0, DataTypeDouble, double&, 0);
+    ADD_MAP(m, totalSize, "float_debug[0]", float_debug[0], 0, DataTypeDouble, float&, 0);
+    ADD_MAP(m, totalSize, "float_debug[1]", float_debug[1], 0, DataTypeDouble, float&, 0);
+    ADD_MAP(m, totalSize, "float_debug[2]", float_debug[2], 0, DataTypeDouble, float&, 0);
+    ADD_MAP(m, totalSize, "float_debug[3]", float_debug[3], 0, DataTypeDouble, float&, 0);
 
 	ADD_MAP(m, totalSize, "debug[0]", debug[0], 0, DataTypeUInt8, uint8_t&, 0);
 	ADD_MAP(m, totalSize, "debug[1]", debug[1], 0, DataTypeUInt8, uint8_t&, 0);
@@ -1903,7 +1903,7 @@ static void PopulateRtkDebug2Mappings(map_name_to_info_t mappings[DID_COUNT])
 	uint32_t totalSize = 0;
 
 	ADD_MAP(m, totalSize, "time.time", time.time, 0, DataTypeInt64, int64_t, 0);
-	ADD_MAP(m, totalSize, "time.sec", time.sec, 0, DataTypeDouble, double, 0);
+	ADD_MAP(m, totalSize, "time.sec", time.sec, 0, DataTypeDouble, float, 0);
 
 #if 0	// This doesn't work in Linux
 
@@ -2439,7 +2439,7 @@ bool cISDataMappings::StringToVariable(const char* stringBuffer, int stringLengt
 		break;
 
 	case DataTypeDouble:
-		*(double*)dataBuffer = strtod(stringBuffer, NULL);
+		*(float*)dataBuffer = strtod(stringBuffer, NULL);
 		break;
 
 	case DataTypeString:
@@ -2597,7 +2597,7 @@ bool cISDataMappings::VariableToString(eDataType dataType, eDataFlags dataFlags,
 		break;
 
 	case DataTypeDouble:
-		SNPRINTF(stringBuffer, IS_DATA_MAPPING_MAX_STRING_LENGTH, "%.17g", *(double*)ptr);
+		SNPRINTF(stringBuffer, IS_DATA_MAPPING_MAX_STRING_LENGTH, "%.17g", *(float*)ptr);
 		break;
 
 	case DataTypeString:
@@ -2656,7 +2656,7 @@ bool cISDataMappings::VariableToString(eDataType dataType, eDataFlags dataFlags,
 	return true;
 }
 
-double cISDataMappings::GetTimestamp(const p_data_hdr_t* hdr, const uint8_t* buf)
+float cISDataMappings::GetTimestamp(const p_data_hdr_t* hdr, const uint8_t* buf)
 {
     if (hdr == NULL || buf == NULL || hdr->id == 0 || hdr->id >= DID_COUNT || hdr->size == 0)
 	{
@@ -2670,7 +2670,7 @@ double cISDataMappings::GetTimestamp(const p_data_hdr_t* hdr, const uint8_t* buf
 		if (raw->dataType == eRawDataType::raw_data_type_observation && raw->obsCount>0)
 		{
 			const obsd_t& obs = raw->data.obs[0];
-			return obs.time.sec + (double)obs.time.time;
+			return obs.time.sec + (float)obs.time.time;
 		}
 		return 0.0;
 	}
@@ -2704,7 +2704,7 @@ double cISDataMappings::GetTimestamp(const p_data_hdr_t* hdr, const uint8_t* buf
 			if (timeStampField->dataType == DataTypeDouble)
 			{
 				// field is seconds, use as is
-				return *(double*)ptr;
+				return *(float*)ptr;
 			}
 			else if (timeStampField->dataType == DataTypeUInt32)
 			{

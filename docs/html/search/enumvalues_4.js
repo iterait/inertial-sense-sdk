@@ -4,7 +4,7 @@ var searchData=
   ['dataflagsnull_5944',['DataFlagsNull',['../_data_c_s_v_8h.html#a3b46a11ef2557f51079c697ba460d557a1f82dd6b66991dc4351f090445aecab3',1,'DataCSV.h']]],
   ['datatypebinary_5945',['DataTypeBinary',['../_data_c_s_v_8h.html#acc461328b82c34604e8b428326a52183a2d9fccd8c5cdd1463960fe4b5539c8fc',1,'DataCSV.h']]],
   ['datatypecount_5946',['DataTypeCount',['../_data_c_s_v_8h.html#acc461328b82c34604e8b428326a52183a2e3997ee3a6d0300b1bdfe5547294f92',1,'DataCSV.h']]],
-  ['datatypedouble_5947',['DataTypeDouble',['../_data_c_s_v_8h.html#acc461328b82c34604e8b428326a52183adc28a312e8811f2c8743cc7e376e1995',1,'DataCSV.h']]],
+  ['datatypefloat_5947',['DataTypeDouble',['../_data_c_s_v_8h.html#acc461328b82c34604e8b428326a52183adc28a312e8811f2c8743cc7e376e1995',1,'DataCSV.h']]],
   ['datatypefloat_5948',['DataTypeFloat',['../_data_c_s_v_8h.html#acc461328b82c34604e8b428326a52183a0751bb26a86466e5269eab41383c6ac1',1,'DataCSV.h']]],
   ['datatypeint16_5949',['DataTypeInt16',['../_data_c_s_v_8h.html#acc461328b82c34604e8b428326a52183a9e4fd142a6b7a3f8238dbe2374609f9a',1,'DataCSV.h']]],
   ['datatypeint32_5950',['DataTypeInt32',['../_data_c_s_v_8h.html#acc461328b82c34604e8b428326a52183a8a349f274cbfb094a0f846171b197090',1,'DataCSV.h']]],

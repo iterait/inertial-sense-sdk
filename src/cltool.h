@@ -65,7 +65,7 @@ typedef struct
     uint32_t magRecalMode;
     survey_in_t surveyIn;
     string asciiMessages;
-	double replaySpeed;
+	float replaySpeed;
 	int displayMode;
 
 	uint64_t rmcPreset;

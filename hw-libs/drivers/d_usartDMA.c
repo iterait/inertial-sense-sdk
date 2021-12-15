@@ -469,7 +469,7 @@ int serWrite(int serialNum, const unsigned char *buf, int size)
 			
 			taskENTER_CRITICAL();
 
-			//Check for data in buffer, if nothing buffered, USB is ready, and data fits, don't double buffer
+			//Check for data in buffer, if nothing buffered, USB is ready, and data fits, don't float buffer
 			if(dma->ptr == dma->end && ((uint32_t)size <= udi_cdc_get_free_tx_buffer()))
 			{
 				udi_cdc_write_buf(buf, size);
@@ -668,7 +668,7 @@ int serWrite(int serialNum, const unsigned char *buf, int size)
 	}
 	else
 	{
-		//Block interrupt handler from running and causing a double configure
+		//Block interrupt handler from running and causing a float configure
 		NVIC_DisableIRQ(XDMAC_IRQn);
 
 		//Enable DMA if it isn't running

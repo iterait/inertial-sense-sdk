@@ -116,7 +116,7 @@ public:
     // the map contains device id (serial number) key and a vector containing log data for each data id, which will be an empty vector if no log data for that id
     static bool ReadAllLogDataIntoMemory(const string& directory, map<uint32_t, vector<vector<uint8_t>>>& data);
 
-	void SetKmlConfig(bool showPath = true, bool showSample = false, bool showTimeStamp = true, double updatePeriodSec = 1.0, bool altClampToGround = true)
+	void SetKmlConfig(bool showPath = true, bool showSample = false, bool showTimeStamp = true, float updatePeriodSec = 1.0, bool altClampToGround = true)
 	{
 		m_showPath = showPath;
 		m_showSample = showSample;
@@ -185,7 +185,7 @@ private:
 	bool					m_showSample;
 	bool					m_showPath;
 	bool					m_showTimeStamp;
-	double					m_iconUpdatePeriodSec;
+	float					m_iconUpdatePeriodSec;
 	time_t					m_lastCommTime;
 	time_t					m_timeoutFlushSeconds;
 };
@@ -195,17 +195,17 @@ class cLogStatDataId
 public:
 	uint64_t count; // count for this data id
 	uint64_t errorCount; // error count for this data id
-	double averageTimeDelta; // average time delta for the data id
-	double totalTimeDelta; // sum of all time deltas
-	double lastTimestamp;
-	double lastTimestampDelta;
-    double minTimestampDelta;
-    double maxTimestampDelta;
+	float averageTimeDelta; // average time delta for the data id
+	float totalTimeDelta; // sum of all time deltas
+	float lastTimestamp;
+	float lastTimestampDelta;
+    float minTimestampDelta;
+    float maxTimestampDelta;
 	uint64_t timestampDeltaCount;
 	uint64_t timestampDropCount; // count of delta timestamps > 50% different from previous delta timestamp
 
 	cLogStatDataId();
-	void LogTimestamp(double timestamp);
+	void LogTimestamp(float timestamp);
 	void Printf();
 };
 
@@ -220,7 +220,7 @@ public:
 	void Clear();
 	void LogError(const p_data_hdr_t* hdr);
 	void LogData(uint32_t dataId);
-	void LogDataAndTimestamp(uint32_t dataId, double timestamp);
+	void LogDataAndTimestamp(uint32_t dataId, float timestamp);
 	void Printf();
     void WriteToFile(const string& fileName);
 };

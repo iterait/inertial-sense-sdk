@@ -15,9 +15,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include "ISMatrix.h"
 #include "data_sets.h"
 
-void LU( const f_t *M, i_t n, f_t *L, f_t *U );
-char solve_upper( f_t *result, i_t n, f_t *A, f_t *b );
-char solve_lower( f_t *result, i_t n, f_t *A, f_t *b );
+void LU( const float *M, i_t n, float *L, float *U );
+char solve_upper( float *result, i_t n, float *A, float *b );
+char solve_lower( float *result, i_t n, float *A, float *b );
 
 void mul_MatMxN( void * result, const void * A_ptr, const void * B_ptr, i_t m, i_t n, i_t p, char transpose_B, char add )
 {
@@ -25,24 +25,24 @@ void mul_MatMxN( void * result, const void * A_ptr, const void * B_ptr, i_t m, i
 	i_t j;
 	i_t k;
 
-	f_t * matOut = (f_t*)result;
-	const f_t * A = (const f_t*)A_ptr;
-	const f_t * B = (const f_t*)B_ptr;
+	float * matOut = (float*)result;
+	const float * A = (const float*)A_ptr;
+	const float * B = (const float*)B_ptr;
 
 	for (i = 0; i < m; i++)
 	{
-		const f_t * A_i = A + i * n;
-		f_t * O_i = matOut + i * p;
+		const float * A_i = A + i * n;
+		float * O_i = matOut + i * p;
 
 		for (j = 0; j < p; j++)
 		{
-			f_t s = 0;
-			f_t * O_i_j = O_i + j;
+			float s = 0;
+			float * O_i_j = O_i + j;
 
 			for (k = 0; k < n; k++)
 			{
-				const f_t * a = A_i + k;
-				const f_t * b;
+				const float * a = A_i + k;
+				const float * b;
 
 				if (is_zero(a))
 					continue;
@@ -75,25 +75,25 @@ void addNxM(void * result, const void * A_ptr, const void * B_ptr, i_t m, i_t n,
     i_t j;
     i_t k;
 
-    f_t * OUT = result;
-    const f_t * A = A_ptr;
-    const f_t * B = B_ptr;
+    float * OUT = result;
+    const float * A = A_ptr;
+    const float * B = B_ptr;
 
     for (i = 0; i < m; i++)
     {
-        const f_t * A_i = A + i * n;
-        f_t * O_i = OUT + i * p;
+        const float * A_i = A + i * n;
+        float * O_i = OUT + i * p;
 
         for (j = 0; j < p; j++)
         {
-//             f_t s = 0;
-            f_t * O_i_j = O_i + j;
+//             float s = 0;
+            float * O_i_j = O_i + j;
 
 
             for (k = 0; k < n; k++)
             {
-                const f_t * a = A_i + k;
-                const f_t * b;
+                const float * a = A_i + k;
+                const float * b;
 
 //                 if (is_zero(a))
 //                     continue;
@@ -116,7 +116,7 @@ void addNxM(void * result, const void * A_ptr, const void * B_ptr, i_t m, i_t n,
 #endif
 
 
-void eye_MatN( f_t *A, i_t n )
+void eye_MatN( float *A, i_t n )
 {
 	zero_MatMxN( A, n, n );
 
@@ -127,11 +127,11 @@ void eye_MatN( f_t *A, i_t n )
 
 
 // Compute the LU factorization of the square matrix A
-void LU( const f_t *M, i_t n, f_t *L, f_t *U )
+void LU( const float *M, i_t n, float *L, float *U )
 {
 	int in, kn;
 
-	f_t *A = (f_t*)MALLOC( sizeof( f_t )*n*n );
+	float *A = (float*)MALLOC( sizeof( float )*n*n );
 	if (A == 0) { return; }
 
 	cpy_MatMxN( A, M, n, n );
@@ -142,7 +142,7 @@ void LU( const f_t *M, i_t n, f_t *L, f_t *U )
 		{
 			in = i*n;
 			kn = k*n;
-// 			f_t * Ai = A + i*n;
+// 			float * Ai = A + i*n;
 
 			A[in + k] = A[in + k] / A[kn + k];
 
@@ -184,14 +184,14 @@ void LU( const f_t *M, i_t n, f_t *L, f_t *U )
 }
 
 // Return 0 on success, -1 on numerical error
-char solve_upper( f_t *result, i_t n, f_t *A, f_t *b )
+char solve_upper( float *result, i_t n, float *A, float *b )
 {
 	for( int i=n - 1; i >= 0; i-- )
 	{
-		f_t s = b[i];
+		float s = b[i];
 
 		// Reference a row
-		f_t *A_i = &A[i*n];
+		float *A_i = &A[i*n];
 
 		for( int j=i + 1; j < n; ++j )
 		{
@@ -219,14 +219,14 @@ char solve_upper( f_t *result, i_t n, f_t *A, f_t *b )
 }
 
 // Return 0 on success, -1 on numerical error
-char solve_lower( f_t *result, i_t n, f_t *A, f_t *b )
+char solve_lower( float *result, i_t n, float *A, float *b )
 {
 	for( int i=0; i < n; ++i )
 	{
-		f_t s = b[i];
+		float s = b[i];
 
 		// Reference a row
-		f_t *A_i = &A[i*n];
+		float *A_i = &A[i*n];
 
 		for( int j=0; j < i; ++j )
 		{
@@ -255,17 +255,17 @@ char solve_lower( f_t *result, i_t n, f_t *A, f_t *b )
 
 
 // Return 0 on success, -1 on numerical error
-char inv_MatN( f_t *result, const f_t *M, i_t n )
+char inv_MatN( float *result, const float *M, i_t n )
 {
 	char error		= 0;
 
-	f_t *L			= (f_t*)MALLOC( sizeof( f_t )*n*n );
-	f_t *U			= (f_t*)MALLOC( sizeof( f_t )*n*n );
-	f_t *invL		= (f_t*)MALLOC( sizeof( f_t )*n*n );
-	f_t *invU		= (f_t*)MALLOC( sizeof( f_t )*n*n );
-	f_t	*identCol	= (f_t*)MALLOC( sizeof( f_t )*n );
+	float *L			= (float*)MALLOC( sizeof( float )*n*n );
+	float *U			= (float*)MALLOC( sizeof( float )*n*n );
+	float *invL		= (float*)MALLOC( sizeof( float )*n*n );
+	float *invU		= (float*)MALLOC( sizeof( float )*n*n );
+	float	*identCol	= (float*)MALLOC( sizeof( float )*n );
 	while( L==NULL || U==NULL || invL==NULL || invU==NULL || identCol==NULL ) { /* Error check malloc */ }
-	memset( identCol, 0, sizeof( f_t )*n );
+	memset( identCol, 0, sizeof( float )*n );
 
 	LU( M, n, L, U );
 
@@ -295,16 +295,16 @@ char inv_MatN( f_t *result, const f_t *M, i_t n )
 }
 
 
-void trans_MatMxN( f_t *result, const f_t *M, int m, int n )
+void trans_MatMxN( float *result, const float *M, int m, int n )
 {
 	i_t i;
 	i_t j;
 
-	const f_t * A = (const f_t*)M;
+	const float * A = (const float*)M;
 
 	for( i = 0; i < m; i++ )
 	{
-		f_t * O_i = result + i;
+		float * O_i = result + i;
 
 		for( j = 0; j < n; j++ )
 		{
@@ -561,27 +561,27 @@ void abs_Vec4d(ixVector4d result, const ixVector4d v)
 	result[3] = fabs(v[3]);
 }
 
-f_t dot_Vec2_Vec2(const ixVector2 v1, const ixVector2 v2 )
+float dot_Vec2_Vec2(const ixVector2 v1, const ixVector2 v2 )
 {
 	return  v1[0] * v2[0] +
 			v1[1] * v2[1];
 }
 
-f_t dot_Vec3_Vec3(const ixVector3 v1, const ixVector3 v2 )
+float dot_Vec3_Vec3(const ixVector3 v1, const ixVector3 v2 )
 {
 	return  v1[0] * v2[0] +
 	        v1[1] * v2[1] +
 	        v1[2] * v2[2];
 }
 
-double dot_Vec3d_Vec3d(const ixVector3d v1, const ixVector3d v2)
+float dot_Vec3d_Vec3d(const ixVector3d v1, const ixVector3d v2)
 {
     return  v1[0] * v2[0] +
             v1[1] * v2[1] +
             v1[2] * v2[2];
 }
 
-f_t dot_Vec4_Vec4(const ixVector4 v1, const ixVector4 v2 )
+float dot_Vec4_Vec4(const ixVector4 v1, const ixVector4 v2 )
 {
 	return  v1[0] * v2[0] +
 	        v1[1] * v2[1] +
@@ -600,38 +600,38 @@ void cross_Vec3( ixVector3 result, const ixVector3 v1, const ixVector3 v2 )
 
 void crossd_Vec3( ixVector3d result, const ixVector3 v1, const ixVector3 v2 )
 {
-	result[0] = (double)(v1[1] * v2[2] - v1[2] * v2[1]);
-	result[1] = (double)(v1[2] * v2[0] - v1[0] * v2[2]);
-	result[2] = (double)(v1[0] * v2[1] - v1[1] * v2[0]);
+	result[0] = (float)(v1[1] * v2[2] - v1[2] * v2[1]);
+	result[1] = (float)(v1[2] * v2[0] - v1[0] * v2[2]);
+	result[2] = (float)(v1[0] * v2[1] - v1[1] * v2[0]);
 }
 
-void mul_Vec2_X( ixVector2 result, const ixVector2 v, const f_t x )
+void mul_Vec2_X( ixVector2 result, const ixVector2 v, const float x )
 {
     result[0] = v[0]*x;
     result[1] = v[1]*x;
 }
 
-void mul_Vec2d_X( ixVector2d result, const ixVector2d v, const double x )
+void mul_Vec2d_X( ixVector2d result, const ixVector2d v, const float x )
 {
     result[0] = v[0]*x;
     result[1] = v[1]*x;
 }
 
-void mul_Vec3_X( ixVector3 result, const ixVector3 v, const f_t x )
+void mul_Vec3_X( ixVector3 result, const ixVector3 v, const float x )
 {
 	result[0] = v[0]*x;
 	result[1] = v[1]*x;
 	result[2] = v[2]*x;
 }
 
-void mul_Vec3d_X( ixVector3d result, const ixVector3d v, const double x )
+void mul_Vec3d_X( ixVector3d result, const ixVector3d v, const float x )
 {
 	result[0] = v[0]*x;
 	result[1] = v[1]*x;
 	result[2] = v[2]*x;
 }
 
-void mul_Vec4_X( ixVector4 result, const ixVector4 v, const f_t x )
+void mul_Vec4_X( ixVector4 result, const ixVector4 v, const float x )
 {
 	result[0] = v[0]*x;
 	result[1] = v[1]*x;
@@ -639,7 +639,7 @@ void mul_Vec4_X( ixVector4 result, const ixVector4 v, const f_t x )
 	result[3] = v[3]*x;
 }
 
-void mul_Vec4d_X( ixVector4d result, const ixVector4d v, const double x )
+void mul_Vec4d_X( ixVector4d result, const ixVector4d v, const float x )
 {
 	result[0] = v[0] * x;
 	result[1] = v[1] * x;
@@ -647,25 +647,25 @@ void mul_Vec4d_X( ixVector4d result, const ixVector4d v, const double x )
 	result[3] = v[3] * x;
 }
 
-void div_Vec3_X( ixVector3 result, const ixVector3 v, const f_t x )
+void div_Vec3_X( ixVector3 result, const ixVector3 v, const float x )
 {
-    f_t d = (f_t)1.0/x;
+    float d = (float)1.0/x;
 	result[0] = v[0]*d;
 	result[1] = v[1]*d;
 	result[2] = v[2]*d;
 }
 
-void div_Vec4_X( ixVector4 result, const ixVector4 v, const f_t x )
+void div_Vec4_X( ixVector4 result, const ixVector4 v, const float x )
 {
-    f_t d = (f_t)1.0/x;
+    float d = (float)1.0/x;
 	result[0] = v[0]*d;
 	result[1] = v[1]*d;
 	result[2] = v[2]*d;
 	result[3] = v[3]*d;
 }
-void div_Vec4d_X( ixVector4d result, const ixVector4d v, const double x )
+void div_Vec4d_X( ixVector4d result, const ixVector4d v, const float x )
 {
-	double d = 1.0 / x;
+	float d = 1.0 / x;
 	result[0] = v[0] * d;
 	result[1] = v[1] * d;
 	result[2] = v[2] * d;
@@ -753,7 +753,7 @@ void neg_Vec3(ixVector3 result, const ixVector3 v)
     result[2] = -v[2];
 }
 
-void cpy_MatRxC_MatMxN( f_t *result, i_t r, i_t c, i_t r_offset, i_t c_offset, f_t *A, i_t m, i_t n )
+void cpy_MatRxC_MatMxN( float *result, i_t r, i_t c, i_t r_offset, i_t c_offset, float *A, i_t m, i_t n )
 {
 	// Ensure source matrix A fits within result matrix
 	if( (m + r_offset) > r || (n + c_offset) > c )
@@ -762,7 +762,7 @@ void cpy_MatRxC_MatMxN( f_t *result, i_t r, i_t c, i_t r_offset, i_t c_offset, f
 	// Set result pointer to first location
 	result += c*r_offset + c_offset;
 
-	int rowSize = sizeof( f_t )*n;
+	int rowSize = sizeof( float )*n;
 	for( int mi=0; mi<m; mi++ )
 	{
 		// Copy row
@@ -827,7 +827,7 @@ void transpose_Mat4( ixMatrix4 result, const ixMatrix4 m )
 
 char inv_Mat2(ixMatrix2 result, ixMatrix2 m)
 {
-    f_t invDet, det = m[0] * m[3] - m[1] * m[2];
+    float invDet, det = m[0] * m[3] - m[1] * m[2];
 
     if( det!=0.0f )
         invDet = 1.0f/det;
@@ -850,7 +850,7 @@ char inv_Mat3( ixMatrix3 result, const ixMatrix3 m )
 	// 	| m[3] m[4] m[5] |    =  1/det * | -(m[8]m[3]-m[6]m[5])   m[8]m[0]-m[6]m[2]  -(m[5]m[0]-m[3]m[2]) |
 	// 	| m[6] m[7] m[8] |               |   m[7]m[3]-m[6]m[4]  -(m[7]m[0]-m[6]m[1])   m[4]m[0]-m[3]m[1]  |
 	
-	f_t invDet, det = m[0]*(m[8]*m[4]-m[7]*m[5]) - m[3]*(m[8]*m[1]-m[7]*m[2]) + m[6]*(m[5]*m[1]-m[4]*m[2]);
+	float invDet, det = m[0]*(m[8]*m[4]-m[7]*m[5]) - m[3]*(m[8]*m[1]-m[7]*m[2]) + m[6]*(m[5]*m[1]-m[4]*m[2]);
 
 	if( det!=0 )
 		invDet = 1/det;
@@ -875,7 +875,7 @@ char inv_Mat3( ixMatrix3 result, const ixMatrix3 m )
 
 char inv_Mat4( ixMatrix4 result, const ixMatrix4 m )
 {
-    f_t inv[16], det;
+    float inv[16], det;
     int i;
 
     inv[0] = 
@@ -1011,7 +1011,7 @@ char inv_Mat4( ixMatrix4 result, const ixMatrix4 m )
     if (det == 0)
         return -1;
 
-    det = (f_t)1.0 / det;
+    det = (float)1.0 / det;
 
     for (i = 0; i < 16; i++)
         result[i] = inv[i] * det;
@@ -1020,9 +1020,9 @@ char inv_Mat4( ixMatrix4 result, const ixMatrix4 m )
 }
 
 // Initialize Alpha Filter alpha and beta values
-void LPFO0_init_Vec3( sLpfO0 *lpf, f_t dt, f_t cornerFreqHz, const ixVector3 initVal )
+void LPFO0_init_Vec3( sLpfO0 *lpf, float dt, float cornerFreqHz, const ixVector3 initVal )
 {
-    f_t dc;
+    float dc;
 
     memset( lpf, 0, sizeof(sLpfO0) );
     cpy_Vec3_Vec3( lpf->v, initVal );

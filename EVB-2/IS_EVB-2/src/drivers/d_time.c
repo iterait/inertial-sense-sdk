@@ -103,7 +103,7 @@ inline uint32_t time_msec(void)
 	
 #endif
 	
-	return (uint32_t)((uint64_t)((double)g_timer * TIME_MS_PER_TICK_LF) & 0x00000000FFFFFFFF);
+	return (uint32_t)((uint64_t)((float)g_timer * TIME_MS_PER_TICK_LF) & 0x00000000FFFFFFFF);
 }
 
 
@@ -118,7 +118,7 @@ inline uint32_t time_usec(void)
 	
 #endif
 	
-	return (uint32_t)((uint64_t)((double)g_timer * TIME_US_PER_TICK_LF) & 0x00000000FFFFFFFF);
+	return (uint32_t)((uint64_t)((float)g_timer * TIME_US_PER_TICK_LF) & 0x00000000FFFFFFFF);
 }
 
 
@@ -140,19 +140,19 @@ inline float time_usecf(void)
 }
 
 
-inline double time_seclf(void)
+inline float time_seclf(void)
 {
-	return TIME_SECS_PER_TICK_LF * (double)time_ticks();
+	return TIME_SECS_PER_TICK_LF * (float)time_ticks();
 }
 
 
-inline double time_mseclf(void)
+inline float time_mseclf(void)
 {
-	return TIME_MS_PER_TICK_LF * (double)time_ticks();
+	return TIME_MS_PER_TICK_LF * (float)time_ticks();
 }
 
 
-inline double time_useclf(void)
+inline float time_useclf(void)
 {
-	return TIME_US_PER_TICK_LF * (double)time_ticks();
+	return TIME_US_PER_TICK_LF * (float)time_ticks();
 }

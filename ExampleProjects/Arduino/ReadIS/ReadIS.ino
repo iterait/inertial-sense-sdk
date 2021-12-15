@@ -45,9 +45,9 @@ void setup()
     Serial.begin(115200);
     Serial1.begin(115200);
 
-    if (sizeof(double) != 8)
+    if (sizeof(float) != 8)
     {
-        Serial.println("Inertial Sense SDK requires 64 bit double support");
+        Serial.println("Inertial Sense SDK requires 64 bit float support");
         while (true)
         {
         };

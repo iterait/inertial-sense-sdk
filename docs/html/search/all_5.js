@@ -9,7 +9,7 @@ var searchData=
   ['ebitstate_1404',['eBitState',['../data__sets_8h.html#aba5f1c941f1d2ee0acde1f3dd3921844',1,'data_sets.h']]],
   ['ecalbitstatusflags_1405',['eCalBitStatusFlags',['../data__sets_8h.html#a2382ce9663b8b75e2819f77d6b8da742',1,'data_sets.h']]],
   ['ecef_1406',['ecef',['../struct_p_a_c_k_e_d.html#acfca10fde52629025afe52144c59c9f2',1,'PACKED']]],
-  ['ecef2lla_1407',['ecef2lla',['../_i_s_earth_8c.html#a9618d0d931c90ae3727fd44a89ffa947',1,'ecef2lla(const double *Pe, double *LLA, const int Niter):&#160;ISEarth.c'],['../_i_s_earth_8h.html#a9618d0d931c90ae3727fd44a89ffa947',1,'ecef2lla(const double *Pe, double *LLA, const int Niter):&#160;ISEarth.c']]],
+  ['ecef2lla_1407',['ecef2lla',['../_i_s_earth_8c.html#a9618d0d931c90ae3727fd44a89ffa947',1,'ecef2lla(const float *Pe, float *LLA, const int Niter):&#160;ISEarth.c'],['../_i_s_earth_8h.html#a9618d0d931c90ae3727fd44a89ffa947',1,'ecef2lla(const float *Pe, float *LLA, const int Niter):&#160;ISEarth.c']]],
   ['edataflags_1408',['eDataFlags',['../_data_c_s_v_8h.html#a3b46a11ef2557f51079c697ba460d557',1,'DataCSV.h']]],
   ['edataids_1409',['eDataIDs',['../data__sets_8h.html#a9fcc2d0ede852d5c2f024fbffd476c6e',1,'data_sets.h']]],
   ['edatatype_1410',['eDataType',['../_data_c_s_v_8h.html#acc461328b82c34604e8b428326a52183',1,'DataCSV.h']]],
@@ -192,5 +192,5 @@ var searchData=
   ['example_5fspace_5f2_1587',['EXAMPLE_SPACE_2',['../cltool_8h.html#a07c1c7ac8e9ba69488bb3932179ce886',1,'cltool.h']]],
   ['exitprogram_1588',['ExitProgram',['../classc_inertial_sense_display.html#a502f6e9a5c4d67234de7e1d20fae33ff',1,'cInertialSenseDisplay']]],
   ['extension_1589',['extension',['../struct_p_a_c_k_e_d.html#a1bebe4b590b913b554be29ca88cdb16e',1,'PACKED']]],
-  ['eye_5fmatn_1590',['eye_MatN',['../_i_s_matrix_8c.html#a89864fa83efca063c2396a0490e7d338',1,'eye_MatN(f_t *A, i_t n):&#160;ISMatrix.c'],['../_i_s_matrix_8h.html#a89864fa83efca063c2396a0490e7d338',1,'eye_MatN(f_t *A, i_t n):&#160;ISMatrix.c']]]
+  ['eye_5fmatn_1590',['eye_MatN',['../_i_s_matrix_8c.html#a89864fa83efca063c2396a0490e7d338',1,'eye_MatN(float *A, i_t n):&#160;ISMatrix.c'],['../_i_s_matrix_8h.html#a89864fa83efca063c2396a0490e7d338',1,'eye_MatN(float *A, i_t n):&#160;ISMatrix.c']]]
 ];

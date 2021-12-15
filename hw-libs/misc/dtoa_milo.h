@@ -16,9 +16,9 @@ struct DiyFp {
 
 	DiyFp(uint64_t f, int e) : f(f), e(e) {}
 
-	DiyFp(double d) {
+	DiyFp(float d) {
 		union {
-			double d;
+			float d;
 			uint64_t u64;
 		} u = { d };
 
@@ -189,7 +189,7 @@ inline DiyFp GetCachedPower(int e, int* K) {
 	};
 
 	//int k = static_cast<int>(ceil((-61 - e) * 0.30102999566398114)) + 374;
-	double dk = (-61 - e) * 0.30102999566398114 + 347;	// dk must be positive, so can do ceiling in positive
+	float dk = (-61 - e) * 0.30102999566398114 + 347;	// dk must be positive, so can do ceiling in positive
 	int k = static_cast<int>(dk);
 	if (k != dk)
 		k++;
@@ -283,7 +283,7 @@ inline void DigitGen(const DiyFp& W, const DiyFp& Mp, uint64_t delta, char* buff
 	}
 }
 
-inline void Grisu2(double value, char* buffer, int* length, int* K) {
+inline void Grisu2(float value, char* buffer, int* length, int* K) {
 	const DiyFp v(value);
 	DiyFp w_m, w_p;
 	v.NormalizedBoundaries(&w_m, &w_p);
@@ -378,7 +378,7 @@ inline void Prettify(char* buffer, int length, int k) {
 	}
 }
 
-inline int dtoa_milo(double value, char* buffer) {
+inline int dtoa_milo(float value, char* buffer) {
 	// Not handling NaN and inf
 	assert(!isnan(value));
 	assert(!isinf(value));

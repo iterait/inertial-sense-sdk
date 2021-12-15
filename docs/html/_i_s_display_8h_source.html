@@ -145,7 +145,7 @@ $(function() {
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keywordtype">void</span> GoToColumnAndRow(<span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y);</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keywordtype">string</span> Hello();</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordtype">string</span> Connected();</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordtype">string</span> Replay(<span class="keywordtype">double</span> speed=1.0);</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordtype">string</span> Replay(<span class="keywordtype">float</span> speed=1.0);</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordtype">string</span> Goodbye();</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordtype">void</span> SetKeyboardNonBlock();</div>
@@ -156,7 +156,7 @@ $(function() {
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keywordtype">void</span> SetExitProgram();</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="comment">// for the binary protocol, this processes a packet of data</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keywordtype">void</span> ProcessData(<a class="code" href="structp__data__t.html">p_data_t</a> *data, <span class="keywordtype">bool</span> enableReplay = <span class="keyword">false</span>, <span class="keywordtype">double</span> replaySpeedX = 1.0);</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keywordtype">void</span> ProcessData(<a class="code" href="structp__data__t.html">p_data_t</a> *data, <span class="keywordtype">bool</span> enableReplay = <span class="keyword">false</span>, <span class="keywordtype">float</span> replaySpeedX = 1.0);</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keywordtype">void</span> DataToStats(<span class="keyword">const</span> <a class="code" href="structp__data__t.html">p_data_t</a>* data);</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keywordtype">string</span> DataToString(<span class="keyword">const</span> <a class="code" href="structp__data__t.html">p_data_t</a>* data);</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keywordtype">char</span>* StatusToString(<span class="keywordtype">char</span>* ptr, <span class="keywordtype">char</span>* ptrEnd, <span class="keyword">const</span> uint32_t insStatus, <span class="keyword">const</span> uint32_t hdwStatus);</div>

@@ -73,8 +73,8 @@ extern "C" {
 typedef struct
 {
     ixVector3               v;
-    f_t                   alpha;  // alpha gain
-    f_t                   beta;   // beta  gain
+    float                   alpha;  // alpha gain
+    float                   beta;   // beta  gain
 } sLpfO0;
 
 // First order low-pass filter
@@ -82,8 +82,8 @@ typedef struct
 {
 	ixVector3               v;
 	ixVector3               c1;
-	f_t                   alpha;  // alpha gain
-	f_t                   beta;   // beta  gain
+	float                   alpha;  // alpha gain
+	float                   beta;   // beta  gain
 } sLpfO1;
 
 //_____ G L O B A L S ______________________________________________________
@@ -96,7 +96,7 @@ typedef struct
  * to see if it is actually a zero without using any floating point
  * code.
  */
-static __inline char is_zero( const f_t * f )
+static __inline char is_zero( const float * f )
 {
 	const unsigned int * x = (const unsigned int*) f;
 
@@ -143,17 +143,17 @@ void mul_MatMxN( void * result, const void * A_ptr, const void * B_ptr, i_t m, i
 /* Initialize square matrix as identity (0's with 1's in the diagonal)
 * result(nxn) = eye(nxn)
 */
-void eye_MatN( f_t *A, i_t n );
+void eye_MatN( float *A, i_t n );
 
 /* Matrix Inverse
 * result(nxn) = M(nxn)^-1
 */
-char inv_MatN( f_t *result, const f_t *M, i_t n );
+char inv_MatN( float *result, const float *M, i_t n );
 
 
 /* Matrix Transpose:  M[m x n] -> result[n x m]
 */
-void trans_MatMxN( f_t *result, const f_t *M, int m, int n );
+void trans_MatMxN( float *result, const float *M, int m, int n );
 
 
 /* Matrix Multiply
@@ -248,10 +248,10 @@ void abs_Vec4d(ixVector4d result, const ixVector4d v);
 /* Dot product
  * result = v1(n) dot v2(n)
  */
-f_t dot_Vec2_Vec2(const ixVector2 v1, const ixVector2 v2 );
-f_t dot_Vec3_Vec3(const ixVector3 v1, const ixVector3 v2 );
-f_t dot_Vec4_Vec4(const ixVector4 v1, const ixVector4 v2 );
-double dot_Vec3d_Vec3d(const ixVector3d v1, const ixVector3d v2);
+float dot_Vec2_Vec2(const ixVector2 v1, const ixVector2 v2 );
+float dot_Vec3_Vec3(const ixVector3 v1, const ixVector3 v2 );
+float dot_Vec4_Vec4(const ixVector4 v1, const ixVector4 v2 );
+float dot_Vec3d_Vec3d(const ixVector3d v1, const ixVector3d v2);
 
 /* Cross product
  * result(3) = v1(3) x v2(3)
@@ -262,36 +262,36 @@ void crossd_Vec3( ixVector3d result, const ixVector3 v1, const ixVector3 v2 );
 // /* Vector length
 //  * result(3) = sqrt( v[0]*v[0] + v[1]*v[1] + v[2]*v[2] )
 //  */
-// f_t length_Vec3( ixVector3 v );
+// float length_Vec3( ixVector3 v );
 
 /* Multiply
  * result(2x1) = v(2) .* x
  */
-void mul_Vec2_X( ixVector2 result, const ixVector2 v, const f_t x );
-void mul_Vec2d_X( ixVector2d result, const ixVector2d v, const double x );
+void mul_Vec2_X( ixVector2 result, const ixVector2 v, const float x );
+void mul_Vec2d_X( ixVector2d result, const ixVector2d v, const float x );
 
 /* Multiply
  * result(3x1) = v(3) .* x
  */
-void mul_Vec3_X( ixVector3 result, const ixVector3 v, const  f_t x );
-void mul_Vec3d_X( ixVector3d result, const ixVector3d v, const double x );
+void mul_Vec3_X( ixVector3 result, const ixVector3 v, const  float x );
+void mul_Vec3d_X( ixVector3d result, const ixVector3d v, const float x );
 
 /* Multiply
  * result(4x1) = v(4) .* x
  */
-void mul_Vec4_X( ixVector4 result, const ixVector4 v, const f_t x );
-void mul_Vec4d_X( ixVector4d result, const ixVector4d v, const double x );
+void mul_Vec4_X( ixVector4 result, const ixVector4 v, const float x );
+void mul_Vec4d_X( ixVector4d result, const ixVector4d v, const float x );
 
 /* Divide
  * result(3x1) = v(3) ./ x
  */
-void div_Vec3_X( ixVector3 result, const ixVector3 v, const f_t x );
+void div_Vec3_X( ixVector3 result, const ixVector3 v, const float x );
 
 /* Divide
  * result(4x1) = v(4) ./ x
  */
-void div_Vec4_X( ixVector4 result, const ixVector4 v, const f_t x );
-void div_Vec4d_X( ixVector4d result, const ixVector4d v, const double x );
+void div_Vec4_X( ixVector4 result, const ixVector4 v, const float x );
+void div_Vec4d_X( ixVector4d result, const ixVector4d v, const float x );
 
 /* Add
  * result(3) = v1(3) + v2(3)
@@ -337,9 +337,9 @@ void neg_Vec3(ixVector3 result, const ixVector3 v);
 /* Min of vector elements
  * = min( v[0], v[1], v[2] }
  */
-static __inline f_t min_Vec3_X(const ixVector3 v )
+static __inline float min_Vec3_X(const ixVector3 v )
 {
-	f_t val = v[0];
+	float val = v[0];
 	
     if( val > v[1] )
 		val = v[1];
@@ -353,9 +353,9 @@ static __inline f_t min_Vec3_X(const ixVector3 v )
 /* Max of vector elements
  * = max( v[0], v[1], v[2] }
  */
-static __inline f_t max_Vec3_X(const ixVector3 v )
+static __inline float max_Vec3_X(const ixVector3 v )
 {
-	f_t val = v[0];
+	float val = v[0];
 	
     if( val < v[1] )
 		val = v[1];
@@ -425,17 +425,17 @@ static __inline void zero_Vec4d( ixVector4d v )
 /* Zero vector
 * v(n) = { 0, ..., 0 }
 */
-static __inline void zero_VecN( f_t *v, i_t n )
+static __inline void zero_VecN( float *v, i_t n )
 {
-	memset( v, 0, sizeof( f_t )*n );
+	memset( v, 0, sizeof( float )*n );
 }
 
 /* Zero matrix
 * m(m,n) = { 0, ..., 0 }
 */
-static __inline void zero_MatMxN( f_t *M, i_t m, i_t n )
+static __inline void zero_MatMxN( float *M, i_t m, i_t n )
 {
-	memset( M, 0, sizeof( f_t )*m*n );
+	memset( M, 0, sizeof( float )*m*n );
 }
 
 
@@ -452,23 +452,23 @@ static __inline void cpy_Vec3d_Vec3d( ixVector3d result, const ixVector3d v )
 }
 static __inline void cpy_Vec3d_Vec3( ixVector3d result, const  ixVector3 v )
 {
-	result[0] = (double)v[0];
-	result[1] = (double)v[1];
-	result[2] = (double)v[2];
+	result[0] = (float)v[0];
+	result[1] = (float)v[1];
+	result[2] = (float)v[2];
 }
 static __inline void cpy_Vec3_Vec3d( ixVector3 result, const ixVector3d v )
 {
-	result[0] = (f_t)v[0];
-	result[1] = (f_t)v[1];
-	result[2] = (f_t)v[2];
+	result[0] = (float)v[0];
+	result[1] = (float)v[1];
+	result[2] = (float)v[2];
 }
 
 /* Copy vector
 * result(n) = v(n)
 */
-static __inline void cpy_VecN_VecN( f_t *result, const f_t *v, i_t n )
+static __inline void cpy_VecN_VecN( float *result, const float *v, i_t n )
 {
-	memcpy( result, v, sizeof( f_t )*n );
+	memcpy( result, v, sizeof( float )*n );
 }
 
 /* Copy vector
@@ -484,31 +484,31 @@ static __inline void cpy_Vec4d_Vec4d( ixVector4d result, const ixVector4d v )
 }
 static __inline void cpy_Vec4d_Vec4( ixVector4d result, const ixVector4 v )
 {
-	result[0] = (double)v[0];
-	result[1] = (double)v[1];
-	result[2] = (double)v[2];
-	result[3] = (double)v[3];
+	result[0] = (float)v[0];
+	result[1] = (float)v[1];
+	result[2] = (float)v[2];
+	result[3] = (float)v[3];
 }
 static __inline void cpy_Vec4_Vec4d( ixVector4 result, const ixVector4d v )
 {
-	result[0] = (f_t)v[0];
-	result[1] = (f_t)v[1];
-	result[2] = (f_t)v[2];
-	result[3] = (f_t)v[3];
+	result[0] = (float)v[0];
+	result[1] = (float)v[1];
+	result[2] = (float)v[2];
+	result[3] = (float)v[3];
 }
 
 /* Copy matrix
 * result(mxn) = M(mxn)
 */
-static __inline void cpy_MatMxN( f_t *result, const f_t *M, i_t m, i_t n )
+static __inline void cpy_MatMxN( float *result, const float *M, i_t m, i_t n )
 {
-	memcpy( result, M, sizeof( f_t )*m*n );
+	memcpy( result, M, sizeof( float )*m*n );
 }
 
 /* Copy matrix A(mxn) into result(rxc) matrix, starting at offset_r, offset_c.  Matrix A must fit inside result matrix dimensions.
 * result(rxc) <= A(mxn)
 */
-void cpy_MatRxC_MatMxN( f_t *result, i_t r, i_t c, i_t r_offset, i_t c_offset, f_t *A, i_t m, i_t n );
+void cpy_MatRxC_MatMxN( float *result, i_t r, i_t c, i_t r_offset, i_t c_offset, float *A, i_t m, i_t n );
 
 
 /* Matrix Transpose
@@ -611,7 +611,7 @@ static __inline int is_equal_Vec4(const ixVector4 v1, const ixVector4 v2)
 /*
 * Limit 3 dimensional vector to +- specified limit
 */
-static __inline void limit_Vec3( ixVector3 v, f_t limit )
+static __inline void limit_Vec3( ixVector3 v, float limit )
 { 	
 	_LIMIT( v[0], limit );
 	_LIMIT( v[1], limit );
@@ -621,7 +621,7 @@ static __inline void limit_Vec3( ixVector3 v, f_t limit )
 /*
 * Limit 3 dimensional vector to min and max values
 */
-static __inline void limit2_Vec3( ixVector3 v, f_t min, f_t max )
+static __inline void limit2_Vec3( ixVector3 v, float min, float max )
 {
 	_LIMIT2( v[0], min, max );
 	_LIMIT2( v[1], min, max );
@@ -632,7 +632,7 @@ static __inline void limit2_Vec3( ixVector3 v, f_t min, f_t max )
 /* Array contains NAN
  * return 1 if NAN found in array, 0 if not
  */
-static __inline int isNan_array( f_t *a, int size )
+static __inline int isNan_array( float *a, int size )
 {
     int i;
 
@@ -647,9 +647,9 @@ static __inline int isNan_array( f_t *a, int size )
 
 
 /* Array contains NAN
- * return 1 if NAN found in double array, 0 if not
+ * return 1 if NAN found in float array, 0 if not
  */
-static __inline int isNan_array_d( double *a, int size )
+static __inline int isNan_array_d( float *a, int size )
 {
     int i;
 
@@ -670,12 +670,12 @@ static __inline int isNan_array_d( double *a, int size )
 /* Array contains INF
  * return 1 if INF found in array, 0 if not
  */
-static __inline int isInf_array( f_t *a, int size )
+static __inline int isInf_array( float *a, int size )
 {
     int i;
 
-    f_t tmp = 1.0f;
-    f_t inf = 1.0f / ( tmp - 1.0f);
+    float tmp = 1.0f;
+    float inf = 1.0f / ( tmp - 1.0f);
 
     for( i=0; i<size; i++ )
     {
@@ -688,14 +688,14 @@ static __inline int isInf_array( f_t *a, int size )
 
 
 /* Array contains INF
-* return 1 if INF found in double array, 0 if not
+* return 1 if INF found in float array, 0 if not
 */
-static __inline int isInf_array_d(double *a, int size)
+static __inline int isInf_array_d(float *a, int size)
 {
 	int i;
 
-	double tmp = 1.0f;
-	double inf = 1.0f / (tmp - 1.0f);
+	float tmp = 1.0f;
+	float inf = 1.0f / (tmp - 1.0f);
 
 	for (i = 0; i<size; i++)
 	{
@@ -713,7 +713,7 @@ static __inline int isInf_array_d(double *a, int size)
 /* Array does not contain NAN or INF
  * return 0 if NAN or INF found in array, 1 if not
  */
-static __inline int isFinite_array( f_t *a, int size )
+static __inline int isFinite_array( float *a, int size )
 {
     if( isNan_array(a, size) )
         return 0;
@@ -726,9 +726,9 @@ static __inline int isFinite_array( f_t *a, int size )
 
 
 /* Array does not contain NAN or INF
-* return 0 if NAN or INF found in double array, 1 if not
+* return 0 if NAN or INF found in float array, 1 if not
 */
-static __inline int isFinite_array_d(double *a, int size)
+static __inline int isFinite_array_d(float *a, int size)
 {
 	if (isNan_array_d(a, size))
 		return 0;
@@ -741,12 +741,12 @@ static __inline int isFinite_array_d(double *a, int size)
 
 
 // Low-Pass Alpha Filter
-void LPFO0_init_Vec3( sLpfO0 *lpf, f_t dt, f_t cornerFreqHz, const ixVector3 initVal );
+void LPFO0_init_Vec3( sLpfO0 *lpf, float dt, float cornerFreqHz, const ixVector3 initVal );
 // output[n+1] = beta*output[n] + alpha*input
 void LPFO0_Vec3( sLpfO0 *lpf, const ixVector3 input );
 
 // Zero order Low-Pass Filter
-static __inline void O0_LPF_Vec3( ixVector3 result, const ixVector3 input, f_t alph, f_t beta )
+static __inline void O0_LPF_Vec3( ixVector3 result, const ixVector3 input, float alph, float beta )
 {
 	ixVector3 tmp3;
 
@@ -758,7 +758,7 @@ static __inline void O0_LPF_Vec3( ixVector3 result, const ixVector3 input, f_t a
 
 
 // First order Low-Pass Filter
-static __inline void O1_LPF_Vec3( ixVector3 result, const ixVector3 input, ixVector3 c1, f_t alph, f_t beta, f_t dt )
+static __inline void O1_LPF_Vec3( ixVector3 result, const ixVector3 input, ixVector3 c1, float alph, float beta, float dt )
 {
 	ixVector3 tmp3;
 

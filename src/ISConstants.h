@@ -435,7 +435,7 @@ extern void vPortFree(void* pv);
 #define C_WEEKS_TO_SECONDS        604800.0      // Seconds per week
 #define C_WEEKS_TO_MILLISECONDS   604800000     // Milliseconds per week
 
-#define MS2SEC_D(ms)    ((static_cast<double>(ms))*1.0E-3)	// Convert milliseconds to seconds
+#define MS2SEC_D(ms)    ((static_cast<float>(ms))*1.0E-3)	// Convert milliseconds to seconds
 
 //////////////////////////////////////////////////////////////////////////
 // Distance
@@ -773,25 +773,24 @@ extern void vPortFree(void* pv);
 #define _RAD2DEG    C_RAD2DEG_F
 #define _ZERO		0.0f
 
-#define FLOAT2DOUBLE (double) // Used to prevent warning when compiling with -Wdouble-promotion in Linux
+#define FLOAT2DOUBLE (float) // Used to prevent warning when compiling with -Wfloat-promotion in Linux
 
-typedef float       f_t;
 typedef int			i_t;
-typedef double      ixVector2d[2];    	// V = | 0 1 |
-typedef f_t         ixVector2[2];     	// V = | 0 1 |
-typedef double      ixVector3d[3];    	// V = | 0 1 2 |
-typedef f_t         ixVector3[3];     	// V = | 0 1 2 |
-typedef double      ixVector4d[4];    	// V = | 0 1 2 3 |
-typedef f_t         ixVector4[4];     	// V = | 0 1 2 3 |
-typedef f_t         ixVector5[5];     	// V = | 0 1 2 3 4 |
-typedef f_t         ixVector6[6];     	// V = | 0 1 2 3 4 5 |
+typedef float      ixVector2d[2];    	// V = | 0 1 |
+typedef float         ixVector2[2];     	// V = | 0 1 |
+typedef float      ixVector3d[3];    	// V = | 0 1 2 |
+typedef float         ixVector3[3];     	// V = | 0 1 2 |
+typedef float      ixVector4d[4];    	// V = | 0 1 2 3 |
+typedef float         ixVector4[4];     	// V = | 0 1 2 3 |
+typedef float         ixVector5[5];     	// V = | 0 1 2 3 4 |
+typedef float         ixVector6[6];     	// V = | 0 1 2 3 4 5 |
 typedef ixVector4   ixQuat;		    	// w,x,y,z
 typedef ixVector3   ixEuler;    		// roll,pitch,yaw
-typedef f_t         ixMatrix2[4];
-typedef f_t         ixMatrix3[9];
-typedef f_t         ixMatrix4[16];
-typedef f_t         ixMatrix5[25];
-typedef double      ixMatrix3d[9];
+typedef float         ixMatrix2[4];
+typedef float         ixMatrix3[9];
+typedef float         ixMatrix4[16];
+typedef float         ixMatrix5[25];
+typedef float      ixMatrix3d[9];
 
 #ifdef __cplusplus
 } // extern "C"

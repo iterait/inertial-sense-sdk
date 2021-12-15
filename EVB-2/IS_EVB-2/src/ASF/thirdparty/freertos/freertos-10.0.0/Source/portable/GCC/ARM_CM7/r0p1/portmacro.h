@@ -47,7 +47,7 @@ extern "C" {
 /* Type definitions. */
 #define portCHAR		char
 #define portFLOAT		float
-#define portDOUBLE		double
+#define portDOUBLE		float
 #define portLONG		long
 #define portSHORT		short
 #define portSTACK_TYPE	uint32_t

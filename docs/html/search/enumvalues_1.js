@@ -9,7 +9,7 @@ var searchData=
   ['ascii_5fmsg_5fid_5fsrst_5865',['ASCII_MSG_ID_SRST',['../protocol__nmea_8h.html#a24b8a7c7d9a2b6aabb120ab64d556b2ca01b89512127fa341696e34388dcec616',1,'protocol_nmea.h']]],
   ['ascii_5fmsg_5fid_5fstpb_5866',['ASCII_MSG_ID_STPB',['../protocol__nmea_8h.html#a24b8a7c7d9a2b6aabb120ab64d556b2caa74a68004caf471588efa995d67168f1',1,'protocol_nmea.h']]],
   ['ascii_5fmsg_5fid_5fstpc_5867',['ASCII_MSG_ID_STPC',['../protocol__nmea_8h.html#a24b8a7c7d9a2b6aabb120ab64d556b2ca0612cbe5e9901e3e138cf809f9af77c7',1,'protocol_nmea.h']]],
-  ['asciitypedouble_5868',['asciiTypeDouble',['../_i_s_comm_8h.html#ae8a53e32ddcd42ac1df8e6bdf6a36eefaf14bc75c3dcf40d15b4851c4990cb2df',1,'ISComm.h']]],
+  ['asciitypefloat_5868',['asciiTypeDouble',['../_i_s_comm_8h.html#ae8a53e32ddcd42ac1df8e6bdf6a36eefaf14bc75c3dcf40d15b4851c4990cb2df',1,'ISComm.h']]],
   ['asciitypefloat_5869',['asciiTypeFloat',['../_i_s_comm_8h.html#ae8a53e32ddcd42ac1df8e6bdf6a36eefa291a1df9c29abd881756c46ba4beec5d',1,'ISComm.h']]],
   ['asciitypeint_5870',['asciiTypeInt',['../_i_s_comm_8h.html#ae8a53e32ddcd42ac1df8e6bdf6a36eefa32398ad4aa75d3c969114a9963804957',1,'ISComm.h']]],
   ['asciitypeuint_5871',['asciiTypeUInt',['../_i_s_comm_8h.html#ae8a53e32ddcd42ac1df8e6bdf6a36eefa12285fb40a75c9bb8ad72ebfe86a89ac',1,'ISComm.h']]]

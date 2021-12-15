@@ -80,7 +80,7 @@ class sDevInfo(ct.Structure):
 
 class sImu(ct.Structure):
     _pack_ = 1
-    _fields_ = [('time',            ct.c_double),
+    _fields_ = [('time',            ct.c_float),
                 ('pqr',             ct.c_float * 3),
                 ('acc',             ct.c_float * 3),
                 ('mag',             ct.c_float * 3),
@@ -89,30 +89,30 @@ class sImu(ct.Structure):
 class sIns1(ct.Structure):
     _pack_ = 1
     _fields_ = [('week',            ct.c_uint32),
-                ('time',            ct.c_double),
+                ('time',            ct.c_float),
                 ('iStatus',         ct.c_uint32),
                 ('hStatus',         ct.c_uint32),
                 ('euler',           ct.c_float * 3),
                 ('uvw',             ct.c_float * 3),
-                ('lla',             ct.c_double * 3),
+                ('lla',             ct.c_float * 3),
                 ('ned',             ct.c_float * 3),
                 ]
 
 class sIns2(ct.Structure):
     _pack_ = 1
     _fields_ = [('week',            ct.c_uint32),
-                ('time',            ct.c_double),
+                ('time',            ct.c_float),
                 ('iStatus',         ct.c_uint32),
                 ('hStatus',         ct.c_uint32),
                 ('q',               ct.c_float * 4),
                 ('uvw',             ct.c_float * 3),
-                ('lla',             ct.c_double * 3),
+                ('lla',             ct.c_float * 3),
                 ]
 
 class sInsRes(ct.Structure):
     _pack_ = 1
     _fields_ = [('timeMs',          ct.c_uint32),
-                ('x_dot.lla',       ct.c_double * 3),
+                ('x_dot.lla',       ct.c_float * 3),
                 ('x_dot.uvw',       ct.c_float * 3),
                 ('x_dot.q',         ct.c_float * 4),
                 ('ned_dot',         ct.c_float * 3),
@@ -125,12 +125,12 @@ class sInsRes(ct.Structure):
 class sInsDev1(ct.Structure):
     _pack_ = 1
     _fields_ = [('week',            ct.c_uint32),
-                ('time',            ct.c_double),
+                ('time',            ct.c_float),
                 ('iStatus',         ct.c_uint32),
                 ('hStatus',         ct.c_uint32),
                 ('euler',           ct.c_float * 3),
                 ('uvw',             ct.c_float * 3),
-                ('lla',             ct.c_double * 3),
+                ('lla',             ct.c_float * 3),
                 ('ned',             ct.c_float * 3),
                 ('eulerErr',        ct.c_float * 3),
                 ('uvwErr',          ct.c_float * 3),
@@ -143,7 +143,7 @@ class sGpsPos(ct.Structure):
                 ('timeMs',          ct.c_uint32),
                 ('satsUsed',        ct.c_uint32),
                 ('cno',             ct.c_uint32),
-                ('lla',             ct.c_double * 3),
+                ('lla',             ct.c_float * 3),
                 ('mMSL',            ct.c_float),
                 ('hAcc',            ct.c_float),
                 ('vAcc',            ct.c_float),
@@ -166,19 +166,19 @@ class sGps(ct.Structure):
     _fields_ = [('pos',             sGpsPos),
                 ('vel',             sGpsVel),
                 ('rxps',            ct.c_uint32),
-                ('timeOffset',      ct.c_double),
+                ('timeOffset',      ct.c_float),
                 ]
 
 class sStateVars(ct.Structure):
     _pack_ = 1
-    _fields_ = [('lla',             ct.c_double * 3),
+    _fields_ = [('lla',             ct.c_float * 3),
                 ('uvw',             ct.c_float * 3),
                 ('q',               ct.c_float * 4),
                 ]
 
 class sInsMisc(ct.Structure):
     _pack_ = 1
-    _fields_ = [('time',            ct.c_double),
+    _fields_ = [('time',            ct.c_float),
                 ('timeMs',          ct.c_uint32),
                 ('x',               sStateVars),
                 ('theta',           ct.c_float * 3),
@@ -242,9 +242,9 @@ class sObsParams(ct.Structure):
                 ('accNed.ins',      ct.c_float * 3),
 
                 ('velNed.timeMs',   ct.c_uint32),
-                ('velNed.ref',      ct.c_double * 3),
+                ('velNed.ref',      ct.c_float * 3),
                 ('velNed.refValid', ct.c_uint32),
-                ('velNed.ins',      ct.c_double * 3),
+                ('velNed.ins',      ct.c_float * 3),
 
                 ('lla.timeMs',      ct.c_uint32),
                 ('lla.ref',         ct.c_float * 3),
@@ -261,7 +261,7 @@ class sDebugArray(ct.Structure):
     _pack_ = 1
     _fields_ = [('i',               ct.c_uint32 * 9),
                 ('f',               ct.c_float * 9),
-                ('lf',              ct.c_double * 3),
+                ('lf',              ct.c_float * 3),
                 ]
 
 class sSensorBias(ct.Structure):

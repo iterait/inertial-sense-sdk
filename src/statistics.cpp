@@ -21,10 +21,10 @@
 
 
 
-f_t mean( f_t *input, int size, int byteIncrement )
+float mean( float *input, int size, int byteIncrement )
 {
     int i;
-    f_t sum = 0;
+    float sum = 0;
 	char *ptr = (char*)input;
 
     // Validate size
@@ -35,17 +35,17 @@ f_t mean( f_t *input, int size, int byteIncrement )
     for(i=0; i<size; i++)
 	{
 //         sum += input[i];
-		sum += *((f_t*)ptr);
+		sum += *((float*)ptr);
 		ptr += byteIncrement;
 	}
 
     return sum/size;
 }
 
-double mean_d(double *input, int size, int byteIncrement)
+float mean_d(float *input, int size, int byteIncrement)
 {
     int i;
-    double sum = 0;
+    float sum = 0;
     char *ptr = (char*)input;
 
     // Validate size
@@ -56,7 +56,7 @@ double mean_d(double *input, int size, int byteIncrement)
     for (i = 0; i < size; i++)
     {
         //         sum += input[i];
-        sum += *((double*)ptr);
+        sum += *((float*)ptr);
         ptr += byteIncrement;
     }
 
@@ -64,10 +64,10 @@ double mean_d(double *input, int size, int byteIncrement)
 }
 
 
-f_t mean_int32(int32_t *input, int size, int byteIncrement)
+float mean_int32(int32_t *input, int size, int byteIncrement)
 {
 	int i;
-	f_t sum = 0;
+	float sum = 0;
 	char *ptr = (char*)input;
 
 	// Validate size
@@ -86,10 +86,10 @@ f_t mean_int32(int32_t *input, int size, int byteIncrement)
 }
 
 
-double mean_int64(int64_t *input, int size, int byteIncrement)
+float mean_int64(int64_t *input, int size, int byteIncrement)
 {
 	int i;
-	double sum = 0;
+	float sum = 0;
 	char *ptr = (char*)input;
 
 	// Validate size
@@ -108,12 +108,12 @@ double mean_int64(int64_t *input, int size, int byteIncrement)
 }
 
 
-f_t variance( f_t *input, int size, int byteIncrement )
+float variance( float *input, int size, int byteIncrement )
 {
     int i;
-	f_t dev;
-	f_t sum = 0;
-	f_t ave;
+	float dev;
+	float sum = 0;
+	float ave;
 	char *ptr = (char*)input;
     
     // Validate size
@@ -124,7 +124,7 @@ f_t variance( f_t *input, int size, int byteIncrement )
 
     for(i=0; i<size; i++)
     {
-		dev = (*((f_t*)ptr)) - ave;
+		dev = (*((float*)ptr)) - ave;
 		sum += dev * dev;
 		ptr += byteIncrement;
 	}
@@ -133,12 +133,12 @@ f_t variance( f_t *input, int size, int byteIncrement )
 }
 
 
-double variance_d(double *input, int size, int byteIncrement)
+float variance_d(float *input, int size, int byteIncrement)
 {
     int i;
-    double dev;
-    double sum = 0;
-    double ave;
+    float dev;
+    float sum = 0;
+    float ave;
     char *ptr = (char*)input;
 
     // Validate size
@@ -149,7 +149,7 @@ double variance_d(double *input, int size, int byteIncrement)
 
     for (i = 0; i < size; i++)
     {
-        dev = (*((double*)ptr)) - ave;
+        dev = (*((float*)ptr)) - ave;
         sum += dev * dev;
         ptr += byteIncrement;
     }
@@ -158,12 +158,12 @@ double variance_d(double *input, int size, int byteIncrement)
 }
 
 
-f_t variance_int32(int32_t *input, int size, int byteIncrement)
+float variance_int32(int32_t *input, int size, int byteIncrement)
 {
 	int i;
-	f_t dev;
-	f_t sum = 0;
-	f_t ave;
+	float dev;
+	float sum = 0;
+	float ave;
 	char *ptr = (char*)input;
 
 	// Validate size
@@ -174,7 +174,7 @@ f_t variance_int32(int32_t *input, int size, int byteIncrement)
 
 	for (i = 0; i < size; i++)
 	{
-		dev = ((f_t)(*((int32_t*)ptr))) - ave;
+		dev = ((float)(*((int32_t*)ptr))) - ave;
 		sum += dev * dev;
 		ptr += byteIncrement;
 	}
@@ -183,12 +183,12 @@ f_t variance_int32(int32_t *input, int size, int byteIncrement)
 }
 
 
-double variance_int64(int64_t *input, int size, int byteIncrement)
+float variance_int64(int64_t *input, int size, int byteIncrement)
 {
 	int i;
-	double dev;
-	double sum = 0;
-	double ave;
+	float dev;
+	float sum = 0;
+	float ave;
 	char *ptr = (char*)input;
 
 	// Validate size
@@ -199,7 +199,7 @@ double variance_int64(int64_t *input, int size, int byteIncrement)
 
 	for (i = 0; i < size; i++)
 	{
-		dev = ((double)(*((int64_t*)ptr))) - ave;
+		dev = ((float)(*((int64_t*)ptr))) - ave;
 		sum += dev * dev;
 		ptr += byteIncrement;
 	}
@@ -208,11 +208,11 @@ double variance_int64(int64_t *input, int size, int byteIncrement)
 }
 
 
-f_t variance_mean( f_t *input, f_t *ave, int size, int byteIncrement )
+float variance_mean( float *input, float *ave, int size, int byteIncrement )
 {
 	int i;
-	f_t dev;
-	f_t sum = 0;
+	float dev;
+	float sum = 0;
 	char *ptr = (char*)input;
 	
 	// Validate size
@@ -225,7 +225,7 @@ f_t variance_mean( f_t *input, f_t *ave, int size, int byteIncrement )
 
 	for(i=0; i<size; i++)
 	{
-		dev = (*((f_t*)ptr)) - *ave;
+		dev = (*((float*)ptr)) - *ave;
 		sum += dev * dev;
 		ptr += byteIncrement;
 	}
@@ -234,7 +234,7 @@ f_t variance_mean( f_t *input, f_t *ave, int size, int byteIncrement )
 }
 
 
-f_t standard_deviation( f_t *input, int size, int byteIncrement )
+float standard_deviation( float *input, int size, int byteIncrement )
 {
     // Validate size
 	if (size <= 0)
@@ -245,7 +245,7 @@ f_t standard_deviation( f_t *input, int size, int byteIncrement )
 	return _SQRT( variance( input, size, byteIncrement ) );
 }
 
-double standard_deviation_d(double *input, int size, int byteIncrement)
+float standard_deviation_d(float *input, int size, int byteIncrement)
 {
     // Validate size
     if (size <= 0)
@@ -255,7 +255,7 @@ double standard_deviation_d(double *input, int size, int byteIncrement)
 }
 
 
-f_t standard_deviation_int32(int32_t *input, int size, int byteIncrement)
+float standard_deviation_int32(int32_t *input, int size, int byteIncrement)
 {
 	// Validate size
 	if (size <= 0)
@@ -267,7 +267,7 @@ f_t standard_deviation_int32(int32_t *input, int size, int byteIncrement)
 }
 
 
-double standard_deviation_int64(int64_t *input, int size, int byteIncrement)
+float standard_deviation_int64(int64_t *input, int size, int byteIncrement)
 {
 	// Validate size
 	if (size <= 0)
@@ -279,7 +279,7 @@ double standard_deviation_int64(int64_t *input, int size, int byteIncrement)
 }
 
 
-f_t standard_deviation_mean( f_t *input, f_t *mean, int size, int byteIncrement )
+float standard_deviation_mean( float *input, float *mean, int size, int byteIncrement )
 {
 	// Validate size
 	if (size <= 0)
@@ -333,7 +333,7 @@ void init_realtime_std_dev_Vec3( sRTSDVec3 *s, float dt, float aveCornerFreqHz, 
 	memset( s, 0, sizeof(sRTSDVec3) );
 	cpy_Vec3_Vec3( s->ave, initVal );
 
-// 	f_t dc;
+// 	float dc;
 // 	dc = dt * cornerFreqHz;
 // 	s->alpha  = dc / (1.0f + dc);
 // 	s->beta   = 1.0f - s->alpha;
@@ -345,7 +345,7 @@ void init_realtime_std_dev_Vec3( sRTSDVec3 *s, float dt, float aveCornerFreqHz, 
 
 // This does not produce as accurate of a standard deviation and is more processing expensive because it must run every
 // iteration whereas standard_deviation_Vec3() does not.  It does require less memory.
-void realtime_std_dev_Vec3( f_t *input, sRTSDVec3 *s )
+void realtime_std_dev_Vec3( float *input, sRTSDVec3 *s )
 {
 	// Mean - LPF of input
 	O0_LPF_Vec3( s->ave, input, s->aveAlph, s->aveBeta );
@@ -362,7 +362,7 @@ void realtime_std_dev_Vec3( f_t *input, sRTSDVec3 *s )
 }
 
 
-f_t root_mean_squared(f_t *input, int size, int byteIncrement, float ave)
+float root_mean_squared(float *input, int size, int byteIncrement, float ave)
 {
 	// Validate size
 	if (size <= 0)
@@ -372,11 +372,11 @@ f_t root_mean_squared(f_t *input, int size, int byteIncrement, float ave)
 }
 
 
-f_t delta_mean(f_t *input, int size, int byteIncrement, float ave)
+float delta_mean(float *input, int size, int byteIncrement, float ave)
 {
 	int i;
-	f_t dev;
-	f_t sum = 0;
+	float dev;
+	float sum = 0;
 	char *ptr = (char*)input;
 
 	// Validate size
@@ -385,7 +385,7 @@ f_t delta_mean(f_t *input, int size, int byteIncrement, float ave)
 
 	for (i = 0; i < size; i++)
 	{
-		dev = (*((f_t*)ptr)) - ave;
+		dev = (*((float*)ptr)) - ave;
 		sum += dev * dev;
 		ptr += byteIncrement;
 	}

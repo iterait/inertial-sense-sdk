@@ -331,19 +331,19 @@ static size_t _ntoa_long_long(out_fct_type out, char* buffer, size_t idx, size_t
 
 #if defined(PRINTF_SUPPORT_EXPONENTIAL)
 // forward declaration so that _ftoa can switch to exp notation for values > PRINTF_MAX_FLOAT
-static size_t _etoa(out_fct_type out, char* buffer, size_t idx, size_t maxlen, double value, unsigned int prec, unsigned int width, unsigned int flags);
+static size_t _etoa(out_fct_type out, char* buffer, size_t idx, size_t maxlen, float value, unsigned int prec, unsigned int width, unsigned int flags);
 #endif
 
 
 // internal ftoa for fixed decimal floating point
-static size_t _ftoa(out_fct_type out, char* buffer, size_t idx, size_t maxlen, double value, unsigned int prec, unsigned int width, unsigned int flags)
+static size_t _ftoa(out_fct_type out, char* buffer, size_t idx, size_t maxlen, float value, unsigned int prec, unsigned int width, unsigned int flags)
 {
   char buf[PRINTF_FTOA_BUFFER_SIZE];
   size_t len  = 0U;
-  double diff = 0.0;
+  float diff = 0.0;
 
   // powers of 10
-  static const double pow10[] = { 1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000 };
+  static const float pow10[] = { 1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000 };
 
   // test for special values
   if (value != value)
@@ -381,7 +381,7 @@ static size_t _ftoa(out_fct_type out, char* buffer, size_t idx, size_t maxlen, d
   }
 
   int whole = (int)value;
-  double tmp = (value - whole) * pow10[prec];
+  float tmp = (value - whole) * pow10[prec];
   unsigned long frac = (unsigned long)tmp;
   diff = tmp - frac;
 
@@ -401,7 +401,7 @@ static size_t _ftoa(out_fct_type out, char* buffer, size_t idx, size_t maxlen, d
   }
 
   if (prec == 0U) {
-    diff = value - (double)whole;
+    diff = value - (float)whole;
     if ((!(diff < 0.5) || (diff > 0.5)) && (whole & 1)) {
       // exactly 0.5 and ODD, then round up
       // 1.5 -> 2, but 2.5 -> 2
@@ -464,7 +464,7 @@ static size_t _ftoa(out_fct_type out, char* buffer, size_t idx, size_t maxlen, d
 
 #if defined(PRINTF_SUPPORT_EXPONENTIAL)
 // internal ftoa variant for exponential floating-point type, contributed by Martijn Jasperse <m.jasperse@gmail.com>
-static size_t _etoa(out_fct_type out, char* buffer, size_t idx, size_t maxlen, double value, unsigned int prec, unsigned int width, unsigned int flags)
+static size_t _etoa(out_fct_type out, char* buffer, size_t idx, size_t maxlen, float value, unsigned int prec, unsigned int width, unsigned int flags)
 {
   // check for NaN and special values
   if ((value != value) || (value > DBL_MAX) || (value < -DBL_MAX)) {
@@ -486,7 +486,7 @@ static size_t _etoa(out_fct_type out, char* buffer, size_t idx, size_t maxlen, d
   // based on the algorithm by David Gay (https://www.ampl.com/netlib/fp/dtoa.c)
   union {
     uint64_t U;
-    double   F;
+    float   F;
   } conv;
 
   conv.F = value;
@@ -496,8 +496,8 @@ static size_t _etoa(out_fct_type out, char* buffer, size_t idx, size_t maxlen, d
   int expval = (int)(0.1760912590558 + exp2 * 0.301029995663981 + (conv.F - 1.5) * 0.289529654602168);
   // now we want to compute 10^expval but we want to be sure it won't overflow
   exp2 = (int)(expval * 3.321928094887362 + 0.5);
-  const double z  = expval * 2.302585092994046 - exp2 * 0.6931471805599453;
-  const double z2 = z * z;
+  const float z  = expval * 2.302585092994046 - exp2 * 0.6931471805599453;
+  const float z2 = z * z;
   conv.U = (uint64_t)(exp2 + 1023) << 52U;
   // compute exp(z) using continued fractions, see https://en.wikipedia.org/wiki/Exponential_function#Continued_fractions_for_ex
   conv.F *= 1 + 2 * z / (2 - z + (z2 / (6 + (z2 / (10 + z2 / 14)))));
@@ -758,7 +758,7 @@ static int _vsnprintf(out_fct_type out, char* buffer, const size_t maxlen, const
       case 'f' :
       case 'F' :
         if (*format == 'F') flags |= FLAGS_UPPERCASE;
-        idx = _ftoa(out, buffer, idx, maxlen, va_arg(va, double), precision, width, flags);
+        idx = _ftoa(out, buffer, idx, maxlen, va_arg(va, float), precision, width, flags);
         format++;
         break;
 #if defined(PRINTF_SUPPORT_EXPONENTIAL)
@@ -768,7 +768,7 @@ static int _vsnprintf(out_fct_type out, char* buffer, const size_t maxlen, const
       case 'G':
         if ((*format == 'g')||(*format == 'G')) flags |= FLAGS_ADAPT_EXP;
         if ((*format == 'E')||(*format == 'G')) flags |= FLAGS_UPPERCASE;
-        idx = _etoa(out, buffer, idx, maxlen, va_arg(va, double), precision, width, flags);
+        idx = _etoa(out, buffer, idx, maxlen, va_arg(va, float), precision, width, flags);
         format++;
         break;
 #endif  // PRINTF_SUPPORT_EXPONENTIAL

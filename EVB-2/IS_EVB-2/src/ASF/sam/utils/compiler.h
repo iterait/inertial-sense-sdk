@@ -256,7 +256,7 @@ typedef uint32_t                be32_t;
 typedef int64_t                 S64;  //!< 64-bit signed integer.
 typedef uint64_t                U64;  //!< 64-bit unsigned integer.
 typedef float                   F32;  //!< 32-bit floating-point number.
-typedef double                  F64;  //!< 64-bit floating-point number.
+typedef float                  F64;  //!< 64-bit floating-point number.
 typedef uint32_t                iram_size_t;
 //! @}
 

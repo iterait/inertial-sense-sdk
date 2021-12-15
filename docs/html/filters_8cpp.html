@@ -103,8 +103,8 @@ Functions</h2></td></tr>
 <tr class="memitem:a9f1ce1982e2ec002a02cd406a4dcbc7f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="filters_8cpp.html#a9f1ce1982e2ec002a02cd406a4dcbc7f">running_mean_filter</a> (float input[], float <a class="el" href="statistics_8h.html#adfdf7b125223f7de9a42416956b12102">mean</a>[], int arraySize, int sampleCount)</td></tr>
 <tr class="memdesc:a9f1ce1982e2ec002a02cd406a4dcbc7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Running Average Filter A running average of the input array is collected in the mean array. Filter is reset when sampleCount equals 0.  <a href="filters_8cpp.html#a9f1ce1982e2ec002a02cd406a4dcbc7f">More...</a><br /></td></tr>
 <tr class="separator:a9f1ce1982e2ec002a02cd406a4dcbc7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afdac5c1b040debe4d404b89018907874"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="filters_8cpp.html#afdac5c1b040debe4d404b89018907874">running_mean_filter_f64</a> (double <a class="el" href="statistics_8h.html#adfdf7b125223f7de9a42416956b12102">mean</a>[], float input[], int arraySize, int sampleCount)</td></tr>
-<tr class="memdesc:afdac5c1b040debe4d404b89018907874"><td class="mdescLeft">&#160;</td><td class="mdescRight">Running Average Filter (double) A running average of the input array is collected in the mean array. Filter is reset when sampleCount equals 0.  <a href="filters_8cpp.html#afdac5c1b040debe4d404b89018907874">More...</a><br /></td></tr>
+<tr class="memitem:afdac5c1b040debe4d404b89018907874"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="filters_8cpp.html#afdac5c1b040debe4d404b89018907874">running_mean_filter_f64</a> (float <a class="el" href="statistics_8h.html#adfdf7b125223f7de9a42416956b12102">mean</a>[], float input[], int arraySize, int sampleCount)</td></tr>
+<tr class="memdesc:afdac5c1b040debe4d404b89018907874"><td class="mdescLeft">&#160;</td><td class="mdescRight">Running Average Filter (float) A running average of the input array is collected in the mean array. Filter is reset when sampleCount equals 0.  <a href="filters_8cpp.html#afdac5c1b040debe4d404b89018907874">More...</a><br /></td></tr>
 <tr class="separator:afdac5c1b040debe4d404b89018907874"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a65a171873aeac1a687d6d398df5f0e56"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="filters_8cpp.html#a65a171873aeac1a687d6d398df5f0e56">errorCheckDualImu</a> (<a class="el" href="data__sets_8h.html#abc4322af57ef2261080dc74b158daf19">dual_imu_ok_t</a> *di)</td></tr>
 <tr class="separator:a65a171873aeac1a687d6d398df5f0e56"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -644,7 +644,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void running_mean_filter_f64 </td>
           <td>(</td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype">float&#160;</td>
           <td class="paramname"><em>mean</em>[], </td>
         </tr>
         <tr>
@@ -673,7 +673,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Running Average Filter (double) A running average of the input array is collected in the mean array. Filter is reset when sampleCount equals 0. </p>
+<p>Running Average Filter (float) A running average of the input array is collected in the mean array. Filter is reset when sampleCount equals 0. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">input</td><td>Double (float 64) value to be included in the average. </td></tr>

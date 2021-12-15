@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['ecef2lla_4241',['ecef2lla',['../_i_s_earth_8c.html#a9618d0d931c90ae3727fd44a89ffa947',1,'ecef2lla(const double *Pe, double *LLA, const int Niter):&#160;ISEarth.c'],['../_i_s_earth_8h.html#a9618d0d931c90ae3727fd44a89ffa947',1,'ecef2lla(const double *Pe, double *LLA, const int Niter):&#160;ISEarth.c']]],
+  ['ecef2lla_4241',['ecef2lla',['../_i_s_earth_8c.html#a9618d0d931c90ae3727fd44a89ffa947',1,'ecef2lla(const float *Pe, float *LLA, const int Niter):&#160;ISEarth.c'],['../_i_s_earth_8h.html#a9618d0d931c90ae3727fd44a89ffa947',1,'ecef2lla(const float *Pe, float *LLA, const int Niter):&#160;ISEarth.c']]],
   ['editdata_4242',['EditData',['../classc_inertial_sense_display.html#a79e327c0c014352ff4e026d25fb01da5',1,'cInertialSenseDisplay']]],
   ['element_4243',['Element',['../class_ti_xml_handle.html#ae9b22d71bf5f69ee5fda28f5ad21f19c',1,'TiXmlHandle']]],
   ['empty_4244',['empty',['../class_ti_xml_string.html#a3139aafb0f0a8e26d1a4ed58a50f3678',1,'TiXmlString']]],
@@ -29,5 +29,5 @@ var searchData=
   ['eulerreferencetobody_4267',['eulerReferenceToBody',['../_i_s_pose_8c.html#aecb13d77e6d2f37329ea31755246609b',1,'eulerReferenceToBody(const ixEuler e, const ixEuler rot, ixEuler result):&#160;ISPose.c'],['../_i_s_pose_8h.html#aecb13d77e6d2f37329ea31755246609b',1,'eulerReferenceToBody(const ixEuler e, const ixEuler rot, ixEuler result):&#160;ISPose.c']]],
   ['eulerwx_4268',['eulerWx',['../_i_s_pose_8c.html#acbe4e0d57fe233e247c7afd8f6e04f81',1,'eulerWx(const ixEuler euler, ixMatrix3 mat):&#160;ISPose.c'],['../_i_s_pose_8h.html#acbe4e0d57fe233e247c7afd8f6e04f81',1,'eulerWx(const ixEuler euler, ixMatrix3 mat):&#160;ISPose.c']]],
   ['exitprogram_4269',['ExitProgram',['../classc_inertial_sense_display.html#a502f6e9a5c4d67234de7e1d20fae33ff',1,'cInertialSenseDisplay']]],
-  ['eye_5fmatn_4270',['eye_MatN',['../_i_s_matrix_8c.html#a89864fa83efca063c2396a0490e7d338',1,'eye_MatN(f_t *A, i_t n):&#160;ISMatrix.c'],['../_i_s_matrix_8h.html#a89864fa83efca063c2396a0490e7d338',1,'eye_MatN(f_t *A, i_t n):&#160;ISMatrix.c']]]
+  ['eye_5fmatn_4270',['eye_MatN',['../_i_s_matrix_8c.html#a89864fa83efca063c2396a0490e7d338',1,'eye_MatN(float *A, i_t n):&#160;ISMatrix.c'],['../_i_s_matrix_8h.html#a89864fa83efca063c2396a0490e7d338',1,'eye_MatN(float *A, i_t n):&#160;ISMatrix.c']]]
 ];

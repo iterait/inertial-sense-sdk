@@ -104,7 +104,7 @@ void mul_Quat_ConjQuat(ixQuat result, const ixQuat q1, const ixQuat qc)
  */
 void div_Quat_Quat(ixQuat result, const ixQuat q1, const ixQuat q2)
 {
-	f_t d = (f_t)1.0 / (q1[0] * q1[0] + q1[1] * q1[1] + q1[2] * q1[2] + q1[3] * q1[3]);
+	float d = (float)1.0 / (q1[0] * q1[0] + q1[1] * q1[1] + q1[2] * q1[2] + q1[3] * q1[3]);
 
     result[0] = (q1[0]*q2[0] + q1[1]*q2[1] + q1[2]*q2[2] + q1[3]*q2[3]) * d;
     result[1] = (q1[0]*q2[1] - q1[1]*q2[0] - q1[2]*q2[3] + q1[3]*q2[2]) * d;
@@ -127,7 +127,7 @@ void quat_Vec3_Vec3(ixQuat result, const ixVector3 v1, const ixVector3 v2)
 	cross_Vec3( &result[1], w1, w2 );
 
     // q[0]
-    result[0] = (f_t)(_SQRT( dot_Vec3(w1) * dot_Vec3(w1) ) + dot_Vec3_Vec3(w1, w2));
+    result[0] = (float)(_SQRT( dot_Vec3(w1) * dot_Vec3(w1) ) + dot_Vec3_Vec3(w1, w2));
 
 	// Normalize quaternion
 	div_Vec4_X( result, result, mag_Vec4(result) );
@@ -143,7 +143,7 @@ void quatRot(ixVector3 result, const ixQuat q, const ixVector3 v)
 {
     ixVector3 t;
     cross_Vec3( t, &q[1], v );
-    mul_Vec3_X( t, t, (f_t)2.0 );
+    mul_Vec3_X( t, t, (float)2.0 );
 
     cross_Vec3( result, &q[1], t );
     mul_Vec3_X( t, t, q[0] );
@@ -167,7 +167,7 @@ void quatConjRot(ixVector3 result, const ixQuat q, const ixVector3 v)
     quatConj( qC, q );
 
     cross_Vec3( t, &qC[1], v );
-    mul_Vec3_X( t, t, (f_t)2.0 );
+    mul_Vec3_X( t, t, (float)2.0 );
 
     cross_Vec3( result, &qC[1], t );
     mul_Vec3_X( t, t, qC[0] );
@@ -192,7 +192,7 @@ void quat2euler(const ixQuat q, ixEuler theta)
 	theta[1] = _ASIN (sinang);
 	theta[2] = _ATAN2(2 * (q[0]*q[3] + q[1]*q[2]), 1 - 2 * (q[2]*q[2] + q[3]*q[3]));
 }
-void quat2phiTheta(const ixQuat q, f_t *phi, f_t *theta)
+void quat2phiTheta(const ixQuat q, float *phi, float *theta)
 {
     float sinang = 2 * (q[0] * q[2] - q[3] * q[1]);
     if (sinang > 1.0f) { sinang = 1.0f; }
@@ -201,7 +201,7 @@ void quat2phiTheta(const ixQuat q, f_t *phi, f_t *theta)
 	*phi	= _ATAN2( 2 * (q[0] * q[1] + q[2] * q[3]), 1 - 2 * (q[1] * q[1] + q[2] * q[2]) );
 	*theta  = _ASIN (sinang);
 }
-void quat2psi(const ixQuat q, f_t *psi)
+void quat2psi(const ixQuat q, float *psi)
 {
 	float sinang = 2 * (q[0] * q[2] - q[3] * q[1]);
 	if (sinang > 1.0f) { sinang = 1.0f; }
@@ -217,18 +217,18 @@ void quat2psi(const ixQuat q, f_t *psi)
  */
 void euler2quat(const ixEuler euler, ixQuat q)
 {
-	f_t hphi = euler[0] * (f_t)0.5;
-	f_t hthe = euler[1] * (f_t)0.5;
-	f_t hpsi = euler[2] * (f_t)0.5;
+	float hphi = euler[0] * (float)0.5;
+	float hthe = euler[1] * (float)0.5;
+	float hpsi = euler[2] * (float)0.5;
 
-	f_t shphi = _SIN(hphi);
-	f_t chphi = _COS(hphi);
+	float shphi = _SIN(hphi);
+	float chphi = _COS(hphi);
 
-	f_t shthe = _SIN(hthe);
-	f_t chthe = _COS(hthe);
+	float shthe = _SIN(hthe);
+	float chthe = _COS(hthe);
 
-	f_t shpsi = _SIN(hpsi);
-	f_t chpsi = _COS(hpsi);
+	float shpsi = _SIN(hpsi);
+	float chpsi = _COS(hpsi);
 
 	q[0] = chphi * chthe * chpsi + shphi * shthe * shpsi;
 	q[1] = shphi * chthe * chpsi - chphi * shthe * shpsi;
@@ -262,10 +262,10 @@ void qe2b2EulerNedLLA(ixVector3 eul, const ixVector4 qe2b, const ixVector3d lla)
  * body = tBL(2,2)*NE
  *
  */
-void psiDCM(const f_t psi, ixMatrix2 m)
+void psiDCM(const float psi, ixMatrix2 m)
 {
-	f_t cpsi = _COS(psi);  // cos(psi)
-	f_t spsi = _SIN(psi);  // sin(psi)
+	float cpsi = _COS(psi);  // cos(psi)
+	float spsi = _SIN(psi);  // sin(psi)
 
 	// Row 1
 	m[0] =  cpsi;
@@ -286,7 +286,7 @@ void psiDCM(const f_t psi, ixMatrix2 m)
 *
 * reference: http://en.wikipedia.org/wiki/Rotation_representation_%28mathematics%29
 */
-f_t DCMpsi(const f_t *m )
+float DCMpsi(const float *m )
 {
 	return _ATAN2( m[1], m[0] );
 }
@@ -303,13 +303,13 @@ f_t DCMpsi(const f_t *m )
  */
 void eulerDCM(const ixEuler euler, ixMatrix3 m)
 {
-	f_t cphi = _COS(euler[0]);  // cos(phi)
-	f_t cthe = _COS(euler[1]);  // cos(theta)
-	f_t cpsi = _COS(euler[2]);  // cos(psi)
+	float cphi = _COS(euler[0]);  // cos(phi)
+	float cthe = _COS(euler[1]);  // cos(theta)
+	float cpsi = _COS(euler[2]);  // cos(psi)
 
-	f_t sphi = _SIN(euler[0]);	// sin(phi)
-	f_t sthe = _SIN(euler[1]);  // sin(theta)
-	f_t spsi = _SIN(euler[2]);  // sin(psi)
+	float sphi = _SIN(euler[0]);	// sin(phi)
+	float sthe = _SIN(euler[1]);  // sin(theta)
+	float spsi = _SIN(euler[2]);  // sin(psi)
 
 	// Row 1
 	m[0] =  cpsi*cthe;
@@ -328,11 +328,11 @@ void eulerDCM(const ixEuler euler, ixMatrix3 m)
 
 void phiThetaDCM(const ixEuler euler, ixMatrix3 m )
 {
-	f_t cphi = _COS( euler[0] );	// cos(phi)
-	f_t cthe = _COS( euler[1] );	// cos(theta)
+	float cphi = _COS( euler[0] );	// cos(phi)
+	float cthe = _COS( euler[1] );	// cos(theta)
 
-	f_t sphi = _SIN( euler[0] );	// sin(phi)
-	f_t sthe = _SIN( euler[1] );	// sin(theta)
+	float sphi = _SIN( euler[0] );	// sin(phi)
+	float sthe = _SIN( euler[1] );	// sin(theta)
 
 	// Row 1
 	m[0] =  cthe;
@@ -361,13 +361,13 @@ void phiThetaDCM(const ixEuler euler, ixMatrix3 m )
 */
 void eulerDCM_Trans(const ixEuler euler, ixMatrix3 m )
 {
-	f_t cphi = _COS( euler[0] );	// cos(phi)
-	f_t cthe = _COS( euler[1] );	// cos(theta)
-	f_t cpsi = _COS( euler[2] );	// cos(psi)
+	float cphi = _COS( euler[0] );	// cos(phi)
+	float cthe = _COS( euler[1] );	// cos(theta)
+	float cpsi = _COS( euler[2] );	// cos(psi)
 
-	f_t sphi = _SIN( euler[0] );	// sin(phi)
-	f_t sthe = _SIN( euler[1] );	// sin(theta)
-	f_t spsi = _SIN( euler[2] );	// sin(psi)
+	float sphi = _SIN( euler[0] );	// sin(phi)
+	float sthe = _SIN( euler[1] );	// sin(theta)
+	float spsi = _SIN( euler[2] );	// sin(psi)
 
 	// Col 1
 	m[0] =  cpsi*cthe;
@@ -414,53 +414,53 @@ void DCMeuler(const ixMatrix3 m, ixEuler euler)
  */
 void quatDCM(const ixQuat q, ixMatrix3 mat)
 {
-    f_t q0q1 = q[0]*q[1];
-    f_t q0q2 = q[0]*q[2];
-    f_t q0q3 = q[0]*q[3];
-    f_t q1q1 = q[1]*q[1];
-    f_t q1q2 = q[1]*q[2];
-    f_t q1q3 = q[1]*q[3];
-    f_t q2q2 = q[2]*q[2];
-    f_t q2q3 = q[2]*q[3];
-    f_t q3q3 = q[3]*q[3];
+    float q0q1 = q[0]*q[1];
+    float q0q2 = q[0]*q[2];
+    float q0q3 = q[0]*q[3];
+    float q1q1 = q[1]*q[1];
+    float q1q2 = q[1]*q[2];
+    float q1q3 = q[1]*q[3];
+    float q2q2 = q[2]*q[2];
+    float q2q3 = q[2]*q[3];
+    float q3q3 = q[3]*q[3];
 
 	// Row 1
-	mat[0] = (f_t)1.0 - (f_t)2 * (q2q2 + q3q3);
-	mat[1] =            (f_t)2 * (q1q2 + q0q3);
-	mat[2] =            (f_t)2 * (q1q3 - q0q2);
+	mat[0] = (float)1.0 - (float)2 * (q2q2 + q3q3);
+	mat[1] =            (float)2 * (q1q2 + q0q3);
+	mat[2] =            (float)2 * (q1q3 - q0q2);
 	// Row 2
-	mat[3] =            (f_t)2 * (q1q2 - q0q3);
-	mat[4] = (f_t)1.0 - (f_t)2 * (q1q1 + q3q3);
-	mat[5] =            (f_t)2 * (q2q3 + q0q1);
+	mat[3] =            (float)2 * (q1q2 - q0q3);
+	mat[4] = (float)1.0 - (float)2 * (q1q1 + q3q3);
+	mat[5] =            (float)2 * (q2q3 + q0q1);
 	// Row 3
-	mat[6] =            (f_t)2 * (q1q3 + q0q2);
-	mat[7] =            (f_t)2 * (q2q3 - q0q1);
-	mat[8] = (f_t)1.0 - (f_t)2 * (q1q1 + q2q2);
+	mat[6] =            (float)2 * (q1q3 + q0q2);
+	mat[7] =            (float)2 * (q2q3 - q0q1);
+	mat[8] = (float)1.0 - (float)2 * (q1q1 + q2q2);
 }
 void quatdDCM(const ixVector4d q, ixMatrix3 mat )
 {
-	f_t q0q1 = (f_t)(q[0] * q[1]);
-	f_t q0q2 = (f_t)(q[0] * q[2]);
-	f_t q0q3 = (f_t)(q[0] * q[3]);
-	f_t q1q1 = (f_t)(q[1] * q[1]);
-	f_t q1q2 = (f_t)(q[1] * q[2]);
-	f_t q1q3 = (f_t)(q[1] * q[3]);
-	f_t q2q2 = (f_t)(q[2] * q[2]);
-	f_t q2q3 = (f_t)(q[2] * q[3]);
-	f_t q3q3 = (f_t)(q[3] * q[3]);
+	float q0q1 = (float)(q[0] * q[1]);
+	float q0q2 = (float)(q[0] * q[2]);
+	float q0q3 = (float)(q[0] * q[3]);
+	float q1q1 = (float)(q[1] * q[1]);
+	float q1q2 = (float)(q[1] * q[2]);
+	float q1q3 = (float)(q[1] * q[3]);
+	float q2q2 = (float)(q[2] * q[2]);
+	float q2q3 = (float)(q[2] * q[3]);
+	float q3q3 = (float)(q[3] * q[3]);
 
 	// Row 1
-	mat[0] = (f_t)1.0 - (f_t)2.0 * (q2q2 + q3q3);
-	mat[1] =            (f_t)2.0 * (q1q2 + q0q3);
-	mat[2] =            (f_t)2.0 * (q1q3 - q0q2);
+	mat[0] = (float)1.0 - (float)2.0 * (q2q2 + q3q3);
+	mat[1] =            (float)2.0 * (q1q2 + q0q3);
+	mat[2] =            (float)2.0 * (q1q3 - q0q2);
 	// Row 2
-	mat[3] =            (f_t)2.0 * (q1q2 - q0q3);
-	mat[4] = (f_t)1.0 - (f_t)2.0 * (q1q1 + q3q3);
-	mat[5] =            (f_t)2.0 * (q2q3 + q0q1);
+	mat[3] =            (float)2.0 * (q1q2 - q0q3);
+	mat[4] = (float)1.0 - (float)2.0 * (q1q1 + q3q3);
+	mat[5] =            (float)2.0 * (q2q3 + q0q1);
 	// Row 3
-	mat[6] =            (f_t)2.0 * (q1q3 + q0q2);
-	mat[7] =            (f_t)2.0 * (q2q3 - q0q1);
-	mat[8] = (f_t)1.0 - (f_t)2.0 * (q1q1 + q2q2);
+	mat[6] =            (float)2.0 * (q1q3 + q0q2);
+	mat[7] =            (float)2.0 * (q2q3 - q0q1);
+	mat[8] = (float)1.0 - (float)2.0 * (q1q1 + q2q2);
 }
 
 /*
@@ -475,11 +475,11 @@ void quatdDCM(const ixVector4d q, ixMatrix3 mat )
  */
 void DCMquat(const ixMatrix3 mat, ixQuat q)
 {
-    f_t d;
+    float d;
 
-    q[0] = (f_t)0.5 * _SQRT((f_t)1.0 + mat[0] + mat[4] + mat[8]);
+    q[0] = (float)0.5 * _SQRT((float)1.0 + mat[0] + mat[4] + mat[8]);
     
-    d = (f_t)1.0 / ((f_t)4.0 * q[0]);
+    d = (float)1.0 / ((float)4.0 * q[0]);
     
     q[1] = d * (mat[5] - mat[7]);
     q[2] = d * (mat[6] - mat[2]);
@@ -493,9 +493,9 @@ void DCMquat(const ixMatrix3 mat, ixQuat q)
  */
 void eulerWx(const ixEuler euler, ixMatrix3 mat)
 {
-	f_t p = euler[0];
-	f_t q = euler[1];
-	f_t r = euler[2];
+	float p = euler[0];
+	float q = euler[1];
+	float r = euler[2];
 
 	// Row 1
 	mat[0] =  0;
@@ -518,9 +518,9 @@ void eulerWx(const ixEuler euler, ixMatrix3 mat)
  */
 void quatW(const ixEuler euler, ixMatrix4 mat)
 {
-	f_t p = euler[0] * (f_t)0.5;
-	f_t q = euler[1] * (f_t)0.5;
-	f_t r = euler[2] * (f_t)0.5;
+	float p = euler[0] * (float)0.5;
+	float q = euler[1] * (float)0.5;
+	float r = euler[2] * (float)0.5;
 
 	// Row 1
 	mat[0]  =  0;
@@ -553,15 +553,15 @@ void quatRotAxis(const ixQuat q, ixVector3 pqr)
     // Normalize quaternion
 //     mul_Vec4_X( q, q, 1/mag_Vec4(q) );
 
-//     f_t theta = _ACOS( q[0] ) * (f_t)2.0;
-    f_t sin_a, d;
+//     float theta = _ACOS( q[0] ) * (float)2.0;
+    float sin_a, d;
     
-    sin_a = _SQRT( (f_t)1.0 - q[0] * q[0] );
+    sin_a = _SQRT( (float)1.0 - q[0] * q[0] );
 
-    if ( _FABS( sin_a ) < (f_t)0.0005 ) 
-        sin_a = (f_t)1.0;
+    if ( _FABS( sin_a ) < (float)0.0005 ) 
+        sin_a = (float)1.0;
 
-    d = (f_t)1.0 / sin_a;
+    d = (float)1.0 / sin_a;
 
     pqr[0] = q[1] * d;
     pqr[1] = q[2] * d;
@@ -580,9 +580,9 @@ void quatRotAxis(const ixQuat q, ixVector3 pqr)
  */
 void dpsi_dq(const ixQuat q, ixQuat dq)
 {
-	f_t t1 = 1 - 2 * (q[2]*q[2] + q[3]*q[2]);
-	f_t t2 = 2 * (q[1]*q[2] + q[0]*q[3]);
-	f_t err = 2 / ( t1*t1 + t2*t2 );
+	float t1 = 1 - 2 * (q[2]*q[2] + q[3]*q[2]);
+	float t2 = 2 * (q[1]*q[2] + q[0]*q[3]);
+	float err = 2 / ( t1*t1 + t2*t2 );
 
 	dq[0] = err * (q[3]*t1);
 	dq[1] = err * (q[2]*t1);

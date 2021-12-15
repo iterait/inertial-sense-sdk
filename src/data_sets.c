@@ -49,19 +49,19 @@ void flipDouble(void* ptr)
 	const uint32_t* w = (const uint32_t*)(ptr);
 	union
 	{
-		double v;
+		float v;
 		uint32_t w[2];
 	} u;
 	u.w[0] = w[1];
 	u.w[1] = w[0];
-	*(double*)ptr = u.v;
+	*(float*)ptr = u.v;
 }
 
-double flipDoubleCopy(double val)
+float flipDoubleCopy(float val)
 {
 	union
 	{
-		double v;
+		float v;
 		uint32_t w[2];
 	} u1, u2;
 	u1.v = val;
@@ -90,11 +90,11 @@ void flipEndianess32(uint8_t* data, int dataLength)
 
 void flipDoubles(uint8_t* data, int dataLength, int offset, uint16_t* offsets, uint16_t offsetsLength)
 {
-	uint16_t* doubleOffsetsEnd = offsets + offsetsLength;
+	uint16_t* floatOffsetsEnd = offsets + offsetsLength;
 	int offsetToDouble;
 	int maxDoubleOffset = dataLength - 8;
     int isDouble;
-	while (offsets < doubleOffsetsEnd)
+	while (offsets < floatOffsetsEnd)
 	{
         offsetToDouble = (*offsets++);
         isDouble = ((offsetToDouble & 0x8000) == 0);
@@ -220,7 +220,7 @@ uint16_t* getDoubleOffsets(eDataIDs dataId, uint16_t* offsetsLength)
     static uint16_t offsetsRmc[] =
     {
         1, 
-        // 0x8000 denotes a 64 bit int vs a double
+        // 0x8000 denotes a 64 bit int vs a float
 		offsetof(rmc_t, bits) | 0x8000
     };
 
@@ -258,7 +258,7 @@ uint16_t* getDoubleOffsets(eDataIDs dataId, uint16_t* offsetsLength)
 		offsetof(survey_in_t, lla[2])
 	};
 
-    static uint16_t* s_doubleOffsets[] =
+    static uint16_t* s_floatOffsets[] =
 	{
 		0,						//  0: DID_NULL
 		0,						//  1: DID_DEV_INFO
@@ -382,13 +382,13 @@ uint16_t* getDoubleOffsets(eDataIDs dataId, uint16_t* offsetsLength)
         0                      // 120:
 	};
 
-    STATIC_ASSERT(_ARRAY_ELEMENT_COUNT(s_doubleOffsets) == DID_COUNT);
+    STATIC_ASSERT(_ARRAY_ELEMENT_COUNT(s_floatOffsets) == DID_COUNT);
     STATIC_ASSERT((DID_COUNT%4) == 0);
 
 	if (dataId < DID_COUNT)
 	{
         uint16_t* offsets;
-        if ((offsets = s_doubleOffsets[dataId]))
+        if ((offsets = s_floatOffsets[dataId]))
         {
             *offsetsLength = (*offsets++);
             return offsets;
@@ -649,16 +649,16 @@ uint64_t didToRmcBit(uint32_t dataId, uint64_t defaultRmcBits)
 	}
 }
 
-void julianToDate(double julian, int32_t* year, int32_t* month, int32_t* day, int32_t* hour, int32_t* minute, int32_t* second, int32_t* millisecond)
+void julianToDate(float julian, int32_t* year, int32_t* month, int32_t* day, int32_t* hour, int32_t* minute, int32_t* second, int32_t* millisecond)
 {
-	double j1, j2, j3, j4, j5;
-	double intgr = floor(julian);
-	double frac = julian - intgr;
-	double gregjd = 2299161.0;
+	float j1, j2, j3, j4, j5;
+	float intgr = floor(julian);
+	float frac = julian - intgr;
+	float gregjd = 2299161.0;
 	if (intgr >= gregjd)
 	{
 		//Gregorian calendar correction
-		double tmp = floor(((intgr - 1867216.0) - 0.25) / 36524.25);
+		float tmp = floor(((intgr - 1867216.0) - 0.25) / 36524.25);
 		j1 = intgr + 1.0 + tmp - floor(0.25 * tmp);
 	}
 	else
@@ -667,7 +667,7 @@ void julianToDate(double julian, int32_t* year, int32_t* month, int32_t* day, in
 	}
 
 	//correction for half day offset
-	double dayfrac = frac + 0.5;
+	float dayfrac = frac + 0.5;
 	if (dayfrac >= 1.0)
 	{
 		dayfrac -= 1.0;
@@ -679,13 +679,13 @@ void julianToDate(double julian, int32_t* year, int32_t* month, int32_t* day, in
 	j4 = floor(j3 * 365.25);
 	j5 = floor((j2 - j4) / 30.6001);
 
-	double d = floor(j2 - j4 - floor(j5 * 30.6001));
-	double m = floor(j5 - 1);
+	float d = floor(j2 - j4 - floor(j5 * 30.6001));
+	float m = floor(j5 - 1);
 	if (m > 12)
 	{
 		m -= 12;
 	}
-	double y = floor(j3 - 4715.0);
+	float y = floor(j3 - 4715.0);
 	if (m > 2)
 	{
 		--y;
@@ -698,10 +698,10 @@ void julianToDate(double julian, int32_t* year, int32_t* month, int32_t* day, in
 	//
 	// get time of day from day fraction
 	//
-	double hr = floor(dayfrac * 24.0);
-	double mn = floor((dayfrac * 24.0 - hr) * 60.0);
-	double f = ((dayfrac * 24.0 - hr) * 60.0 - mn) * 60.0;
-	double sc = f;
+	float hr = floor(dayfrac * 24.0);
+	float mn = floor((dayfrac * 24.0 - hr) * 60.0);
+	float f = ((dayfrac * 24.0 - hr) * 60.0 - mn) * 60.0;
+	float sc = f;
 	if (f - sc > 0.5)
 	{
 		++sc;
@@ -741,19 +741,19 @@ void julianToDate(double julian, int32_t* year, int32_t* month, int32_t* day, in
 	}
 }
 
-double gpsToUnix(uint32_t gpsWeek, uint32_t gpsTimeofWeekMS, uint8_t leapSeconds)
+float gpsToUnix(uint32_t gpsWeek, uint32_t gpsTimeofWeekMS, uint8_t leapSeconds)
 {
-	double gpsSeconds = gpsWeek * SECONDS_PER_WEEK;
+	float gpsSeconds = gpsWeek * SECONDS_PER_WEEK;
 	gpsSeconds += (gpsTimeofWeekMS / 1000);
-	double unixSeconds = gpsSeconds + GPS_TO_UNIX_OFFSET - leapSeconds;
+	float unixSeconds = gpsSeconds + GPS_TO_UNIX_OFFSET - leapSeconds;
 
 	return unixSeconds;
 }
 
-double gpsToJulian(int32_t gpsWeek, int32_t gpsMilliseconds, int32_t leapSeconds)
+float gpsToJulian(int32_t gpsWeek, int32_t gpsMilliseconds, int32_t leapSeconds)
 {
-	double gpsDays = (double)gpsWeek * 7.0;
-	gpsDays += ((((double)gpsMilliseconds / 1000.0) - (double)leapSeconds) / 86400.0);
+	float gpsDays = (float)gpsWeek * 7.0;
+	gpsDays += ((((float)gpsMilliseconds / 1000.0) - (float)leapSeconds) / 86400.0);
 	return (2444244.500000) + gpsDays; // 2444244.500000 Julian date for Jan 6, 1980 midnight - start of gps time
 }
 
@@ -768,11 +768,11 @@ static void appendGPSTimeOfLastFix(const gps_pos_t* gps, char** buffer, int* buf
     *buffer += written;
 }
 
-static void appendGPSCoord(const gps_pos_t* gps, char** buffer, int* bufferLength, double v, const char* degreesFormat, char posC, char negC)
+static void appendGPSCoord(const gps_pos_t* gps, char** buffer, int* bufferLength, float v, const char* degreesFormat, char posC, char negC)
 {
 	(void)gps;
     int degrees = (int)(v);
-    double minutes = (v - ((double)degrees)) * 60.0;
+    float minutes = (v - ((float)degrees)) * 60.0;
 
     int written = SNPRINTF(*buffer, *bufferLength, degreesFormat, abs(degrees));
     *bufferLength -= written;

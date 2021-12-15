@@ -604,17 +604,17 @@ __EXIT:
 }
 /*!
 @fn	\
-	sint8 m2m_ate_set_dig_gain(double dGaindB)
+	sint8 m2m_ate_set_dig_gain(float dGaindB)
 
 @brief
 	This function is used to set the digital gain
 
-@param [in]	double dGaindB
+@param [in]	float dGaindB
 		The digital gain value required to be set.
 @return
 	The function SHALL return 0 for success and a negative value otherwise.
 */
-sint8 m2m_ate_set_dig_gain(double dGaindB)
+sint8 m2m_ate_set_dig_gain(float dGaindB)
 {
 	uint32_t dGain, val32;
 	dGain = (uint32_t)(pow(10, dGaindB/20.0) * 1024.0);
@@ -627,17 +627,17 @@ sint8 m2m_ate_set_dig_gain(double dGaindB)
 }
 /*!
 @fn	\
-	sint8 m2m_ate_get_dig_gain(double * pdGaindB)
+	sint8 m2m_ate_get_dig_gain(float * pdGaindB)
 
 @brief
 	This function is used to get the digital gain
 
-@param [out]	double * pdGaindB
+@param [out]	float * pdGaindB
 		The retrieved digital gain value obtained from HW registers.
 @return
 	The function SHALL return 0 for success and a negative value otherwise.
 */
-sint8 m2m_ate_get_dig_gain(double * pdGaindB)
+sint8 m2m_ate_get_dig_gain(float * pdGaindB)
 {
 	uint32 dGain, val32;
 	
@@ -646,7 +646,7 @@ sint8 m2m_ate_get_dig_gain(double * pdGaindB)
 	val32 = nm_read_reg(0x160cd0);
 	
 	dGain = (val32 >> 0) & 0x1ffful;
-	*pdGaindB = 20.0*log10((double)dGain / 1024.0);
+	*pdGaindB = 20.0*log10((float)dGain / 1024.0);
 	
 	return M2M_SUCCESS;
 }
@@ -701,19 +701,19 @@ sint8 m2m_ate_get_ppa_gain(uint32 * ppaGain)
 }
 /*!
 @fn	\
-	sint8 m2m_ate_get_tot_gain(double * pTotGaindB)
+	sint8 m2m_ate_get_tot_gain(float * pTotGaindB)
 
 @brief
 	This function is used to calculate the total gain
 
-@param [out]	double * pTotGaindB
+@param [out]	float * pTotGaindB
 		The retrieved total gain value obtained from calculations made based on the digital gain, pa and ppa gain values.
 @return
 	The function SHALL return 0 for success and a negative value otherwise.
 */
-sint8 m2m_ate_get_tot_gain(double * pTotGaindB)
+sint8 m2m_ate_get_tot_gain(float * pTotGaindB)
 {
-	double totGaindB, dGaindB;
+	float totGaindB, dGaindB;
 	uint32 paGain,ppaGain,m_cmbPAGainStep,m_cmbPPAGainStep;
 	
 	

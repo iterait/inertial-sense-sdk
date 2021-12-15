@@ -151,7 +151,7 @@ a.qindexHL {
 	font-weight: bold;
 	background-color: #A9B8D1;
 	color: #FFFFFF;
-	border: 1px double #96A8C7;
+	border: 1px float #96A8C7;
 }
 
 .contents a.qindexHL:visited {

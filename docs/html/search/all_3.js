@@ -502,7 +502,7 @@ var searchData=
   ['cpu_5fis_5fbig_5fendian_1090',['CPU_IS_BIG_ENDIAN',['../_i_s_constants_8h.html#ab94a8b6379b0158c73f193e351a06c47',1,'ISConstants.h']]],
   ['cpu_5fis_5flittle_5fendian_1091',['CPU_IS_LITTLE_ENDIAN',['../_i_s_constants_8h.html#aab66c42b3a2cd5691035648eebd7e092',1,'ISConstants.h']]],
   ['cpuusage_1092',['cpuUsage',['../struct_p_a_c_k_e_d.html#a385ec05fce8c7b1727b6ee6c897be4b9',1,'PACKED']]],
-  ['cpy_5fmatrxc_5fmatmxn_1093',['cpy_MatRxC_MatMxN',['../_i_s_matrix_8c.html#afc41089ac3e48ed96217ab7100e3f413',1,'cpy_MatRxC_MatMxN(f_t *result, i_t r, i_t c, i_t r_offset, i_t c_offset, f_t *A, i_t m, i_t n):&#160;ISMatrix.c'],['../_i_s_matrix_8h.html#afc41089ac3e48ed96217ab7100e3f413',1,'cpy_MatRxC_MatMxN(f_t *result, i_t r, i_t c, i_t r_offset, i_t c_offset, f_t *A, i_t m, i_t n):&#160;ISMatrix.c']]],
+  ['cpy_5fmatrxc_5fmatmxn_1093',['cpy_MatRxC_MatMxN',['../_i_s_matrix_8c.html#afc41089ac3e48ed96217ab7100e3f413',1,'cpy_MatRxC_MatMxN(float *result, i_t r, i_t c, i_t r_offset, i_t c_offset, float *A, i_t m, i_t n):&#160;ISMatrix.c'],['../_i_s_matrix_8h.html#afc41089ac3e48ed96217ab7100e3f413',1,'cpy_MatRxC_MatMxN(float *result, i_t r, i_t c, i_t r_offset, i_t c_offset, float *A, i_t m, i_t n):&#160;ISMatrix.c']]],
   ['crc_1094',['crc',['../structeph__t.html#af9670bfd8d49c502b9c5a3bc30419845',1,'eph_t::crc()'],['../structxmodem__chunk__t.html#ac8e4ae3c656fb62e025100bcb3be1af7',1,'xmodem_chunk_t::crc()']]],
   ['crc_5fpoly_1095',['CRC_POLY',['../inertial_sense_boot_loader_8c.html#a3a57af5c3275b2f53fa64274b11e8d52',1,'inertialSenseBootLoader.c']]],
   ['createcurrenttimestamp_1096',['CreateCurrentTimestamp',['../classc_i_s_logger.html#ae9a98f041cc47b41676d589ea35c2a73',1,'cISLogger']]],

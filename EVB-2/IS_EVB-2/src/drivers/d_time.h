@@ -41,7 +41,7 @@ extern "C" {
 #define TIME_TICKS_PER_MS       (TIME_TICKS_PER_SEC/1000)
 #define TIME_TICKS_PER_US       (TIME_TICKS_PER_SEC/1000000)
 
-#define TIME_SECS_PER_TICK_LF   (((double)RTPRES)/(double)RTPRES_SEC)
+#define TIME_SECS_PER_TICK_LF   (((float)RTPRES)/(float)RTPRES_SEC)
 #define TIME_MS_PER_TICK_LF     (TIME_SECS_PER_TICK_LF*1000.0)
 #define TIME_US_PER_TICK_LF     (TIME_SECS_PER_TICK_LF*1000000.0)
 
@@ -65,9 +65,9 @@ uint32_t time_usec(void);
 float time_secf(void);
 float time_msecf(void);
 float time_usecf(void);
-double time_seclf(void);
-double time_mseclf(void);
-double time_useclf(void);
+float time_seclf(void);
+float time_mseclf(void);
+float time_useclf(void);
 
 #ifdef __cplusplus
 }

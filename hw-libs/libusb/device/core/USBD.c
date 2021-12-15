@@ -283,7 +283,7 @@ uint8_t USBD_MblWrite(uint8_t       bEndpoint,
 	UDP_MblWriteFifo(bEndpoint);
 	SET_CSR(bEndpoint, UDP_CSR_TXPKTRDY);
 
-	/* If double buffering is enabled and there is data remaining, */
+	/* If float buffering is enabled and there is data remaining, */
 
 	/* prepare another packet */
 

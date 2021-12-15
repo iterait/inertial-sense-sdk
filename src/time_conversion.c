@@ -133,9 +133,9 @@ int TIMECONV_GetSystemTime(
   unsigned char*      utc_minute,   //!< Universal Time Coordinated    [minutes]
   float*              utc_seconds,  //!< Universal Time Coordinated    [s]
   unsigned char*      utc_offset,   //!< Integer seconds that GPS is ahead of UTC time, always positive             [s], obtained from a look up table
-  double*             julian_date,  //!< Number of days since noon Universal Time Jan 1, 4713 BCE (Julian calendar) [days]
+  float*             julian_date,  //!< Number of days since noon Universal Time Jan 1, 4713 BCE (Julian calendar) [days]
   unsigned short*     gps_week,     //!< GPS week (0-1024+)            [week]
-  double*             gps_tow       //!< GPS time of week (0-604800.0) [s]
+  float*             gps_tow       //!< GPS time of week (0-604800.0) [s]
   )
 {
   int result;
@@ -145,8 +145,8 @@ int TIMECONV_GetSystemTime(
 #else
   struct timeb timebuffer;
 #endif
-  double timebuffer_time_in_days;
-  double timebuffer_time_in_seconds;
+  float timebuffer_time_in_days;
+  float timebuffer_time_in_seconds;
   //char *timeline; // for debugging
 
 #ifdef WIN32
@@ -217,7 +217,7 @@ int TIMECONV_SetSystemTime(
 {
   int result;
   SYSTEMTIME t;
-  double julian_date = 0;
+  float julian_date = 0;
   unsigned char day_of_week = 0;
 
   result = TIMECONV_GetJulianDateFromUTCTime(
@@ -260,7 +260,7 @@ int TIMECONV_SetSystemTime(
 
 
 int TIMECONV_GetDayOfWeekFromJulianDate(
-  const double julian_date,   //!< Number of days since noon Universal Time Jan 1, 4713 BCE (Julian calendar) [days]
+  const float julian_date,   //!< Number of days since noon Universal Time Jan 1, 4713 BCE (Julian calendar) [days]
   unsigned char *day_of_week  //!< 0-Sunday, 1-Monday, 2-Tuesday, 3-Wednesday, 4-Thursday, 5-Friday, 6-Saturday [].
   )
 {
@@ -301,9 +301,9 @@ int TIMECONV_GetDayOfWeekFromJulianDate(
 
 int TIMECONV_GetJulianDateFromGPSTime(
   const unsigned short    gps_week,      //!< GPS week (0-1024+)             [week]
-  const double            gps_tow,       //!< GPS time of week (0-604800.0)  [s]
+  const float            gps_tow,       //!< GPS time of week (0-604800.0)  [s]
   const unsigned char     utc_offset,    //!< Integer seconds that GPS is ahead of UTC time, always positive [s]
-  double*                 julian_date    //!< Number of days since noon Universal Time Jan 1, 4713 BCE (Julian calendar) [days]
+  float*                 julian_date    //!< Number of days since noon Universal Time Jan 1, 4713 BCE (Julian calendar) [days]
   )
 {   
   if( gps_tow < 0.0  || gps_tow > 604800.0 )
@@ -313,7 +313,7 @@ int TIMECONV_GetJulianDateFromGPSTime(
   }
 
   // GPS time is ahead of UTC time and Julian time by the UTC offset
-  *julian_date = ((double)gps_week + (gps_tow-(double)utc_offset)/604800.0)*7.0 + TIMECONV_JULIAN_DATE_START_OF_GPS_TIME;  
+  *julian_date = ((float)gps_week + (gps_tow-(float)utc_offset)/604800.0)*7.0 + TIMECONV_JULIAN_DATE_START_OF_GPS_TIME;  
   return 1;
 }
 
@@ -325,11 +325,11 @@ int TIMECONV_GetJulianDateFromUTCTime(
  const unsigned char      utc_hour,      //!< Universal Time Coordinated  [hours]
  const unsigned char      utc_minute,    //!< Universal Time Coordinated  [minutes]
  const float              utc_seconds,   //!< Universal Time Coordinated  [s]
- double*                  julian_date    //!< Number of days since noon Universal Time Jan 1, 4713 BCE (Julian calendar) [days]
+ float*                  julian_date    //!< Number of days since noon Universal Time Jan 1, 4713 BCE (Julian calendar) [days]
  )
 {   
-  double y; // temp for year
-  double m; // temp for month
+  float y; // temp for year
+  float m; // temp for month
   int result;
 
   // Check the input.
@@ -358,10 +358,10 @@ int TIMECONV_GetJulianDateFromUTCTime(
 
 
 int TIMECONV_GetGPSTimeFromJulianDate(
-  const double            julian_date, //!< Number of days since noon Universal Time Jan 1, 4713 BCE (Julian calendar) [days]
+  const float            julian_date, //!< Number of days since noon Universal Time Jan 1, 4713 BCE (Julian calendar) [days]
   const unsigned char     utc_offset,  //!< Integer seconds that GPS is ahead of UTC time, always positive [s]
   unsigned short*         gps_week,    //!< GPS week (0-1024+)            [week]
-  double*                 gps_tow      //!< GPS time of week [s]
+  float*                 gps_tow      //!< GPS time of week [s]
   )
 {
   // Check the input.
@@ -388,7 +388,7 @@ int TIMECONV_GetGPSTimeFromJulianDate(
 
 
 int TIMECONV_GetUTCTimeFromJulianDate(
-  const double        julian_date,  //!< Number of days since noon Universal Time Jan 1, 4713 BCE (Julian calendar) [days]
+  const float        julian_date,  //!< Number of days since noon Universal Time Jan 1, 4713 BCE (Julian calendar) [days]
   unsigned short*     utc_year,     //!< Universal Time Coordinated    [year]
   unsigned char*      utc_month,    //!< Universal Time Coordinated    [1-12 months] 
   unsigned char*      utc_day,      //!< Universal Time Coordinated    [1-31 days]
@@ -405,8 +405,8 @@ int TIMECONV_GetUTCTimeFromJulianDate(
   unsigned char hour;
   unsigned char minute;        
   unsigned char days_in_month = 0;  
-  double td; // temporary double
-  double seconds;
+  float td; // temporary float
+  float seconds;
   int result;
 
   // Check the input.
@@ -418,9 +418,9 @@ int TIMECONV_GetUTCTimeFromJulianDate(
   
   a = (int)(julian_date+0.5);
   b = a + 1537;
-  c = (int)( ((double)b-122.1)/365.25 );
+  c = (int)( ((float)b-122.1)/365.25 );
   d = (int)(365.25*c);
-  e = (int)( ((double)(b-d))/30.6001 );
+  e = (int)( ((float)(b-d))/30.6001 );
   
   td      = b - d - (int)(30.6001*e) + fmod( julian_date+0.5, 1.0 );   // [days]
   day     = (unsigned char)td;   
@@ -434,7 +434,7 @@ int TIMECONV_GetUTCTimeFromJulianDate(
   td     *= 60.0;        // [s]
   seconds = td;
   month   = (unsigned char)(e - 1 - 12*(int)(e/14));
-  year    = (unsigned short)(c - 4715 - (int)( (7.0+(double)month) / 10.0 ));
+  year    = (unsigned short)(c - 4715 - (int)( (7.0+(float)month) / 10.0 ));
   
   // check for rollover issues
   if( seconds >= 60.0 )
@@ -489,10 +489,10 @@ int TIMECONV_GetGPSTimeFromUTCTime(
   unsigned char      utc_minute,   //!< Universal Time Coordinated    [minutes]
   float              utc_seconds,  //!< Universal Time Coordinated    [s]
   unsigned short*    gps_week,     //!< GPS week (0-1024+)            [week]
-  double*            gps_tow       //!< GPS time of week (0-604800.0) [s]
+  float*            gps_tow       //!< GPS time of week (0-604800.0) [s]
   )
 {
-  double julian_date=0.0;
+  float julian_date=0.0;
   unsigned char utc_offset=0;
   int result;
 
@@ -549,10 +549,10 @@ int TIMECONV_GetGPSTimeFromRinexTime(
   unsigned char      utc_minute,   //!< Universal Time Coordinated    [minutes]
   float              utc_seconds,  //!< Universal Time Coordinated    [s]
   unsigned short*    gps_week,     //!< GPS week (0-1024+)            [week]
-  double*            gps_tow       //!< GPS time of week (0-604800.0) [s]
+  float*            gps_tow       //!< GPS time of week (0-604800.0) [s]
   )
 {
-  double julian_date=0.0;
+  float julian_date=0.0;
   unsigned char utc_offset=0;
   int result;
 
@@ -596,7 +596,7 @@ int TIMECONV_GetGPSTimeFromRinexTime(
 
 int TIMECONV_GetUTCTimeFromGPSTime(
   unsigned short     gps_week,     //!< GPS week (0-1024+)            [week]
-  double             gps_tow,      //!< GPS time of week (0-604800.0) [s]
+  float             gps_tow,      //!< GPS time of week (0-604800.0) [s]
   unsigned short*    utc_year,     //!< Universal Time Coordinated    [year]
   unsigned char*     utc_month,    //!< Universal Time Coordinated    [1-12 months] 
   unsigned char*     utc_day,      //!< Universal Time Coordinated    [1-31 days]
@@ -605,7 +605,7 @@ int TIMECONV_GetUTCTimeFromGPSTime(
   float*             utc_seconds   //!< Universal Time Coordinated    [s]
   )
 {
-  double julian_date = 0.0; 
+  float julian_date = 0.0; 
   unsigned char utc_offset = 0;
   int i;
   int result;
@@ -658,7 +658,7 @@ int TIMECONV_GetUTCTimeFromGPSTime(
 
 
 int TIMECONV_DetermineUTCOffset(
-  double julian_date,       //!< Number of days since noon Universal Time Jan 1, 4713 BCE (Julian calendar) [days]
+  float julian_date,       //!< Number of days since noon Universal Time Jan 1, 4713 BCE (Julian calendar) [days]
   unsigned char* utc_offset //!< Integer seconds that GPS is ahead of UTC time, always positive             [s], obtained from a look up table
   )
 {
@@ -810,11 +810,11 @@ int TIMECONV_GetGPSTimeFromYearAndDayOfYear(
  const unsigned short year,      // The year [year]
  const unsigned short dayofyear, // The number of days into the year (1-366) [days]
  unsigned short*      gps_week,  //!< GPS week (0-1024+)            [week]
- double*              gps_tow    //!< GPS time of week (0-604800.0) [s]
+ float*              gps_tow    //!< GPS time of week (0-604800.0) [s]
  )
 {
   int result;
-  double julian_date = 0;
+  float julian_date = 0;
 
   if( gps_week == NULL )
   {

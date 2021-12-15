@@ -28,12 +28,12 @@ using namespace std;
 
 struct sKmlLogData
 {
-	double                  time;
-	double                  lla[3];
+	float                  time;
+	float                  lla[3];
 	float                   theta[3];
 	bool                    deadReckoning;
     sKmlLogData() {}
-	sKmlLogData(double _time, double _lla[3], float _theta[3], bool _deadReckoning)
+	sKmlLogData(float _time, float _lla[3], float _theta[3], bool _deadReckoning)
 	{
 		time = _time;
         lla[0] = _lla[0];
@@ -45,7 +45,7 @@ struct sKmlLogData
 		deadReckoning = _deadReckoning;
 	}
 
-	sKmlLogData(unsigned int _timeMs, double _lla[3])
+	sKmlLogData(unsigned int _timeMs, float _lla[3])
 	{
 		time = _timeMs*0.001;
         lla[0] = _lla[0];

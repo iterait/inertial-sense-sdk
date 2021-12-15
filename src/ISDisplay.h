@@ -75,7 +75,7 @@ public:
 	void GoToColumnAndRow(int x, int y);
 	string Hello();
 	string Connected();
-	string Replay(double speed=1.0);
+	string Replay(float speed=1.0);
 	string Goodbye();
 
 	void SetKeyboardNonBlock();
@@ -86,7 +86,7 @@ public:
 	void SetExitProgram();
 
 	// for the binary protocol, this processes a packet of data
-	bool ProcessData(p_data_t *data, bool enableReplay = false, double replaySpeedX = 1.0);
+	bool ProcessData(p_data_t *data, bool enableReplay = false, float replaySpeedX = 1.0);
 	void PrintData(unsigned int refreshPeriodMs = 100);		// 100ms = 10Hz
 	void DataToStats(const p_data_t* data);
 	void PrintStats();
@@ -136,7 +136,7 @@ private:
 	uint16_t m_rxCount = 0;
 
 	bool m_enableReplay = false;
-	double m_replaySpeedX = 1.0;
+	float m_replaySpeedX = 1.0;
 
 	edit_data_t m_editData = {};
 	uint32_t m_outputOnceDid = 0;			// Set to DID to display then exit cltool.  0 = disabled

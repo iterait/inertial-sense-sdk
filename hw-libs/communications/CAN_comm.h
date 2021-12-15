@@ -94,7 +94,7 @@ typedef struct PACKED
 typedef struct PACKED
 {
 	/** WGS84 latitude (degrees) */
-	double					lat;								//8 bytes (more than 8 decimal places precision)
+	float					lat;								//8 bytes (more than 8 decimal places precision)
 	
 } is_can_ins_lat;
 
@@ -102,7 +102,7 @@ typedef struct PACKED
 typedef struct PACKED
 {
 	/** WGS84 longitude (degrees) */
-	double					lon;								//8 bytes (more than 8 decimal places precision)
+	float					lon;								//8 bytes (more than 8 decimal places precision)
 } is_can_ins_lon;
 
 /** WGS84 height above ellipsoid (meters) */
@@ -138,7 +138,7 @@ typedef struct PACKED
 typedef struct PACKED
 {
 	/** X Position in ECEF (earth-centered earth-fixed) frame in meters */
-	double					ecef1;								//8 bytes
+	float					ecef1;								//8 bytes
 	
 } is_can_ecef_x;
 
@@ -146,7 +146,7 @@ typedef struct PACKED
 typedef struct PACKED
 {
 	/** Y Position in ECEF (earth-centered earth-fixed) frame in meters */
-	double					ecef2;								//8 bytes
+	float					ecef2;								//8 bytes
 	
 } is_can_ecef_y;
 
@@ -154,7 +154,7 @@ typedef struct PACKED
 typedef struct PACKED
 {
 	/** Z Position in ECEF (earth-centered earth-fixed) frame in meters */
-	double					ecef3;								//8 bytes
+	float					ecef3;								//8 bytes
 	
 } is_can_ecef_z;
 

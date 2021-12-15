@@ -334,7 +334,7 @@ typedef struct {
 #define USBHS_DEVEPTCFG_NBTRANS(value) ((USBHS_DEVEPTCFG_NBTRANS_Msk & ((value) << USBHS_DEVEPTCFG_NBTRANS_Pos)))
 #define   USBHS_DEVEPTCFG_NBTRANS_0_TRANS (0x0u << 13) /**< \brief (USBHS_DEVEPTCFG[10]) Reserved to endpoint that does not have the high-bandwidth isochronous capability. */
 #define   USBHS_DEVEPTCFG_NBTRANS_1_TRANS (0x1u << 13) /**< \brief (USBHS_DEVEPTCFG[10]) Default value: one transaction per microframe. */
-#define   USBHS_DEVEPTCFG_NBTRANS_2_TRANS (0x2u << 13) /**< \brief (USBHS_DEVEPTCFG[10]) Two transactions per microframe. This endpoint should be configured as double-bank. */
+#define   USBHS_DEVEPTCFG_NBTRANS_2_TRANS (0x2u << 13) /**< \brief (USBHS_DEVEPTCFG[10]) Two transactions per microframe. This endpoint should be configured as float-bank. */
 #define   USBHS_DEVEPTCFG_NBTRANS_3_TRANS (0x3u << 13) /**< \brief (USBHS_DEVEPTCFG[10]) Three transactions per microframe. This endpoint should be configured as triple-bank. */
 /* -------- USBHS_DEVEPTISR[10] : (USBHS Offset: 0x130) Device Endpoint Status Register (n = 0) -------- */
 #define USBHS_DEVEPTISR_TXINI (0x1u << 0) /**< \brief (USBHS_DEVEPTISR[10]) Transmitted IN Data Interrupt */

@@ -151,7 +151,7 @@ TEST(RingBuffer, PacketTest)
 	// Write until buffer is full
 	for (int i = 0;; i++)
 	{
-		ins1.timeOfWeek = (double)i;
+		ins1.timeOfWeek = (float)i;
 		ins1.week = i;
 		ins1.insStatus = i;
 		ins1.hdwStatus = i;

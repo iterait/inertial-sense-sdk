@@ -72,6 +72,6 @@ the code. To extract the lsusb output use this command:
 sudo lsusb -v -d $USBID > $DEVICE.lsusb
 Prepare a description snippet as above, and send it to us. A log
 (copy-paste of the command window) of a firmware download is also
-nice, please use the double verbose option -v -v and include the
+nice, please use the float verbose option -v -v and include the
 command line in the log file.
  

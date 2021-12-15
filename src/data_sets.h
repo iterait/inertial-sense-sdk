@@ -128,7 +128,7 @@ typedef uint32_t eDataIDs;
 
 // Adding a new data id?
 // 1] Add it above and increment the previous number, include the matching data structure type in the comments
-// 2] Add flip doubles and flip strings entries in data_sets.c
+// 2] Add flip floats and flip strings entries in data_sets.c
 // 3] Add data id to ISDataMappings.cpp
 // 4] Increment DID_COUNT
 // 5) Update the DIDs in IS-src/python/src/ci_hdw/data_sets.py
@@ -426,10 +426,10 @@ PUSH_PACK_1
 typedef struct PACKED
 {
 	/** GPS time of week (since Sunday morning) in seconds */
-	double					timeOfWeek;
+	float					timeOfWeek;
 
 	/** Position in ECEF (earth-centered earth-fixed) frame in meters */
-	double					ecef[3];
+	float					ecef[3];
 	
 	/** Heading with respect to NED frame (rad)*/
 	float psi;
@@ -505,7 +505,7 @@ typedef struct PACKED
 	uint32_t				week;
 	
 	/** GPS time of week (since Sunday morning) in seconds */
-	double					timeOfWeek;
+	float					timeOfWeek;
 
 	/** INS status flags (eInsStatusFlags). Copy of DID_SYS_PARAMS.insStatus */
 	uint32_t				insStatus;
@@ -520,7 +520,7 @@ typedef struct PACKED
 	float					uvw[3];
 
 	/** WGS84 latitude, longitude, height above ellipsoid (degrees,degrees,meters) */
-	double					lla[3];
+	float					lla[3];
 
 	/** North, east and down offset from reference latitude, longitude, and altitude to current latitude, longitude, and altitude */
 	float					ned[3];
@@ -534,7 +534,7 @@ typedef struct PACKED
 	uint32_t				week;
 	
 	/** GPS time of week (since Sunday morning) in seconds */
-	double					timeOfWeek;
+	float					timeOfWeek;
 
 	/** INS status flags (eInsStatusFlags). Copy of DID_SYS_PARAMS.insStatus */
 	uint32_t				insStatus;
@@ -549,7 +549,7 @@ typedef struct PACKED
 	float					uvw[3];
 
 	/** WGS84 latitude, longitude, height above ellipsoid in meters (not MSL) */
-	double					lla[3];
+	float					lla[3];
 } ins_2_t;
 
 
@@ -560,7 +560,7 @@ typedef struct PACKED
 	uint32_t				week;
 	
 	/** GPS time of week (since Sunday morning) in seconds */
-	double					timeOfWeek;
+	float					timeOfWeek;
 
 	/** INS status flags (eInsStatusFlags). Copy of DID_SYS_PARAMS.insStatus */
 	uint32_t				insStatus;
@@ -575,7 +575,7 @@ typedef struct PACKED
 	float					uvw[3];
 
 	/** WGS84 latitude, longitude, height above ellipsoid in meters (not MSL) */
-	double					lla[3];
+	float					lla[3];
 
 	/** height above mean sea level (MSL) in meters */
 	float					msl;
@@ -589,7 +589,7 @@ typedef struct PACKED
 	uint32_t				week;
 	
 	/** GPS time of week (since Sunday morning) in seconds */
-	double					timeOfWeek;
+	float					timeOfWeek;
 
 	/** INS status flags (eInsStatusFlags). Copy of DID_SYS_PARAMS.insStatus */
 	uint32_t				insStatus;
@@ -604,7 +604,7 @@ typedef struct PACKED
 	float					ve[3];
 
 	/** Position in ECEF (earth-centered earth-fixed) frame in meters */
-	double					ecef[3];
+	float					ecef[3];
 } ins_4_t;
 
 
@@ -623,7 +623,7 @@ typedef struct PACKED
 typedef struct PACKED
 {
 	/** Time since boot up in seconds.  Convert to GPS time of week by adding gps.towOffset */
-	double                  time;
+	float                  time;
 
 	/** IMU Status (eImuStatus) */
 	uint32_t                status;
@@ -637,7 +637,7 @@ typedef struct PACKED
 typedef struct PACKED
 {
 	/** Time since boot up in seconds.  Convert to GPS time of week by adding gps.towOffset */
-	double                  time;
+	float                  time;
 
 	/** IMU Status (eImuStatus) */
 	uint32_t                status;
@@ -652,7 +652,7 @@ typedef struct PACKED
 typedef struct PACKED
 {
 	/** Time since boot up in seconds.  Convert to GPS time of week by adding gps.towOffset */
-	double                  time;
+	float                  time;
 	
 	/** Magnetometers in Gauss */
 	float                   mag[3];
@@ -663,7 +663,7 @@ typedef struct PACKED
 typedef struct PACKED
 {
 	/** Time since boot up in seconds.  Convert to GPS time of week by adding gps.towOffset */
-	double                  time;
+	float                  time;
 	
 	/** Barometric pressure in kilopascals */
 	float                   bar;
@@ -683,7 +683,7 @@ typedef struct PACKED
 typedef struct PACKED
 {
 	/** Time since boot up in seconds.  Convert to GPS time of week by adding gps.towOffset */
-	double                  time;
+	float                  time;
 
 	/** Integral period in seconds for delta theta and delta velocity.  This is configured using DID_FLASH_CONFIG.startupNavDtMs. */
 	float					dt;
@@ -794,10 +794,10 @@ typedef struct PACKED
 	uint32_t                status;
 
 	/** Position in ECEF {x,y,z} (m) */
-	double					ecef[3];
+	float					ecef[3];
     
 	/** Position - WGS84 latitude, longitude, height above ellipsoid (not MSL) (degrees, m) */
-	double					lla[3];
+	float					lla[3];
 
 	/** Height above mean sea level (MSL) in meters */
 	float					hMSL;
@@ -815,7 +815,7 @@ typedef struct PACKED
 	float                   cnoMean;
 
 	/** Time sync offset between local time since boot up to GPS time of week in seconds.  Add this to IMU and sensor time to get GPS time of week in seconds. */
-	double                  towOffset;
+	float                  towOffset;
 	
 	/** GPS leap second (GPS-UTC) offset. Receiver's best knowledge of the leap seconds offset from UTC to GPS time. Subtract from GPS time of week to get UTC time of week. (18 seconds as of December 31, 2016) */
 	uint8_t					leapS;
@@ -922,7 +922,7 @@ typedef struct PACKED
 typedef struct PACKED
 {
     /** GPS time of week (since Sunday morning) in seconds */
-	double                  timeOfWeek;					
+	float                  timeOfWeek;					
 
     /** Quaternion body rotation with respect to ECEF */
 	float					qe2b[4];                    
@@ -931,7 +931,7 @@ typedef struct PACKED
 	float					ve[3];						
 
     /** (m)     Position in ECEF frame */
-    double					ecef[3];				
+    float					ecef[3];				
 
 	/** (rad/s) Gyro bias */
     float					biasPqr[3];	           
@@ -973,7 +973,7 @@ typedef struct PACKED
 typedef struct PACKED
 {
 	/** Time in seconds */
-	double                  time;
+	float                  time;
 
 	/** Three axis sensor */
 	float                   val;
@@ -983,7 +983,7 @@ typedef struct PACKED
 typedef struct PACKED
 {
 	/** Time in seconds */
-	double                  time;
+	float                  time;
 
 	/** Three axis sensor */
 	float                   val[3];
@@ -993,7 +993,7 @@ typedef struct PACKED
 typedef struct PACKED
 {
 	/** Time in seconds */
-	double                  time;
+	float                  time;
 
 	/** First three axis sensor */
 	float                   val1[3];
@@ -1006,17 +1006,17 @@ typedef struct PACKED
 typedef struct PACKED
 {
 	/** Time in seconds */
-	double                  time;
+	float                  time;
 
 	/** Three axis sensor */
-	double                  val[3];
+	float                  val[3];
 } gen_3axis_sensord_t;
 
 /** (DID_SYS_SENSORS) Output from system sensors */
 typedef struct PACKED
 {
 	/** Time since boot up in seconds.  Convert to GPS time of week by adding gps.towOffset */
-	double					time;
+	float					time;
 
 	/** Temperature in Celsius */
 	float                   temp;
@@ -1062,7 +1062,7 @@ typedef struct PACKED
 	uint32_t                timeOfWeekMs;
 
 	/** Latitude, longitude and height above ellipsoid (rad, rad, m) */
-	double                  lla[3];
+	float                  lla[3];
 
 	/** Velocities in body frames of X, Y and Z (m/s) */
 	float                   uvw[3];
@@ -1102,7 +1102,7 @@ typedef struct PACKED
 	uint32_t				navPeriodMs;
 	
 	/** Actual sample period relative to GPS PPS */
-	double					sensorTruePeriod;
+	float					sensorTruePeriod;
 
 	/** Reserved */
 	float					reserved2[2];
@@ -1269,29 +1269,29 @@ typedef struct PACKED
 /* (DID_SENSORS_CAL1, DID_SENSORS_CAL2) */
 typedef struct PACKED
 {                                       // Units only apply for calibrated data
-	f_t						pqr[3];         // (rad/s)	Angular rate
-	f_t						acc[3];         // (m/s^2)	Linear acceleration
-	f_t						mag[3];         // (uT)		Magnetometers
-	f_t						temp;			// (°C)		Temperature of MPU
+	float						pqr[3];         // (rad/s)	Angular rate
+	float						acc[3];         // (m/s^2)	Linear acceleration
+	float						mag[3];         // (uT)		Magnetometers
+	float						temp;			// (°C)		Temperature of MPU
 } sensors_mpu_w_temp_t;
 
 typedef struct PACKED
 {                                       // Units only apply for calibrated data
-	f_t						pqr[3];         // (rad/s)	Angular rate
-	f_t						acc[3];         // (m/s^2)	Linear acceleration
-	f_t						temp;			// (°C)		Temperature of MPU
+	float						pqr[3];         // (rad/s)	Angular rate
+	float						acc[3];         // (m/s^2)	Linear acceleration
+	float						temp;			// (°C)		Temperature of MPU
 } sensors_imu_w_temp_t;
 
 typedef struct PACKED
 {                                       // Units only apply for calibrated data
-	f_t						mag[3];         // (uT)		Magnetometers
+	float						mag[3];         // (uT)		Magnetometers
 } sensors_mag_t;
 
 typedef struct PACKED
 {                                       // Units only apply for calibrated data
-	f_t						pqr[3];         // (rad/s)	Gyros
-	f_t						acc[3];         // (m/s^2)	Accelerometers
-	f_t						mag[3];         // (uT)		Magnetometers
+	float						pqr[3];         // (rad/s)	Gyros
+	float						acc[3];         // (m/s^2)	Accelerometers
+	float						mag[3];         // (uT)		Magnetometers
 } sensors_mpu_t;
 
 // (DID_SENSORS_TC_BIAS)
@@ -1308,14 +1308,14 @@ typedef struct PACKED
 
 typedef struct PACKED
 {
-	f_t						lpfLsb[3];      // Low-pass filtered of g_sensors.lsb
-	f_t						lpfTemp;		// (°C) Low-pass filtered sensor temperature
-	f_t						k[3];			// Slope (moved from flash to here)
-	f_t						temp;			// (°C)	Temperature of sensor
-	f_t                     tempRampRate;   // (°C/s) Temperature ramp rate
+	float						lpfLsb[3];      // Low-pass filtered of g_sensors.lsb
+	float						lpfTemp;		// (°C) Low-pass filtered sensor temperature
+	float						k[3];			// Slope (moved from flash to here)
+	float						temp;			// (°C)	Temperature of sensor
+	float                     tempRampRate;   // (°C/s) Temperature ramp rate
 	uint32_t                tci;            // Index of current temperature compensation point
 	uint32_t                numTcPts;       // Total number of tc points
-	f_t                     dtTemp;			// (°C) Temperature from last calibration point
+	float                     dtTemp;			// (°C) Temperature from last calibration point
 } sensor_comp_unit_t;
 
 typedef struct PACKED
@@ -1325,20 +1325,20 @@ typedef struct PACKED
 	sensor_comp_unit_t		mag[NUM_MAG_DEVICES];
 	uint32_t                sampleCount;    // Number of samples collected
 	uint32_t                calState;       // state machine (see eSensorCalState)
-	f_t						alignAccel[3];  // Alignment acceleration
+	float						alignAccel[3];  // Alignment acceleration
 	uint32_t				status;         // Used to control LED (see eSensorCalStatus)
 } sensor_compensation_t;
 
 #define NUM_ANA_CHANNELS	4
 typedef struct PACKED
 {                                       // LSB units for all except temperature, which is Celsius.
-	double					time;
+	float					time;
 	sensors_imu_w_temp_t	imu[NUM_IMU_DEVICES];
 	sensors_mag_t			mag[NUM_MAG_DEVICES];   // Magnetometers
-	f_t						bar;            		// Barometric pressure
-	f_t						barTemp;				// Temperature of barometric pressure sensor
-	f_t                     humidity;				// Relative humidity as a percent (%rH).  Range is 0% - 100%
-	f_t						ana[NUM_ANA_CHANNELS]; // ADC analog input
+	float						bar;            		// Barometric pressure
+	float						barTemp;				// Temperature of barometric pressure sensor
+	float                     humidity;				// Relative humidity as a percent (%rH).  Range is 0% - 100%
+	float						ana[NUM_ANA_CHANNELS]; // ADC analog input
 } sys_sensors_adc_t;
 
 #define NUM_COM_PORTS       4	// Number of communication ports.  (Ser0, Ser1, Ser2, and USB).
@@ -2019,7 +2019,7 @@ enum eIoConfig
 typedef struct PACKED
 {
     /** Time of measurement wrt current week */
-    double timeOfWeek;
+    float timeOfWeek;
 
     /** Status Word */
     uint32_t status;
@@ -2186,10 +2186,10 @@ typedef struct PACKED
     uint32_t				sysCfgBits;
 
     /** Reference latitude, longitude and height above ellipsoid for north east down (NED) calculations (deg, deg, m) */
-    double                  refLla[3];
+    float                  refLla[3];
 
     /** Last latitude, longitude, HAE (height above ellipsoid) used to aid GPS startup (deg, deg, m).  Updated when the distance between current LLA and lastLla exceeds lastLlaUpdateDistance. */
-    double					lastLla[3];
+    float					lastLla[3];
 
     /** Last LLA GPS time since week start (Sunday morning) in milliseconds */
     uint32_t				lastLlaTimeOfWeekMs;
@@ -2289,8 +2289,8 @@ typedef struct PACKED
 typedef struct PACKED
 {
 	int32_t					i[DEBUG_I_ARRAY_SIZE];
-	f_t						f[DEBUG_F_ARRAY_SIZE];
-	double                  lf[DEBUG_LF_ARRAY_SIZE];
+	float						f[DEBUG_F_ARRAY_SIZE];
+	float                  lf[DEBUG_LF_ARRAY_SIZE];
 } debug_array_t;
 
 #define DEBUG_STRING_SIZE		80
@@ -2312,20 +2312,20 @@ typedef struct
 	int64_t time;
 
 	/** fraction of second under 1 s */
-	double sec;         
+	float sec;         
 } gtime_t;
 
 typedef struct PACKED
 {
 	gtime_t time;
-	double rp_ecef[3]; // Rover position
-	double rv_ecef[3]; // Rover velocity
-	double ra_ecef[3]; // Rover acceleration
-	double bp_ecef[3]; // Base position
-	double bv_ecef[3]; // Base velocity
-	double qr[6]; // rover position and velocity covariance main diagonal
-	double b[24]; // satellite bias
-	double qb[24]; // main diagonal of sat bias covariances
+	float rp_ecef[3]; // Rover position
+	float rv_ecef[3]; // Rover velocity
+	float ra_ecef[3]; // Rover acceleration
+	float bp_ecef[3]; // Base position
+	float bv_ecef[3]; // Base velocity
+	float qr[6]; // rover position and velocity covariance main diagonal
+	float b[24]; // satellite bias
+	float qb[24]; // main diagonal of sat bias covariances
 	uint8_t sat_id[24]; // satellite id of b[]
 } rtk_state_t;
 
@@ -2336,7 +2336,7 @@ typedef struct PACKED
 	uint8_t sat_id_i[24]; // sat id of measurements (reference sat)
 	uint8_t sat_id_j[24]; // sat id of measurements
 	uint8_t type[24]; // type (0 = dd-range, 1 = dd-phase, 2 = baseline)
-	double v[24]; // residual
+	float v[24]; // residual
 } rtk_residual_t;
 
 typedef struct PACKED
@@ -2394,7 +2394,7 @@ typedef struct PACKED
 	uint8_t warning_count;
 	uint8_t warning_code;
 
-    double double_debug[4];
+    float float_debug[4];
 
 	uint8_t debug[2];
 	uint8_t obs_count_bas;
@@ -2426,7 +2426,7 @@ typedef struct
 	int32_t navsys;
 
 	/** elevation mask angle (rad) */
-	double elmin;
+	float elmin;
 
 	/** Min snr to consider satellite for rtk */
 	int32_t snrmin;
@@ -2492,65 +2492,65 @@ typedef struct
 	int32_t refpos;
 
 	/** code/phase error ratio */
-	double eratio[1];
+	float eratio[1];
 
 	/** measurement error factor */
-	double err[5];
+	float err[5];
 
 	/** initial-state std [0]bias,[1]iono [2]trop */
-	double std[3];
+	float std[3];
 
 	/** process-noise std [0]bias,[1]iono [2]trop [3]acch [4]accv [5] pos */
-	double prn[6];
+	float prn[6];
 
 	/** satellite clock stability (sec/sec) */
-	double sclkstab;
+	float sclkstab;
 
 	/** AR validation threshold */
-	double thresar[8];
+	float thresar[8];
 
 	/** elevation mask of AR for rising satellite (rad) */
-	double elmaskar;
+	float elmaskar;
 
 	/** elevation mask to hold ambiguity (rad) */
-	double elmaskhold;
+	float elmaskhold;
 
 	/** slip threshold of geometry-free phase (m) */
-	double thresslip;
+	float thresslip;
 
 	/** variance for fix-and-hold pseudo measurements (cycle^2) */
-	double varholdamb;
+	float varholdamb;
 
 	/** gain used for GLO and SBAS sats to adjust ambiguity */
-	double gainholdamb;
+	float gainholdamb;
 
 	/** max difference of time (sec) */
-	double maxtdiff;
+	float maxtdiff;
 
     /** reset sat biases after this long trying to get fix if not acquired */
     int fix_reset_base_msgs;
 
     /** reject threshold of NIS */
-    double maxinnocode;
-    double maxinnophase;
-    double maxnis;
+    float maxinnocode;
+    float maxinnophase;
+    float maxnis;
 
 	/** reject threshold of gdop */
-	double maxgdop;
+	float maxgdop;
 
     /** baseline length constraint {const,sigma before fix, sigma after fix} (m) */
-    double baseline[3];
-    double max_baseline_error;
-    double reset_baseline_error;
+    float baseline[3];
+    float max_baseline_error;
+    float reset_baseline_error;
 
     /** maximum error wrt ubx position (triggers reset if more than this far) (m) */
     float max_ubx_error;
 
 	/** rover position for fixed mode {x,y,z} (ecef) (m) */
-	double ru[3];
+	float ru[3];
 
 	/** base position for relative mode {x,y,z} (ecef) (m) */
-	double rb[3];
+	float rb[3];
 
 	/** max averaging epochs */
 	int32_t maxaveep;
@@ -2591,10 +2591,10 @@ typedef struct PACKED
 	uint8_t reserved;
 
 	/** Observation data carrier-phase (cycle). The carrier phase initial ambiguity is initialized using an approximate value to make the magnitude of the phase close to the pseudorange measurement. Clock resets are applied to both phase and code measurements in accordance with the RINEX specification. */
-	double L[1];
+	float L[1];
 
 	/** Observation data pseudorange (m). GLONASS inter frequency channel delays are compensated with an internal calibration table */
-	double P[1]; 
+	float P[1]; 
 
 	/** Observation data Doppler measurement (positive sign for approaching satellites) (Hz) */
 	float D[1];
@@ -2653,73 +2653,73 @@ typedef struct
 	gtime_t ttr;
 
 	/** Orbit semi-major axis (m) */
-	double A;
+	float A;
 
 	/** Orbit eccentricity (non-dimensional)  */
-	double e;
+	float e;
 
 	/** Orbit inclination angle at reference time (rad) */
-	double i0;
+	float i0;
 
 	/** Longitude of ascending node of orbit plane at weekly epoch (rad) */
-	double OMG0;
+	float OMG0;
 
 	/** Argument of perigee (rad) */
-	double omg;
+	float omg;
 
 	/** Mean anomaly at reference time (rad) */
-	double M0;
+	float M0;
 
 	/** Mean Motion Difference From Computed Value (rad) */
-	double deln;
+	float deln;
 
 	/** Rate of Right Ascension (rad/s) */
-	double OMGd;
+	float OMGd;
 
 	/** Rate of Inclination Angle (rad/s) */
-	double idot;
+	float idot;
 
 	/** Amplitude of the Cosine Harmonic Correction Term to the Orbit Radius (m) */
-	double crc;
+	float crc;
 
 	/** Amplitude of the Sine Harmonic Correction Term to the Orbit Radius (m) */
-	double crs;
+	float crs;
 
 	/** Amplitude of the Cosine Harmonic Correction Term to the Argument of Latitude (rad)  */
-	double cuc;
+	float cuc;
 
 	/** Amplitude of the Sine Harmonic Correction Term to the Argument of Latitude (rad) */
-	double cus;
+	float cus;
 
 	/** Amplitude of the Cosine Harmonic Correction Term to the Angle of Inclination (rad) */
-	double cic;
+	float cic;
 
 	/** Amplitude of the Sine Harmonic Correction Term to the Angle of Inclination (rad) */
-	double cis;
+	float cis;
 
-	/** Time Of Ephemeris, ephemeris reference epoch in seconds within the week (s), same as <toe> above but represented as double type. Note that toe is computed as eph->toe = gst2time(week, eph->toes) */
-	double toes;
+	/** Time Of Ephemeris, ephemeris reference epoch in seconds within the week (s), same as <toe> above but represented as float type. Note that toe is computed as eph->toe = gst2time(week, eph->toes) */
+	float toes;
 
 	/** Fit interval (h) (0: 4 hours, 1: greater than 4 hours) */
-	double fit;
+	float fit;
 
 	/** SV clock offset, af0 (s) */
-	double f0;
+	float f0;
 	
 	/** SV clock drift, af1 (s/s, non-dimensional) */
-	double f1;
+	float f1;
 	
 	/** SV clock drift rate, af2 (1/s) */
-	double f2;
+	float f2;
 
 	/** Group delay parameters GPS/QZS: tgd[0] = TGD (IRN-IS-200H p.103). Galilleo: tgd[0] = BGD E5a/E1, tgd[1] = BGD E5b/E1. Beidou: tgd[0] = BGD1, tgd[1] = BGD2 */
-	double tgd[4];
+	float tgd[4];
 
 	/** Adot for CNAV, not used */
-	double Adot;
+	float Adot;
 	
 	/** First derivative of mean motion n (second derivative of mean anomaly M), ndot for CNAV (rad/s/s). Not used. */
-	double ndot;
+	float ndot;
 } eph_t;
 
 /** Glonass ephemeris data */
@@ -2750,22 +2750,22 @@ typedef struct
 	gtime_t tof;
 
 	/** satellite position (ecef) (m) */
-	double pos[3];
+	float pos[3];
 
 	/** satellite velocity (ecef) (m/s) */
-	double vel[3];
+	float vel[3];
 
 	/** satellite acceleration (ecef) (m/s^2) */
-	double acc[3];
+	float acc[3];
 
 	/** SV clock bias (s) */
-	double taun;
+	float taun;
 
 	/** relative frequency bias */
-	double gamn;
+	float gamn;
 
 	/** delay between L1 and L2 (s) */
-	double dtaun;
+	float dtaun;
 } geph_t;
 
 /** SBAS message type */
@@ -2794,13 +2794,13 @@ typedef struct
 	int32_t deltype;
 	
 	/** station position (ecef) (m) */
-	double pos[3];
+	float pos[3];
 
 	/** antenna position delta (e/n/u or x/y/z) (m) */
-	double del[3];
+	float del[3];
 
 	/** antenna height (m) */
-	double hgt;
+	float hgt;
 	
 	/** station id */
 	int32_t stationId;
@@ -2825,52 +2825,52 @@ typedef struct
 	gtime_t toa;        
 						
 	/** SV orbit parameters - A */
-	double A;
+	float A;
 
 	/** SV orbit parameters - e */
-	double e;
+	float e;
 
 	/** SV orbit parameters - i0 */
-	double i0;
+	float i0;
 
 	/** SV orbit parameters - OMG0 */
-	double OMG0;
+	float OMG0;
 	
 	/** SV orbit parameters - omg */
-	double omg;
+	float omg;
 	
 	/** SV orbit parameters - M0 */
-	double M0;
+	float M0;
 	
 	/** SV orbit parameters - OMGd */
-	double OMGd;
+	float OMGd;
 
 	/** Toa (s) in week - toas */
-	double toas;
+	float toas;
 
 	/** SV clock parameters - af0 */
-	double f0;
+	float f0;
 	
 	/** SV clock parameters - af1 */
-	double f1;
+	float f1;
 } alm_t;
 
 /** ionosphere model and utc parameters */
 typedef struct
 {
-	double ion_gps[8];  /* GPS iono model parameters {a0,a1,a2,a3,b0,b1,b2,b3} */
-	double ion_gal[4];  /* Galileo iono model parameters {ai0,ai1,ai2,0} */
-	double ion_qzs[8];  /* QZSS iono model parameters {a0,a1,a2,a3,b0,b1,b2,b3} */
-	double ion_cmp[8];  /* BeiDou iono model parameters {a0,a1,a2,a3,b0,b1,b2,b3} */
-	double ion_irn[8];  /* IRNSS iono model parameters {a0,a1,a2,a3,b0,b1,b2,b3} */
+	float ion_gps[8];  /* GPS iono model parameters {a0,a1,a2,a3,b0,b1,b2,b3} */
+	float ion_gal[4];  /* Galileo iono model parameters {ai0,ai1,ai2,0} */
+	float ion_qzs[8];  /* QZSS iono model parameters {a0,a1,a2,a3,b0,b1,b2,b3} */
+	float ion_cmp[8];  /* BeiDou iono model parameters {a0,a1,a2,a3,b0,b1,b2,b3} */
+	float ion_irn[8];  /* IRNSS iono model parameters {a0,a1,a2,a3,b0,b1,b2,b3} */
 
-	double utc_gps[4];  /* GPS delta-UTC parameters {A0,A1,T,W} */
-	double utc_glo[4];  /* GLONASS UTC GPS time parameters */
-	double utc_gal[4];  /* Galileo UTC GPS time parameters */
-	double utc_qzs[4];  /* QZS UTC GPS time parameters */
-	double utc_cmp[4];  /* BeiDou UTC parameters */
-	double utc_irn[4];  /* IRNSS UTC parameters */
-	double utc_sbs[4];  /* SBAS UTC parameters */
+	float utc_gps[4];  /* GPS delta-UTC parameters {A0,A1,T,W} */
+	float utc_glo[4];  /* GLONASS UTC GPS time parameters */
+	float utc_gal[4];  /* Galileo UTC GPS time parameters */
+	float utc_qzs[4];  /* QZS UTC GPS time parameters */
+	float utc_cmp[4];  /* BeiDou UTC parameters */
+	float utc_irn[4];  /* IRNSS UTC parameters */
+	float utc_sbs[4];  /* SBAS UTC parameters */
 
 	int32_t leaps;      /* leap seconds (s) */
 	
@@ -2953,7 +2953,7 @@ typedef struct PACKED
 	float					vDop;
 
 	/** Base Position - latitude, longitude, height (degrees, meters) */
- 	double					baseLla[3];
+ 	float					baseLla[3];
 
     /** Cycle slip counter */
     uint32_t                cycleSlipCount;
@@ -3161,7 +3161,7 @@ typedef struct
 	float hAccuracy;
 
 	/** The current surveyed latitude, longitude, altitude (deg, deg, m) */
-	double lla[3];
+	float lla[3];
 } survey_in_t;
 
 
@@ -3819,29 +3819,29 @@ Flip the bytes of a float (4 bytes) - ptr is assumed to be at least 4 bytes
 float flipFloatCopy(float val);
 
 /**
-Flip the bytes of a double in place (8 bytes) - ptr is assumed to be at least 8 bytes
+Flip the bytes of a float in place (8 bytes) - ptr is assumed to be at least 8 bytes
 Only flips each 4 byte pair, does not flip the individual bytes within the pair
 
-@param ptr the double to flip
+@param ptr the float to flip
 */
 void flipDouble(void* ptr);
 
 /**
-Flip the bytes of a double in place (8 bytes)
+Flip the bytes of a float in place (8 bytes)
 Unlike flipDouble, this also flips the individual bytes in each 4 byte pair
 
-@param val the double to flip
-@return the flipped double
+@param val the float to flip
+@return the flipped float
 */
-double flipDoubleCopy(double val);
+float flipDoubleCopy(float val);
 
 /**
-Flip double (64 bit) floating point values in data
+Flip float (64 bit) floating point values in data
 
-@param data the data to flip doubles in
+@param data the data to flip floats in
 @param dataLength the number of bytes in data
 @param offset offset into data to start flipping at
-@param offsets a list of offsets of all doubles in data, starting at position 0
+@param offsets a list of offsets of all floats in data, starting at position 0
 @param offsetsLength the number of items in offsets
 */
 void flipDoubles(uint8_t* data, int dataLength, int offset, uint16_t* offsets, uint16_t offsetsLength);
@@ -3880,12 +3880,12 @@ void flipStrings(uint8_t* data, int dataLength, int offset, uint16_t* offsets, u
 #endif
 
 /**
-Get the offsets of double / int64 (64 bit) values given a data id
+Get the offsets of float / int64 (64 bit) values given a data id
 
-@param dataId the data id to get double offsets for
-@param offsetsLength receives the number of double offsets
+@param dataId the data id to get float offsets for
+@param offsetsLength receives the number of float offsets
 
-@return a list of offets of doubles or 0 if none, offset will have high bit set if it is an int64 instead of a double
+@return a list of offets of floats or 0 if none, offset will have high bit set if it is an int64 instead of a float
 */
 uint16_t* getDoubleOffsets(eDataIDs dataId, uint16_t* offsetsLength);
 
@@ -3907,13 +3907,13 @@ uint64_t didToRmcBit(uint32_t dataId, uint64_t defaultRmcBits);
 #define SECONDS_PER_DAY         86400
 #define GPS_TO_UNIX_OFFSET      315964800
 /** Convert GPS Week and Ms and leapSeconds to Unix seconds**/
-double gpsToUnix(uint32_t gpsWeek, uint32_t gpsTimeofWeekMS, uint8_t leapSeconds);
+float gpsToUnix(uint32_t gpsWeek, uint32_t gpsTimeofWeekMS, uint8_t leapSeconds);
 
 /** Convert Julian Date to calendar date. */
-void julianToDate(double julian, int32_t* year, int32_t* month, int32_t* day, int32_t* hour, int32_t* minute, int32_t* second, int32_t* millisecond);
+void julianToDate(float julian, int32_t* year, int32_t* month, int32_t* day, int32_t* hour, int32_t* minute, int32_t* second, int32_t* millisecond);
 
 /** Convert GPS Week and Seconds to Julian Date.  Leap seconds are the GPS-UTC offset (18 seconds as of December 31, 2016). */
-double gpsToJulian(int32_t gpsWeek, int32_t gpsMilliseconds, int32_t leapSeconds);
+float gpsToJulian(int32_t gpsWeek, int32_t gpsMilliseconds, int32_t leapSeconds);
 
 
 #ifndef RTKLIB_H

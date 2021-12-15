@@ -309,7 +309,7 @@ void generateData(std::deque<data_holder_t> &testDeque)
 		case 2:
 		case 3:
 			// INS 1
-			ins1.timeOfWeek = (double)i;
+			ins1.timeOfWeek = (float)i;
 			ins1.week = i;
 			ins1.insStatus = i;
 			ins1.hdwStatus = i;
@@ -349,17 +349,17 @@ void generateData(std::deque<data_holder_t> &testDeque)
 			gps.timeOfWeekMs = i * 1000;
 			gps.week = i * 10;
 			gps.status = i;
-			gps.ecef[0] = (double)i*1.234;
-			gps.ecef[1] = (double)i*2.345;
-			gps.ecef[2] = (double)i*3.456;
-			gps.lla[0] = (double)i*1.234;
-			gps.lla[1] = (double)i*2.345;
-			gps.lla[2] = (double)i*3.456;
+			gps.ecef[0] = (float)i*1.234;
+			gps.ecef[1] = (float)i*2.345;
+			gps.ecef[2] = (float)i*3.456;
+			gps.lla[0] = (float)i*1.234;
+			gps.lla[1] = (float)i*2.345;
+			gps.lla[2] = (float)i*3.456;
 			gps.hAcc = (float)i;
 			gps.cnoMean = (float)i;
 			gps.hMSL = (float)i;
 			gps.pDop = (float)i;
-			gps.towOffset = (double)i*123.4;
+			gps.towOffset = (float)i*123.4;
 			gps.leapS = (uint8_t)i;
 
 			if ((j == 5 || TEST_PROTO_IS == 0) && TEST_PROTO_ASCII)

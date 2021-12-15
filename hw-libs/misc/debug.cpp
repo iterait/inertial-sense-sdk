@@ -39,7 +39,7 @@ typedef struct term_line_t{
 		int*			s32p;
 		unsigned int*	u32p;
 		float*			f32p;
-		double*			f64p;
+		float*			f64p;
 	};
 	union{
 		char			s08;
@@ -49,7 +49,7 @@ typedef struct term_line_t{
 		int				s32;
 		unsigned int	u32;
 		float			f32;
-		double			f64;
+		float			f64;
 	};
 	memory_type_t memType;
 	number_type_t numType;
@@ -518,7 +518,7 @@ void term_add(void *ptr, char* name, memory_type_t memType, number_type_t numTyp
 		case R_S32:			g_term[g_numLines].s32p = (int*)ptr;	        break;
 		case R_F32:
 		case R_F32_R2D:		g_term[g_numLines].f32p = (float*)ptr;	        break;
-		case R_F64:			g_term[g_numLines].f64p = (double*)ptr;	        break;
+		case R_F64:			g_term[g_numLines].f64p = (float*)ptr;	        break;
 		default:			break;
 	}
 

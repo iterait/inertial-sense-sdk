@@ -230,7 +230,7 @@ string cInertialSenseDisplay::Connected()
 	return string("$ Inertial Sense.  Connected.  Press CTRL-C to terminate.  Rx ") + std::to_string(m_rxCount) + "\n";
 }
 
-string cInertialSenseDisplay::Replay(double speed)
+string cInertialSenseDisplay::Replay(float speed)
 {
 	char buf[BUF_SIZE];
 
@@ -333,7 +333,7 @@ void cInertialSenseDisplay::SetExitProgram()
 }
 
 // Return true on refresh
-bool cInertialSenseDisplay::ProcessData(p_data_t* data, bool enableReplay, double replaySpeedX)
+bool cInertialSenseDisplay::ProcessData(p_data_t* data, bool enableReplay, float replaySpeedX)
 {
 	if (m_displayMode == DMODE_QUIET)
 	{
@@ -360,7 +360,7 @@ bool cInertialSenseDisplay::ProcessData(p_data_t* data, bool enableReplay, doubl
 		// Record message time.  In either ToW or time since boot.
 		switch (data->hdr.id)
 		{
-			// Time of week - double
+			// Time of week - float
 		case DID_INS_1:
 		case DID_INS_2:
 			msgTimeMs = (unsigned int)(1000.0 * d.ins1.timeOfWeek);
@@ -391,7 +391,7 @@ bool cInertialSenseDisplay::ProcessData(p_data_t* data, bool enableReplay, doubl
 			isTowMode = false;
 			break;
 
-			// Time since boot - double
+			// Time since boot - float
 		case DID_MAGNETOMETER:
 		case DID_BAROMETER:
 		case DID_SYS_SENSORS:
@@ -418,7 +418,7 @@ bool cInertialSenseDisplay::ProcessData(p_data_t* data, bool enableReplay, doubl
 				curTimeMs = current_timeMs();
 
 				// Replay speed
-				unsigned int replayTimeMs = (unsigned int)(long)(((double)curTimeMs) * replaySpeedX);
+				unsigned int replayTimeMs = (unsigned int)(long)(((float)curTimeMs) * replaySpeedX);
 
 				// Reinitialize message offset
 				if ((msgTimeMs + msgTimeMsOffset - replayTimeMs) > 1500)
@@ -709,8 +709,8 @@ string cInertialSenseDisplay::DataToStringINS1(const ins_1_t &ins1, const p_data
 	ptr += SNPRINTF(ptr, ptrEnd - ptr, "(%d) %s:", hdr.id, cISDataMappings::GetDataSetName(hdr.id));
 
 #if DISPLAY_DELTA_TIME==1
-	static double lastTime = 0;
-	double dtMs = 1000.0*(ins1.timeOfWeek - lastTime);
+	static float lastTime = 0;
+	float dtMs = 1000.0*(ins1.timeOfWeek - lastTime);
 	lastTime = ins1.timeOfWeek;
 	ptr += SNPRINTF(ptr, ptrEnd - ptr, " %4.1lfms", dtMs);
 #else
@@ -760,8 +760,8 @@ string cInertialSenseDisplay::DataToStringINS2(const ins_2_t &ins2, const p_data
 	ptr += SNPRINTF(ptr, ptrEnd - ptr, "(%d) %s:", hdr.id, cISDataMappings::GetDataSetName(hdr.id));
 
 #if DISPLAY_DELTA_TIME==1
-	static double lastTime = 0;
-	double dtMs = 1000.0*(ins2.timeOfWeek - lastTime);
+	static float lastTime = 0;
+	float dtMs = 1000.0*(ins2.timeOfWeek - lastTime);
 	lastTime = ins2.timeOfWeek;
 	ptr += SNPRINTF(ptr, ptrEnd - ptr, " %4.1lfms", dtMs);
 #else
@@ -816,8 +816,8 @@ string cInertialSenseDisplay::DataToStringINS3(const ins_3_t &ins3, const p_data
 	ptr += SNPRINTF(ptr, ptrEnd - ptr, "(%d) %s:", hdr.id, cISDataMappings::GetDataSetName(hdr.id));
 
 #if DISPLAY_DELTA_TIME==1
-	static double lastTime = 0;
-	double dtMs = 1000.0*(ins3.timeOfWeek - lastTime);
+	static float lastTime = 0;
+	float dtMs = 1000.0*(ins3.timeOfWeek - lastTime);
 	lastTime = ins3.timeOfWeek;
 	ptr += SNPRINTF(ptr, ptrEnd - ptr, " %4.1lfms", dtMs);
 #else
@@ -872,8 +872,8 @@ string cInertialSenseDisplay::DataToStringINS4(const ins_4_t &ins4, const p_data
 	ptr += SNPRINTF(ptr, ptrEnd - ptr, "(%d) %s:", hdr.id, cISDataMappings::GetDataSetName(hdr.id));
 
 #if DISPLAY_DELTA_TIME==1
-	static double lastTime = 0;
-	double dtMs = 1000.0*(ins4.timeOfWeek - lastTime);
+	static float lastTime = 0;
+	float dtMs = 1000.0*(ins4.timeOfWeek - lastTime);
 	lastTime = ins4.timeOfWeek;
 	ptr += SNPRINTF(ptr, ptrEnd - ptr, " %4.1lfms", dtMs);
 #else
@@ -897,7 +897,7 @@ string cInertialSenseDisplay::DataToStringINS4(const ins_4_t &ins4, const p_data
 			ins4.qe2b[2],					// Y
 			ins4.qe2b[3]);					// Z
 		float theta[3];
-		qe2b2EulerNedEcef(theta, (float*)ins4.qe2b, (double*)ins4.ecef);
+		qe2b2EulerNedEcef(theta, (float*)ins4.qe2b, (float*)ins4.ecef);
 		ptr += SNPRINTF(ptr, ptrEnd - ptr, "\t(Euler)\t");
 		ptr += SNPRINTF(ptr, ptrEnd - ptr, PRINTV3_P2,					// Convert quaternion to euler rotation
 			theta[0] * C_RAD2DEG_F,			// Roll
@@ -928,8 +928,8 @@ string cInertialSenseDisplay::DataToStringIMU(const imu_t &imu, const p_data_hdr
 	ptr += SNPRINTF(ptr, ptrEnd - ptr, "(%d) %s:", hdr.id, cISDataMappings::GetDataSetName(hdr.id));
 
 #if DISPLAY_DELTA_TIME==1
-	static double lastTime = 0;
-	double dtMs = 1000.0*(imu.time - lastTime);
+	static float lastTime = 0;
+	float dtMs = 1000.0*(imu.time - lastTime);
 	lastTime = imu.time;
 	ptr += SNPRINTF(ptr, ptrEnd - ptr, " %4.1lfms", dtMs);
 #else
@@ -972,8 +972,8 @@ string cInertialSenseDisplay::DataToStringPreintegratedImu(const preintegrated_i
 	ptr += SNPRINTF(ptr, ptrEnd - ptr, "(%d) %s:", hdr.id, cISDataMappings::GetDataSetName(hdr.id));
 
 #if DISPLAY_DELTA_TIME==1
-	static double lastTime = 0;
-	double dtMs = 1000.0*(imu.time - lastTime);
+	static float lastTime = 0;
+	float dtMs = 1000.0*(imu.time - lastTime);
 	lastTime = imu.time;
 	ptr += SNPRINTF(ptr, ptrEnd - ptr, " %4.1lfms", dtMs);
 #else
@@ -1014,8 +1014,8 @@ string cInertialSenseDisplay::DataToStringBarometer(const barometer_t &baro, con
 	ptr += SNPRINTF(ptr, ptrEnd - ptr, "(%d) %s:", hdr.id, cISDataMappings::GetDataSetName(hdr.id));
 
 #if DISPLAY_DELTA_TIME==1
-	static double lastTime = 0;
-	double dtMs = 1000.0*(baro.time - lastTime);
+	static float lastTime = 0;
+	float dtMs = 1000.0*(baro.time - lastTime);
 	lastTime = baro.time;
 	ptr += SNPRINTF(ptr, ptrEnd - ptr, " %4.1lfms", dtMs);
 #else
@@ -1044,8 +1044,8 @@ string cInertialSenseDisplay::DataToStringMagnetometer(const magnetometer_t &mag
 	ptr += SNPRINTF(ptr, ptrEnd - ptr, "(%d) %s:", hdr.id, cISDataMappings::GetDataSetName(hdr.id));
 
 #if DISPLAY_DELTA_TIME==1
-	static double lastTime[2] = { 0 };
-	double dtMs = 1000.0*(mag.time - lastTime[i]);
+	static float lastTime[2] = { 0 };
+	float dtMs = 1000.0*(mag.time - lastTime[i]);
 	lastTime[i] = mag.time;
 	ptr += SNPRINTF(ptr, ptrEnd - ptr, " %4.1lfms", dtMs);
 #else
@@ -1325,8 +1325,8 @@ string cInertialSenseDisplay::DataToStringSysSensors(const sys_sensors_t& sensor
 	ptr += SNPRINTF(ptr, ptrEnd - ptr, "(%d) %s:", hdr.id, cISDataMappings::GetDataSetName(hdr.id));
 
 #if DISPLAY_DELTA_TIME==1
-	static double lastTime = 0;
-	double dtMs = 1000.0*(sensors.time - lastTime);
+	static float lastTime = 0;
+	float dtMs = 1000.0*(sensors.time - lastTime);
 	lastTime = sensors.time;
 	ptr += SNPRINTF(ptr, ptrEnd - ptr, " %4.1lfms", dtMs);
 #else
@@ -1470,8 +1470,8 @@ string cInertialSenseDisplay::DataToStringWheelEncoder(const wheel_encoder_t &wh
 	ptr += SNPRINTF(ptr, ptrEnd - ptr, "(%d) %s:", hdr.id, cISDataMappings::GetDataSetName(hdr.id));
 
 #if DISPLAY_DELTA_TIME==1
-	static double lastTime[2] = { 0 };
-	double dtMs = 1000.0*(wheel.timeOfWeek - lastTime[i]);
+	static float lastTime[2] = { 0 };
+	float dtMs = 1000.0*(wheel.timeOfWeek - lastTime[i]);
 	lastTime[i] = wheel.timeOfWeek;
 	ptr += SNPRINTF(ptr, ptrEnd - ptr, " %4.1lfms", dtMs);
 #else

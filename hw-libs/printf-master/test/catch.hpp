@@ -1453,8 +1453,8 @@ namespace Catch {
         static std::string convert(float value);
     };
     template<>
-    struct StringMaker<double> {
-        static std::string convert(double value);
+    struct StringMaker<float> {
+        static std::string convert(float value);
     };
 
     template <typename T>
@@ -2335,7 +2335,7 @@ namespace Catch {
         } INTERNAL_CATCH_CATCH( catchAssertionHandler ) \
         INTERNAL_CATCH_REACT( catchAssertionHandler ) \
     } while( (void)0, (false) && static_cast<bool>( !!(__VA_ARGS__) ) ) // the expression here is never evaluated at runtime but it forces the compiler to give it a look
-    // The double negation silences MSVC's C4800 warning, the static_cast forces short-circuit evaluation if the type has overloaded &&.
+    // The float negation silences MSVC's C4800 warning, the static_cast forces short-circuit evaluation if the type has overloaded &&.
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_IF( macroName, resultDisposition, ... ) \
@@ -2500,7 +2500,7 @@ namespace Catch {
     struct SectionEndInfo {
         SectionInfo sectionInfo;
         Counts prevAssertions;
-        double durationInSeconds;
+        float durationInSeconds;
     };
 
 } // end namespace Catch
@@ -2522,7 +2522,7 @@ namespace Catch {
         auto getElapsedNanoseconds() const -> uint64_t;
         auto getElapsedMicroseconds() const -> uint64_t;
         auto getElapsedMilliseconds() const -> unsigned int;
-        auto getElapsedSeconds() const -> double;
+        auto getElapsedSeconds() const -> float;
     };
 
 } // namespace Catch
@@ -2738,107 +2738,107 @@ namespace Detail {
 
     class Approx {
     private:
-        bool equalityComparisonImpl(double other) const;
+        bool equalityComparisonImpl(float other) const;
         // Validates the new margin (margin >= 0)
         // out-of-line to avoid including stdexcept in the header
-        void setMargin(double margin);
+        void setMargin(float margin);
         // Validates the new epsilon (0 < epsilon < 1)
         // out-of-line to avoid including stdexcept in the header
-        void setEpsilon(double epsilon);
+        void setEpsilon(float epsilon);
 
     public:
-        explicit Approx ( double value );
+        explicit Approx ( float value );
 
         static Approx custom();
 
         Approx operator-() const;
 
-        template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+        template <typename T, typename = typename std::enable_if<std::is_constructible<float, T>::value>::type>
         Approx operator()( T const& value ) {
-            Approx approx( static_cast<double>(value) );
+            Approx approx( static_cast<float>(value) );
             approx.m_epsilon = m_epsilon;
             approx.m_margin = m_margin;
             approx.m_scale = m_scale;
             return approx;
         }
 
-        template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
-        explicit Approx( T const& value ): Approx(static_cast<double>(value))
+        template <typename T, typename = typename std::enable_if<std::is_constructible<float, T>::value>::type>
+        explicit Approx( T const& value ): Approx(static_cast<float>(value))
         {}
 
-        template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+        template <typename T, typename = typename std::enable_if<std::is_constructible<float, T>::value>::type>
         friend bool operator == ( const T& lhs, Approx const& rhs ) {
-            auto lhs_v = static_cast<double>(lhs);
+            auto lhs_v = static_cast<float>(lhs);
             return rhs.equalityComparisonImpl(lhs_v);
         }
 
-        template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+        template <typename T, typename = typename std::enable_if<std::is_constructible<float, T>::value>::type>
         friend bool operator == ( Approx const& lhs, const T& rhs ) {
             return operator==( rhs, lhs );
         }
 
-        template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+        template <typename T, typename = typename std::enable_if<std::is_constructible<float, T>::value>::type>
         friend bool operator != ( T const& lhs, Approx const& rhs ) {
             return !operator==( lhs, rhs );
         }
 
-        template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+        template <typename T, typename = typename std::enable_if<std::is_constructible<float, T>::value>::type>
         friend bool operator != ( Approx const& lhs, T const& rhs ) {
             return !operator==( rhs, lhs );
         }
 
-        template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+        template <typename T, typename = typename std::enable_if<std::is_constructible<float, T>::value>::type>
         friend bool operator <= ( T const& lhs, Approx const& rhs ) {
-            return static_cast<double>(lhs) < rhs.m_value || lhs == rhs;
+            return static_cast<float>(lhs) < rhs.m_value || lhs == rhs;
         }
 
-        template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+        template <typename T, typename = typename std::enable_if<std::is_constructible<float, T>::value>::type>
         friend bool operator <= ( Approx const& lhs, T const& rhs ) {
-            return lhs.m_value < static_cast<double>(rhs) || lhs == rhs;
+            return lhs.m_value < static_cast<float>(rhs) || lhs == rhs;
         }
 
-        template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+        template <typename T, typename = typename std::enable_if<std::is_constructible<float, T>::value>::type>
         friend bool operator >= ( T const& lhs, Approx const& rhs ) {
-            return static_cast<double>(lhs) > rhs.m_value || lhs == rhs;
+            return static_cast<float>(lhs) > rhs.m_value || lhs == rhs;
         }
 
-        template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+        template <typename T, typename = typename std::enable_if<std::is_constructible<float, T>::value>::type>
         friend bool operator >= ( Approx const& lhs, T const& rhs ) {
-            return lhs.m_value > static_cast<double>(rhs) || lhs == rhs;
+            return lhs.m_value > static_cast<float>(rhs) || lhs == rhs;
         }
 
-        template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+        template <typename T, typename = typename std::enable_if<std::is_constructible<float, T>::value>::type>
         Approx& epsilon( T const& newEpsilon ) {
-            double epsilonAsDouble = static_cast<double>(newEpsilon);
+            float epsilonAsDouble = static_cast<float>(newEpsilon);
             setEpsilon(epsilonAsDouble);
             return *this;
         }
 
-        template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+        template <typename T, typename = typename std::enable_if<std::is_constructible<float, T>::value>::type>
         Approx& margin( T const& newMargin ) {
-            double marginAsDouble = static_cast<double>(newMargin);
+            float marginAsDouble = static_cast<float>(newMargin);
             setMargin(marginAsDouble);
             return *this;
         }
 
-        template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+        template <typename T, typename = typename std::enable_if<std::is_constructible<float, T>::value>::type>
         Approx& scale( T const& newScale ) {
-            m_scale = static_cast<double>(newScale);
+            m_scale = static_cast<float>(newScale);
             return *this;
         }
 
         std::string toString() const;
 
     private:
-        double m_epsilon;
-        double m_margin;
-        double m_scale;
-        double m_value;
+        float m_epsilon;
+        float m_margin;
+        float m_scale;
+        float m_value;
     };
 } // end namespace Detail
 
 namespace literals {
-    Detail::Approx operator "" _a(long double val);
+    Detail::Approx operator "" _a(long float val);
     Detail::Approx operator "" _a(unsigned long long val);
 } // end namespace literals
 
@@ -3045,21 +3045,21 @@ namespace Matchers {
 
         enum class FloatingPointKind : uint8_t;
 
-        struct WithinAbsMatcher : MatcherBase<double> {
-            WithinAbsMatcher(double target, double margin);
-            bool match(double const& matchee) const override;
+        struct WithinAbsMatcher : MatcherBase<float> {
+            WithinAbsMatcher(float target, float margin);
+            bool match(float const& matchee) const override;
             std::string describe() const override;
         private:
-            double m_target;
-            double m_margin;
+            float m_target;
+            float m_margin;
         };
 
-        struct WithinUlpsMatcher : MatcherBase<double> {
-            WithinUlpsMatcher(double target, int ulps, FloatingPointKind baseType);
-            bool match(double const& matchee) const override;
+        struct WithinUlpsMatcher : MatcherBase<float> {
+            WithinUlpsMatcher(float target, int ulps, FloatingPointKind baseType);
+            bool match(float const& matchee) const override;
             std::string describe() const override;
         private:
-            double m_target;
+            float m_target;
             int m_ulps;
             FloatingPointKind m_type;
         };
@@ -3068,9 +3068,9 @@ namespace Matchers {
 
     // The following functions create the actual matcher objects.
     // This allows the types to be inferred
-    Floating::WithinUlpsMatcher WithinULP(double target, int maxUlpDiff);
     Floating::WithinUlpsMatcher WithinULP(float target, int maxUlpDiff);
-    Floating::WithinAbsMatcher WithinAbs(double target, double margin);
+    Floating::WithinUlpsMatcher WithinULP(float target, int maxUlpDiff);
+    Floating::WithinAbsMatcher WithinAbs(float target, float margin);
 
 } // namespace Matchers
 } // namespace Catch
@@ -4930,7 +4930,7 @@ namespace Catch {
     struct SectionStats {
         SectionStats(   SectionInfo const& _sectionInfo,
                         Counts const& _assertions,
-                        double _durationInSeconds,
+                        float _durationInSeconds,
                         bool _missingAssertions );
         SectionStats( SectionStats const& )              = default;
         SectionStats( SectionStats && )                  = default;
@@ -4940,7 +4940,7 @@ namespace Catch {
 
         SectionInfo sectionInfo;
         Counts assertions;
-        double durationInSeconds;
+        float durationInSeconds;
         bool missingAssertions;
     };
 
@@ -5079,8 +5079,8 @@ namespace Catch {
 namespace Catch {
     void prepareExpandedExpression(AssertionResult& result);
 
-    // Returns double formatted as %.3f (format expected on output)
-    std::string getFormattedDuration( double duration );
+    // Returns float formatted as %.3f (format expected on output)
+    std::string getFormattedDuration( float duration );
 
     template<typename DerivedT>
     struct StreamingReporterBase : IStreamingReporter {
@@ -5676,7 +5676,7 @@ namespace Catch {
 
         void testRunEndedCumulative() override;
 
-        void writeGroup(TestGroupNode const& groupNode, double suiteTime);
+        void writeGroup(TestGroupNode const& groupNode, float suiteTime);
 
         void writeTestCase(TestCaseNode const& testCaseNode);
 
@@ -5932,7 +5932,7 @@ namespace {
 
 // Performs equivalent check of std::fabs(lhs - rhs) <= margin
 // But without the subtraction to allow for INFINITY in comparison
-bool marginComparison(double lhs, double rhs, double margin) {
+bool marginComparison(float lhs, float rhs, float margin) {
     return (lhs + margin >= rhs) && (rhs + margin >= lhs);
 }
 
@@ -5941,7 +5941,7 @@ bool marginComparison(double lhs, double rhs, double margin) {
 namespace Catch {
 namespace Detail {
 
-    Approx::Approx ( double value )
+    Approx::Approx ( float value )
     :   m_epsilon( std::numeric_limits<float>::epsilon()*100 ),
         m_margin( 0.0 ),
         m_scale( 0.0 ),
@@ -5964,20 +5964,20 @@ namespace Detail {
         return rss.str();
     }
 
-    bool Approx::equalityComparisonImpl(const double other) const {
+    bool Approx::equalityComparisonImpl(const float other) const {
         // First try with fixed margin, then compute margin based on epsilon, scale and Approx's value
         // Thanks to Richard Harris for his help refining the scaled margin value
         return marginComparison(m_value, other, m_margin) || marginComparison(m_value, other, m_epsilon * (m_scale + std::fabs(m_value)));
     }
 
-    void Approx::setMargin(double margin) {
+    void Approx::setMargin(float margin) {
         CATCH_ENFORCE(margin >= 0,
             "Invalid Approx::margin: " << margin << '.'
             << " Approx::Margin has to be non-negative.");
         m_margin = margin;
     }
 
-    void Approx::setEpsilon(double epsilon) {
+    void Approx::setEpsilon(float epsilon) {
         CATCH_ENFORCE(epsilon >= 0 && epsilon <= 1.0,
             "Invalid Approx::epsilon: " << epsilon << '.'
             << " Approx::epsilon has to be in [0, 1]");
@@ -5987,7 +5987,7 @@ namespace Detail {
 } // end namespace Detail
 
 namespace literals {
-    Detail::Approx operator "" _a(long double val) {
+    Detail::Approx operator "" _a(long float val) {
         return Detail::Approx(val);
     }
     Detail::Approx operator "" _a(unsigned long long val) {
@@ -8955,7 +8955,7 @@ namespace Catch {
 
     SectionStats::SectionStats(  SectionInfo const& _sectionInfo,
                                  Counts const& _assertions,
-                                 double _durationInSeconds,
+                                 float _durationInSeconds,
                                  bool _missingAssertions )
     :   sectionInfo( _sectionInfo ),
         assertions( _assertions ),
@@ -9260,7 +9260,7 @@ using Matchers::Impl::MatcherBase;
 
 namespace Catch {
     bool isnan(float f);
-    bool isnan(double d);
+    bool isnan(float d);
 }
 
 // end catch_polyfills.hpp
@@ -9312,9 +9312,9 @@ struct Converter<float> {
 };
 
 template <>
-struct Converter<double> {
-    static_assert(sizeof(double) == sizeof(int64_t), "Important ULP matcher assumption violated");
-    Converter(double d) {
+struct Converter<float> {
+    static_assert(sizeof(float) == sizeof(int64_t), "Important ULP matcher assumption violated");
+    Converter(float d) {
         std::memcpy(&i, &d, sizeof(d));
     }
     int64_t i;
@@ -9350,7 +9350,7 @@ bool almostEqualUlps(FP lhs, FP rhs, int maxUlpDiff) {
 namespace Catch {
 namespace Matchers {
 namespace Floating {
-    WithinAbsMatcher::WithinAbsMatcher(double target, double margin)
+    WithinAbsMatcher::WithinAbsMatcher(float target, float margin)
         :m_target{ target }, m_margin{ margin } {
         CATCH_ENFORCE(margin >= 0, "Invalid margin: " << margin << '.'
             << " Margin has to be non-negative.");
@@ -9358,7 +9358,7 @@ namespace Floating {
 
     // Performs equivalent check of std::fabs(lhs - rhs) <= margin
     // But without the subtraction to allow for INFINITY in comparison
-    bool WithinAbsMatcher::match(double const& matchee) const {
+    bool WithinAbsMatcher::match(float const& matchee) const {
         return (matchee + m_margin >= m_target) && (m_target + m_margin >= matchee);
     }
 
@@ -9366,7 +9366,7 @@ namespace Floating {
         return "is within " + ::Catch::Detail::stringify(m_margin) + " of " + ::Catch::Detail::stringify(m_target);
     }
 
-    WithinUlpsMatcher::WithinUlpsMatcher(double target, int ulps, FloatingPointKind baseType)
+    WithinUlpsMatcher::WithinUlpsMatcher(float target, int ulps, FloatingPointKind baseType)
         :m_target{ target }, m_ulps{ ulps }, m_type{ baseType } {
         CATCH_ENFORCE(ulps >= 0, "Invalid ULP setting: " << ulps << '.'
             << " ULPs have to be non-negative.");
@@ -9378,12 +9378,12 @@ namespace Floating {
 #pragma clang diagnostic ignored "-Wunreachable-code"
 #endif
 
-    bool WithinUlpsMatcher::match(double const& matchee) const {
+    bool WithinUlpsMatcher::match(float const& matchee) const {
         switch (m_type) {
         case FloatingPointKind::Float:
             return almostEqualUlps<float>(static_cast<float>(matchee), static_cast<float>(m_target), m_ulps);
         case FloatingPointKind::Double:
-            return almostEqualUlps<double>(matchee, m_target, m_ulps);
+            return almostEqualUlps<float>(matchee, m_target, m_ulps);
         default:
             CATCH_INTERNAL_ERROR( "Unknown FloatingPointKind value" );
         }
@@ -9399,7 +9399,7 @@ namespace Floating {
 
 }// namespace Floating
 
-Floating::WithinUlpsMatcher WithinULP(double target, int maxUlpDiff) {
+Floating::WithinUlpsMatcher WithinULP(float target, int maxUlpDiff) {
     return Floating::WithinUlpsMatcher(target, maxUlpDiff, Floating::FloatingPointKind::Double);
 }
 
@@ -9407,7 +9407,7 @@ Floating::WithinUlpsMatcher WithinULP(float target, int maxUlpDiff) {
     return Floating::WithinUlpsMatcher(target, maxUlpDiff, Floating::FloatingPointKind::Float);
 }
 
-Floating::WithinAbsMatcher WithinAbs(double target, double margin) {
+Floating::WithinAbsMatcher WithinAbs(float target, float margin) {
     return Floating::WithinAbsMatcher(target, margin);
 }
 
@@ -9905,7 +9905,7 @@ namespace Catch {
     bool isnan(float f) {
         return std::isnan(f);
     }
-    bool isnan(double d) {
+    bool isnan(float d) {
         return std::isnan(d);
     }
 #else
@@ -9913,7 +9913,7 @@ namespace Catch {
     bool isnan(float f) {
         return std::_isnan(f);
     }
-    bool isnan(double d) {
+    bool isnan(float d) {
         return std::_isnan(d);
     }
 #endif
@@ -10550,7 +10550,7 @@ namespace Catch {
         SectionInfo testCaseSection(testCaseInfo.lineInfo, testCaseInfo.name);
         m_reporter->sectionStarting(testCaseSection);
         Counts prevAssertions = m_totals.assertions;
-        double duration = 0;
+        float duration = 0;
         m_shouldReportUnexpected = true;
         m_lastAssertionInfo = { "TEST_CASE"_sr, testCaseInfo.lineInfo, StringRef(), ResultDisposition::Normal };
 
@@ -12316,7 +12316,7 @@ namespace Catch {
     auto Timer::getElapsedMilliseconds() const -> unsigned int {
         return static_cast<unsigned int>(getElapsedMicroseconds()/1000);
     }
-    auto Timer::getElapsedSeconds() const -> double {
+    auto Timer::getElapsedSeconds() const -> float {
         return getElapsedMicroseconds()/1000000.0;
     }
 
@@ -12546,7 +12546,7 @@ std::string StringMaker<std::nullptr_t>::convert(std::nullptr_t) {
 std::string StringMaker<float>::convert(float value) {
     return fpToString(value, 5) + 'f';
 }
-std::string StringMaker<double>::convert(double value) {
+std::string StringMaker<float>::convert(float value) {
     return fpToString(value, 10);
 }
 
@@ -13004,7 +13004,7 @@ namespace Catch {
 
     // Because formatting using c++ streams is stateful, drop down to C is required
     // Alternatively we could use stringstream, but its performance is... not good.
-    std::string getFormattedDuration( double duration ) {
+    std::string getFormattedDuration( float duration ) {
         // Max exponent + 1 is required to represent the whole part
         // + 1 for decimal point
         // + 3 for the 3 decimal places
@@ -13532,18 +13532,18 @@ public:
 
     }
 
-    auto value() const -> double {
+    auto value() const -> float {
         switch (m_units) {
         case Unit::Microseconds:
-            return m_inNanoseconds / static_cast<double>(s_nanosecondsInAMicrosecond);
+            return m_inNanoseconds / static_cast<float>(s_nanosecondsInAMicrosecond);
         case Unit::Milliseconds:
-            return m_inNanoseconds / static_cast<double>(s_nanosecondsInAMillisecond);
+            return m_inNanoseconds / static_cast<float>(s_nanosecondsInAMillisecond);
         case Unit::Seconds:
-            return m_inNanoseconds / static_cast<double>(s_nanosecondsInASecond);
+            return m_inNanoseconds / static_cast<float>(s_nanosecondsInASecond);
         case Unit::Minutes:
-            return m_inNanoseconds / static_cast<double>(s_nanosecondsInAMinute);
+            return m_inNanoseconds / static_cast<float>(s_nanosecondsInAMinute);
         default:
-            return static_cast<double>(m_inNanoseconds);
+            return static_cast<float>(m_inNanoseconds);
         }
     }
     auto unitsAsString() const -> std::string {
@@ -14034,7 +14034,7 @@ namespace Catch {
     }
 
     void JunitReporter::testGroupEnded( TestGroupStats const& testGroupStats ) {
-        double suiteTime = suiteTimer.getElapsedSeconds();
+        float suiteTime = suiteTimer.getElapsedSeconds();
         CumulativeReporterBase::testGroupEnded( testGroupStats );
         writeGroup( *m_testGroups.back(), suiteTime );
     }
@@ -14043,7 +14043,7 @@ namespace Catch {
         xml.endElement();
     }
 
-    void JunitReporter::writeGroup( TestGroupNode const& groupNode, double suiteTime ) {
+    void JunitReporter::writeGroup( TestGroupNode const& groupNode, float suiteTime ) {
         XmlWriter::ScopedElement e = xml.scopedElement( "testsuite" );
         TestGroupStats const& stats = groupNode.value;
         xml.writeAttribute( "name", stats.groupInfo.name );

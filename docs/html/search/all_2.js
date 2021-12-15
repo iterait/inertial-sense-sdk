@@ -4,7 +4,7 @@ var searchData=
   ['bad_5fbaseline_5fholdamb_300',['bad_baseline_holdamb',['../struct_p_a_c_k_e_d.html#aa55406401f59eff70eba458ac0c6d3eb',1,'PACKED']]],
   ['bar_301',['bar',['../struct_p_a_c_k_e_d.html#a031616f5555e4bd5443485b6e3f6f5d8',1,'PACKED::bar()'],['../struct_p_a_c_k_e_d.html#aee978532b44e901687276ef514d2ee4e',1,'PACKED::bar()']]],
   ['baro_302',['baro',['../struct_p_a_c_k_e_d.html#aed4611937a460a34b24e8975fffed5ac',1,'PACKED']]],
-  ['baro2msl_303',['baro2msl',['../_i_s_earth_8c.html#af19dd0d1e90036190bc1e13d55b10185',1,'baro2msl(f_t pKPa):&#160;ISEarth.c'],['../_i_s_earth_8h.html#af19dd0d1e90036190bc1e13d55b10185',1,'baro2msl(f_t pKPa):&#160;ISEarth.c']]],
+  ['baro2msl_303',['baro2msl',['../_i_s_earth_8c.html#af19dd0d1e90036190bc1e13d55b10185',1,'baro2msl(float pKPa):&#160;ISEarth.c'],['../_i_s_earth_8h.html#af19dd0d1e90036190bc1e13d55b10185',1,'baro2msl(float pKPa):&#160;ISEarth.c']]],
   ['barometer_5ft_304',['barometer_t',['../data__sets_8h.html#a6fef47737109b6ebb079fe545aec7ee2',1,'data_sets.h']]],
   ['barotemp_305',['baroTemp',['../struct_p_a_c_k_e_d.html#a078c5751f7e61ee9ba8797ded06ab012',1,'PACKED']]],
   ['bartemp_306',['barTemp',['../struct_p_a_c_k_e_d.html#a17a88544fe320ab7a907d5894206fb09',1,'PACKED::barTemp()'],['../struct_p_a_c_k_e_d.html#ac566cd4ff981bac36eff32137d216d3c',1,'PACKED::barTemp()']]],

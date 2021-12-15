@@ -149,7 +149,7 @@ bool cDeviceLogKML::CloseWriteFile(int kid, sKmlLog &log)
 	{
 		int tracksNum = 0;
 
-		double nextTime = log.data[0].time;
+		float nextTime = log.data[0].time;
 		for (size_t i = 0; i < log.data.size(); )
 		{
 			bool deadReckoning = log.data[i].deadReckoning;
@@ -256,9 +256,9 @@ bool cDeviceLogKML::CloseWriteFile(int kid, sKmlLog &log)
 
 				elem = new TiXmlElement("coordinates");
 #if 1
-				double lat = _CLAMP(item.lla[0] * DEG2RADMULT, -C_PIDIV2, C_PIDIV2) * RAD2DEGMULT;
-				double lon = _CLAMP(item.lla[1] * DEG2RADMULT, -C_PI, C_PI) * RAD2DEGMULT;
-				double alt = _CLAMP(item.lla[2], -1000, 100000);
+				float lat = _CLAMP(item.lla[0] * DEG2RADMULT, -C_PIDIV2, C_PIDIV2) * RAD2DEGMULT;
+				float lon = _CLAMP(item.lla[1] * DEG2RADMULT, -C_PI, C_PI) * RAD2DEGMULT;
+				float alt = _CLAMP(item.lla[2], -1000, 100000);
 				snprintf(buf, BUF_SIZE, "%.8lf,%.8lf,%.3lf", lon, lat, alt);
 				elem->LinkEndChild(new TiXmlText(buf));
 #else
@@ -345,9 +345,9 @@ bool cDeviceLogKML::CloseWriteFile(int kid, sKmlLog &log)
 				}
 
 				sKmlLogData& item = (log.data[i]);
-				double lat = _CLAMP(item.lla[0] * DEG2RADMULT, -C_PIDIV2, C_PIDIV2) * RAD2DEGMULT;
-				double lon = _CLAMP(item.lla[1] * DEG2RADMULT, -C_PI, C_PI) * RAD2DEGMULT;
-				double alt = _CLAMP(item.lla[2], -1000, 100000);
+				float lat = _CLAMP(item.lla[0] * DEG2RADMULT, -C_PIDIV2, C_PIDIV2) * RAD2DEGMULT;
+				float lon = _CLAMP(item.lla[1] * DEG2RADMULT, -C_PI, C_PI) * RAD2DEGMULT;
+				float alt = _CLAMP(item.lla[2], -1000, 100000);
 
 				if (i >= log.data.size() - 2)
 				{

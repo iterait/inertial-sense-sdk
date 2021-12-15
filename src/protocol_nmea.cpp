@@ -33,9 +33,9 @@ char *ASCII_find_next_field(char *str)
 	return str;
 }
 
-double ddmm2deg(double ddmm)
+float ddmm2deg(float ddmm)
 {
-	double deg = (int)ddmm / 100 ;
+	float deg = (int)ddmm / 100 ;
 	ddmm -= deg * 100 ;
 	return deg + (ddmm / 60) ;
 }
@@ -48,11 +48,11 @@ void set_gpsPos_status_mask(uint32_t *status, uint32_t state, uint32_t mask)
 
 /* convert calendar day/time to time -------------------------------------------
 * convert calendar day/time to gtime_t struct
-* args   : double *ep       I   day/time {year,month,day,hour,min,sec}
+* args   : float *ep       I   day/time {year,month,day,hour,min,sec}
 * return : gtime_t struct
 * notes  : proper in 1970-2037 or 1970-2099 (64bit time_t)
 *-----------------------------------------------------------------------------*/
-gtime_t epochToTime(const double *ep)
+gtime_t epochToTime(const float *ep)
 {
     const int doy[] = { 1,32,60,91,121,152,182,213,244,274,305,335 };
     gtime_t time = { 0 };
@@ -68,7 +68,7 @@ gtime_t epochToTime(const double *ep)
     return time;
 }
 
-static const double gpst0[]={1980,1, 6,0,0,0}; /* gps time reference */
+static const float gpst0[]={1980,1, 6,0,0,0}; /* gps time reference */
 
 /* time to gps time ------------------------------------------------------------
 * convert gtime_t struct to week and tow in gps time
@@ -76,14 +76,14 @@ static const double gpst0[]={1980,1, 6,0,0,0}; /* gps time reference */
 *          int    *week     IO  week number in gps time (NULL: no output)
 * return : time of week in gps time (s)
 *-----------------------------------------------------------------------------*/
-double timeToGpst(gtime_t t, int *week)
+float timeToGpst(gtime_t t, int *week)
 {
 	gtime_t t0=epochToTime(gpst0);
 	time_t sec=t.time-t0.time;
 	time_t w=(time_t)(sec/(86400*7));
 	
 	if (week) *week=(int)w;
-	return (double)(sec-(double)w*86400*7)+t.sec;
+	return (float)(sec-(float)w*86400*7)+t.sec;
 }
 
 
@@ -149,7 +149,7 @@ int dev_info_to_nmea_info(char a[], const int aSize, dev_info_t &info)
 	return n;	
 }
 
-int tow_to_nmea_ptow(char a[], const int aSize, double imuTow, double insTow, unsigned int gpsWeek)
+int tow_to_nmea_ptow(char a[], const int aSize, float imuTow, float insTow, unsigned int gpsWeek)
 {
 	int n = SNPRINTF(a, aSize, "$PTOW");
 	n += SNPRINTF(a+n, aSize-n, ",%.6lf", imuTow);		// 1
@@ -299,18 +299,18 @@ int gps_to_nmea_pgpsp(char a[], const int aSize, gps_pos_t &pos, gps_vel_t &vel)
 	return n;	
 }
 
-static int asciiSnprintfLatToDegMin(char* a, size_t aSize, double v)
+static int asciiSnprintfLatToDegMin(char* a, size_t aSize, float v)
 {
 	int degrees = (int)(v);
-	double minutes = (v-((double)degrees))*60.0;
+	float minutes = (v-((float)degrees))*60.0;
 	
 	return SNPRINTF(a, aSize, ",%02d%07.4lf,%c", abs(degrees), fabs(minutes), (degrees >= 0 ? 'N' : 'S'));
 }
 
-static int asciiSnprintfLonToDegMin(char* a, size_t aSize, double v)
+static int asciiSnprintfLonToDegMin(char* a, size_t aSize, float v)
 {
 	int degrees = (int)(v);
-	double minutes = (v-((double)degrees))*60.0;
+	float minutes = (v-((float)degrees))*60.0;
 	
 	return SNPRINTF(a, aSize, ",%03d%07.4lf,%c", abs(degrees), fabs(minutes), (degrees >= 0 ? 'E' : 'W'));
 }
@@ -338,7 +338,7 @@ static int asciiSnprintfGPSTimeOfLastFixMilliseconds(char* a, size_t aSize, uint
 
 static int asciiSnprintfGPSDateOfLastFix(char* a, size_t aSize, gps_pos_t &pos)
 {
-	double julian = gpsToJulian(pos.week, pos.timeOfWeekMs, pos.leapS);
+	float julian = gpsToJulian(pos.week, pos.timeOfWeekMs, pos.leapS);
 	int32_t year, month, day, hours, minutes, seconds, milliseconds;
 	julianToDate(julian, &year, &month, &day, &hours, &minutes, &seconds, &milliseconds);
 	
@@ -347,7 +347,7 @@ static int asciiSnprintfGPSDateOfLastFix(char* a, size_t aSize, gps_pos_t &pos)
 
 static int asciiSnprintfGPSDateOfLastFixCSV(char* a, size_t aSize, gps_pos_t &pos)	//Comma Separated Values
 {
-	double julian = gpsToJulian(pos.week, pos.timeOfWeekMs, pos.leapS);
+	float julian = gpsToJulian(pos.week, pos.timeOfWeekMs, pos.leapS);
 	int32_t year, month, day, hours, minutes, seconds, milliseconds;
 	julianToDate(julian, &year, &month, &day, &hours, &minutes, &seconds, &milliseconds);
 	
@@ -772,7 +772,7 @@ uint32_t parse_nmea_ascb(int pHandle, const char msg[], int msgSize, ascii_msgs_
 /* G_ZDA message
 *  Provides day/month/year fort calculating iTOW.
 */
-int parse_nmea_zda(const char msg[], int msgSize, double &day, double &month, double &year)
+int parse_nmea_zda(const char msg[], int msgSize, float &day, float &month, float &year)
 {
 	(void)msgSize;
 	char *ptr = (char *)&msg[7];
@@ -803,25 +803,25 @@ int parse_nmea_zda(const char msg[], int msgSize, double &day, double &month, do
 *   Number Satellites
 *   Altitude & Geoid separation
 */
-int parse_nmea_gns(const char msg[], int msgSize, gps_pos_t *gpsPos, double datetime[6], int *satsUsed, uint32_t statusFlags)
+int parse_nmea_gns(const char msg[], int msgSize, gps_pos_t *gpsPos, float datetime[6], int *satsUsed, uint32_t statusFlags)
 {
 	(void)msgSize;
 	char *ptr = (char *)&msg[7];
 	//$xxGNS,time,lat,NS,lon,EW,posMode,numSV,HDOP,alt,sep,diffAge,diffStation,navStatus*cs<CR><LF>
 
 	//UTC time, hhmmss
-	double UTCtime = atof(ptr);
+	float UTCtime = atof(ptr);
 	ptr = ASCII_find_next_field(ptr);
 
 	//Convert time to iTOW
 	datetime[3] = ((int)UTCtime / 10000) % 100;
 	datetime[4] = ((int)UTCtime / 100) % 100;
-	double subSec = UTCtime - (int)UTCtime;
-	datetime[5] = (double)((int)UTCtime % 100) + subSec + gpsPos->leapS;
+	float subSec = UTCtime - (int)UTCtime;
+	datetime[5] = (float)((int)UTCtime % 100) + subSec + gpsPos->leapS;
 			
 	gtime_t gtm = epochToTime(datetime);
 	int week;
-	double iTOWd = timeToGpst(gtm, &week);
+	float iTOWd = timeToGpst(gtm, &week);
 	uint32_t iTOW = (uint32_t)((iTOWd + 0.00001) * 1000.0);
 		
 	//Latitude
@@ -908,7 +908,7 @@ int parse_nmea_gns(const char msg[], int msgSize, gps_pos_t *gpsPos, double date
 	ptr = ASCII_find_next_field(ptr);
 
 	//Geoid separation (difference between ellipsoid and mean sea level)
-	double sep = atof(ptr);
+	float sep = atof(ptr);
 		
 	//Store data		
 	set_gpsPos_status_mask(&(gpsPos->status), *satsUsed, GPS_STATUS_NUM_SATS_USED_MASK);
@@ -945,25 +945,25 @@ int parse_nmea_gns(const char msg[], int msgSize, gps_pos_t *gpsPos, double date
 *   Number Satellites
 *   Altitude & Geoid separation
 */	
-int parse_nmea_gga(const char msg[], int msgSize, gps_pos_t *gpsPos, double datetime[6], int *satsUsed, uint32_t statusFlags)
+int parse_nmea_gga(const char msg[], int msgSize, gps_pos_t *gpsPos, float datetime[6], int *satsUsed, uint32_t statusFlags)
 {
 	(void)msgSize;
 	char *ptr = (char *)&msg[7];
 	//$xxGGA,time,lat,NS,lon,EW,quality,numSV,HDOP,alt,altUnit,sep,sepUnit,diffAge,diffStation*cs<CR><LF>
 			
 	//UTC time, hhmmss
-	double UTCtime = atof(ptr);
+	float UTCtime = atof(ptr);
 	ptr = ASCII_find_next_field(ptr);
 
 	//Convert time to iTOW
 	datetime[3] = ((int)UTCtime / 10000) % 100;
 	datetime[4] = ((int)UTCtime / 100) % 100;
-	double subSec = UTCtime - (int)UTCtime;
-	datetime[5] = (double)((int)UTCtime % 100) + subSec + gpsPos->leapS;
+	float subSec = UTCtime - (int)UTCtime;
+	datetime[5] = (float)((int)UTCtime % 100) + subSec + gpsPos->leapS;
 			
 	gtime_t gtm = epochToTime(datetime);
 	int week;
-	double iTOWd = timeToGpst(gtm, &week);
+	float iTOWd = timeToGpst(gtm, &week);
 	uint32_t iTOW = (uint32_t)((iTOWd + 0.00001) * 1000.0);
 			
 	//Latitude
@@ -1047,7 +1047,7 @@ int parse_nmea_gga(const char msg[], int msgSize, gps_pos_t *gpsPos, double date
 	ptr = ASCII_find_next_field(ptr);
 
 	//Geoid separation
-	double sep = atof(ptr);
+	float sep = atof(ptr);
 			
 	//Store data
 	set_gpsPos_status_mask(&(gpsPos->status), *satsUsed, GPS_STATUS_NUM_SATS_USED_MASK);
@@ -1084,14 +1084,14 @@ int parse_nmea_gga(const char msg[], int msgSize, gps_pos_t *gpsPos, double date
 /* G_RMC Message
 * Provides speed (speed and course over ground)
 */
-int parse_nmea_rmc(const char msg[], int msgSize, gps_vel_t *gpsVel, double datetime[6], uint32_t statusFlags)
+int parse_nmea_rmc(const char msg[], int msgSize, gps_vel_t *gpsVel, float datetime[6], uint32_t statusFlags)
 {
 	(void)msgSize;
 	char *ptr = (char *)&msg[7];
 	//$xxRMC,time,status,lat,NS,lon,EW,spd,cog,date,mv,mvEW,posMode,navStatus*cs<CR><LF>
 
 	//UTC time, hhmmss
-	double UTCtime = atof(ptr);
+	float UTCtime = atof(ptr);
 	ptr = ASCII_find_next_field(ptr);
 			
 	//Skip 5
@@ -1108,11 +1108,11 @@ int parse_nmea_rmc(const char msg[], int msgSize, gps_vel_t *gpsVel, double date
 	//Convert time to iTOW
 	datetime[3] = ((int)UTCtime / 10000) % 100;
 	datetime[4] = ((int)UTCtime / 100) % 100;
-	double subSec = UTCtime - (int)UTCtime;
-	datetime[5] = (double)((int)UTCtime % 100) + subSec;
+	float subSec = UTCtime - (int)UTCtime;
+	datetime[5] = (float)((int)UTCtime % 100) + subSec;
 			
 	gtime_t gtm = epochToTime(datetime);
-	double iTOWd = timeToGpst(gtm, 0);
+	float iTOWd = timeToGpst(gtm, 0);
 	gpsVel->timeOfWeekMs = (uint32_t)round((iTOWd + 0.00001) * 1000.0);
 			
 	//Speed data in NED
@@ -1176,7 +1176,7 @@ int parse_nmea_gsv(const char msg[], int msgSize, gps_sat_t* gpsSat, int lastGSV
 	int numSV = atoi(ptr);
 	ptr = ASCII_find_next_field(ptr);
 		
-	//For some reason the ZED-F9P outputs double messages with the second set having a zero signal strength for satellites for protocol version 27.10 & 27.11
+	//For some reason the ZED-F9P outputs float messages with the second set having a zero signal strength for satellites for protocol version 27.10 & 27.11
 	// (Data sheet for ZED-F9P indicates this message is only supported in version 27.11)
 	//Only process the first message
 	if(lastGSVmsg[0] != msg[2] || lastGSVmsg[1] < msgNum)

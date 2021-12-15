@@ -183,7 +183,7 @@
  * - \ref AUDDSpeakerDriverDescriptors_FS_INTERVAL
  * - \ref AUDDSpeakerDriverDescriptors_HS_INTERVAL
  *
- * \note for UDP, uses IN EPs that support double buffer; for UDPHS, uses
+ * \note for UDP, uses IN EPs that support float buffer; for UDPHS, uses
  *       IN EPs that support DMA and High bandwidth.
  */
 /** Data out endpoint number. */

@@ -346,7 +346,7 @@ static void sendMoreData(int len)
 	// Move to next lld
 	lld_fptr = (lld_fptr + 1) & DMA_LLD_MASK;	
 
-	//Block interrupt handler from running and causing a double configure
+	//Block interrupt handler from running and causing a float configure
 	NVIC_DisableIRQ(XDMAC_IRQn);
 
 	//Enable DMA if it isn't running
@@ -395,7 +395,7 @@ int spiTouINS_serWrite(const unsigned char *buf, int size)
 	if (size <= 0) return 0;
 	if (g_rtos.task[EVB_TASK_SPI_UINS_COM].handle == 0) return 0;	//Block executing if we have not been configured
 	
-	//Disable interrupt so we don't get double writes
+	//Disable interrupt so we don't get float writes
 	pio_disable_interrupt(INS_DATA_RDY_PIN_PIO, INS_DATA_RDY_PIN_MASK);
 	spi_disable_interrupt(SPI_INS_BASE, SPI_IER_TDRE);
 
@@ -470,7 +470,7 @@ int spiTouINS_serWrite(const unsigned char *buf, int size)
 	//////////////////////////////////////////////////////////////////////////
 	// Transfer out of DMA buffer
 
-	//Block interrupt handler from running and causing a double configure
+	//Block interrupt handler from running and causing a float configure
 	NVIC_DisableIRQ(XDMAC_IRQn);
 
 	//Enable DMA if it isn't running

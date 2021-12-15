@@ -502,31 +502,31 @@ sint8 m2m_ate_read_rx_status(tstrM2mAteRxStatus *);
 
 /*!
 @fn	\
-	sint8 m2m_ate_set_dig_gain(double dGaindB)
+	sint8 m2m_ate_set_dig_gain(float dGaindB)
 
 @brief
 	This function is used to set the digital gain
 
-@param [in]	double dGaindB
+@param [in]	float dGaindB
 		The digital gain value required to be set.
 @return
 	The function SHALL return 0 for success and a negative value otherwise.
 */
-sint8 m2m_ate_set_dig_gain(double dGaindB);
+sint8 m2m_ate_set_dig_gain(float dGaindB);
 
 /*!
 @fn	\
-	sint8 m2m_ate_get_dig_gain(double * pdGaindB)
+	sint8 m2m_ate_get_dig_gain(float * pdGaindB)
 
 @brief
 	This function is used to get the digital gain
 
-@param [out]	double * pdGaindB
+@param [out]	float * pdGaindB
 		The retrieved digital gain value obtained from HW registers.
 @return
 	The function SHALL return 0 for success and a negative value otherwise.
 */
-sint8 m2m_ate_get_dig_gain(double * pdGaindB);
+sint8 m2m_ate_get_dig_gain(float * pdGaindB);
 
 /*!
 @fn	\
@@ -558,17 +558,17 @@ sint8 m2m_ate_get_ppa_gain(uint32 * ppaGain);
 
 /*!
 @fn	\
-	sint8 m2m_ate_get_tot_gain(double * pTotGaindB)
+	sint8 m2m_ate_get_tot_gain(float * pTotGaindB)
 
 @brief
 	This function is used to get the total gain
 
-@param [out]	double * pTotGaindB
+@param [out]	float * pTotGaindB
 		The retrieved total gain value obtained from calculations made based on the digital gain, pa and ppa gain values.
 @return
 	The function SHALL return 0 for success and a negative value otherwise.
 */
-sint8 m2m_ate_get_tot_gain(double * pTotGaindB);
+sint8 m2m_ate_get_tot_gain(float * pTotGaindB);
 
 	
 #ifdef __cplusplus

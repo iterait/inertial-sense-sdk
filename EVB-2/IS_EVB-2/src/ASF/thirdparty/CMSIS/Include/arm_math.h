@@ -394,7 +394,7 @@ extern "C"
   /**
    * @brief 64-bit floating-point type definition.
    */
-  typedef double float64_t;
+  typedef float float64_t;
 
   /**
    * @brief definition to read/write two 16 bit values.

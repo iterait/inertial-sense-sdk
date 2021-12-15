@@ -122,7 +122,7 @@ GCCFLAGS      = $(C_INCLUDES)                     \
                 -Wcast-align                      \
                 -Wmissing-include-dirs            \
                 -Winit-self                       \
-                -Wdouble-promotion                \
+                -Wfloat-promotion                \
                 -gdwarf-2                         \
                 -fno-exceptions                   \
                 -O2                               \

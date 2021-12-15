@@ -224,8 +224,8 @@ typedef struct {
 #define PWM_SCM_UPDM_Pos 16
 #define PWM_SCM_UPDM_Msk (0x3u << PWM_SCM_UPDM_Pos) /**< \brief (PWM_SCM) Synchronous Channels Update Mode */
 #define PWM_SCM_UPDM(value) ((PWM_SCM_UPDM_Msk & ((value) << PWM_SCM_UPDM_Pos)))
-#define   PWM_SCM_UPDM_MODE0 (0x0u << 16) /**< \brief (PWM_SCM) Manual write of double buffer registers and manual update of synchronous channels */
-#define   PWM_SCM_UPDM_MODE1 (0x1u << 16) /**< \brief (PWM_SCM) Manual write of double buffer registers and automatic update of synchronous channels */
+#define   PWM_SCM_UPDM_MODE0 (0x0u << 16) /**< \brief (PWM_SCM) Manual write of float buffer registers and manual update of synchronous channels */
+#define   PWM_SCM_UPDM_MODE1 (0x1u << 16) /**< \brief (PWM_SCM) Manual write of float buffer registers and automatic update of synchronous channels */
 #define   PWM_SCM_UPDM_MODE2 (0x2u << 16) /**< \brief (PWM_SCM) Automatic write of duty-cycle update registers by the DMA and automatic update of synchronous channels */
 #define PWM_SCM_PTRM (0x1u << 20) /**< \brief (PWM_SCM) DMA Transfer Request Mode */
 #define PWM_SCM_PTRCS_Pos 21

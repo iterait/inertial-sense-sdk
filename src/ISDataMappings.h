@@ -227,7 +227,7 @@ public:
 	* @param buf data buffer
 	* @return timestamp, or 0.0 if no timestamp available
 	*/
-    static double GetTimestamp(const p_data_hdr_t* hdr, const uint8_t* buf);
+    static float GetTimestamp(const p_data_hdr_t* hdr, const uint8_t* buf);
 
 	/**
 	* Check whether field data can be retrieved given a data packet

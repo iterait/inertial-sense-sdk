@@ -36,7 +36,7 @@ var searchData=
   ['dist2base_5047',['dist2base',['../struct_p_a_c_k_e_d.html#a0fe37fd3e7937e07f4b423b003c8276d',1,'PACKED']]],
   ['distance_5048',['distance',['../struct_p_a_c_k_e_d.html#ae8c3f671a6b593b76339422a750c0440',1,'PACKED']]],
   ['divergent_5fpnt_5fpos_5fiteration_5049',['divergent_pnt_pos_iteration',['../struct_p_a_c_k_e_d.html#a9531c358d54154d34d706266b8be3ad7',1,'PACKED']]],
-  ['double_5fdebug_5050',['double_debug',['../struct_p_a_c_k_e_d.html#ae4719f52cefd7891e4427bfce777bc8e',1,'PACKED']]],
+  ['float_5fdebug_5050',['float_debug',['../struct_p_a_c_k_e_d.html#ae4719f52cefd7891e4427bfce777bc8e',1,'PACKED']]],
   ['dt_5051',['dt',['../struct_p_a_c_k_e_d.html#a764d698b496cf0712cdbe1931ea8d36d',1,'PACKED']]],
   ['dtaun_5052',['dtaun',['../structgeph__t.html#a4a40f08ff0cac6502d225bf8ffe69bd3',1,'geph_t']]],
   ['dualimu_5053',['dualImu',['../struct_p_a_c_k_e_d.html#ac7a04f77b0ae30538eaad9b0bf9c4d08',1,'PACKED']]],

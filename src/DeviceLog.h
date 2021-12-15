@@ -52,7 +52,7 @@ public:
 	uint64_t FileSize() { return m_fileSize; }
 	uint64_t LogSize() { return m_logSize; }
 	uint32_t FileCount() { return m_fileCount; }
-	void SetKmlConfig(bool showTracks =true, bool showPoints =true, bool showPointTimestamps =true, double pointUpdatePeriodSec=1.0, bool altClampToGround=true)
+	void SetKmlConfig(bool showTracks =true, bool showPoints =true, bool showPointTimestamps =true, float pointUpdatePeriodSec=1.0, bool altClampToGround=true)
 	{ 
 		m_showTracks = showTracks;
 		m_showPoints = showPoints;
@@ -83,7 +83,7 @@ protected:
 	bool                    m_showTracks;
 	bool                    m_showPoints;
 	bool                    m_showPointTimestamps;
-	double                  m_pointUpdatePeriodSec;
+	float                  m_pointUpdatePeriodSec;
 
 private:
     cLogStats*              m_logStats;

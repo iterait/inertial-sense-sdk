@@ -464,7 +464,7 @@ typedef struct
 typedef struct  
 {   
     int         count;              // Sample count
-    double      mean;               // input average
+    float      mean;               // input average
 } rmean_filter_t;
 
 
@@ -490,7 +490,7 @@ void running_mean_filter( float mean[], float input[], int arraySize, int sample
 
 
 /** 
- * \brief Running Average Filter (double)
+ * \brief Running Average Filter (float)
  *  A running average of the input array is collected in the mean array.  Filter
  *  is reset when sampleCount equals 0.
  *
@@ -499,7 +499,7 @@ void running_mean_filter( float mean[], float input[], int arraySize, int sample
  * \param arraySize     Array length of mean and input arrays.
  * \param sampleCount   Sample number of input.  0 causes filter to be reset.
  */
-void running_mean_filter_f64( double mean[], float input[], int arraySize, int sampleCount );
+void running_mean_filter_f64( float mean[], float input[], int arraySize, int sampleCount );
 
 
 // Look for error in dual IMU data

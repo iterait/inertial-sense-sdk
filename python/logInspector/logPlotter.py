@@ -939,7 +939,7 @@ class logPlot:
         if fig is None:
             fig = plt.figure()
         ax = fig.subplots(3,1, sharex=True)
-        fig.suptitle('Debug double Array - ' + os.path.basename(os.path.normpath(self.log.directory)))
+        fig.suptitle('Debug float Array - ' + os.path.basename(os.path.normpath(self.log.directory)))
         for d in self.active_devs:
             debug_lf = self.getData(d, DID_DEBUG_ARRAY, 'lf')
             for i in range(3):
