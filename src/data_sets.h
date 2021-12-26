@@ -656,6 +656,9 @@ typedef struct PACKED
 	
 	/** Magnetometers in Gauss */
 	float                   mag[3];
+
+	/** Temperature of magnetometer sensor in Celsius */
+	float                   magTemp;
 } magnetometer_t;
 
 
@@ -1291,6 +1294,12 @@ typedef struct PACKED
 typedef struct PACKED
 {                                       // Units only apply for calibrated data
 	f_t						mag[3];         // (uT)		Magnetometers
+	f_t						temp;			// (°C)		Temperature of magnetometer
+} sensors_mag_w_temp_t;
+
+typedef struct PACKED
+{                                       // Units only apply for calibrated data
+	f_t						mag[3];         // (uT)		Magnetometers
 } sensors_mag_t;
 
 typedef struct PACKED
@@ -1340,7 +1349,7 @@ typedef struct PACKED
 {                                       // LSB units for all except temperature, which is Celsius.
 	double					time;
 	sensors_imu_w_temp_t	imu[NUM_IMU_DEVICES];
-	sensors_mag_t			mag[NUM_MAG_DEVICES];   // Magnetometers
+	sensors_mag_w_temp_t	mag[NUM_MAG_DEVICES];   // Magnetometers
 	f_t						bar;            		// Barometric pressure
 	f_t						barTemp;				// Temperature of barometric pressure sensor
 	f_t                     humidity;				// Relative humidity as a percent (%rH).  Range is 0% - 100%
