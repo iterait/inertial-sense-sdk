@@ -329,8 +329,8 @@ static void PopulateSysSensorsMappings(map_name_to_info_t mappings[DID_COUNT])
     ADD_MAP(m, totalSize, "humidity", humidity, 0, DataTypeFloat, float, 0);
     ADD_MAP(m, totalSize, "vin", vin, 0, DataTypeFloat, float, 0);
     ADD_MAP(m, totalSize, "ana1", ana1, 0, DataTypeFloat, float, 0);
-    ADD_MAP(m, totalSize, "ana3", ana1, 0, DataTypeFloat, float, 0);
-    ADD_MAP(m, totalSize, "ana4", ana1, 0, DataTypeFloat, float, 0);
+    ADD_MAP(m, totalSize, "ana3", ana3, 0, DataTypeFloat, float, 0);
+    ADD_MAP(m, totalSize, "ana4", ana4, 0, DataTypeFloat, float, 0);
 
     ASSERT_SIZE(totalSize);
 }
@@ -593,6 +593,7 @@ static void PopulateMagnetometerMappings(map_name_to_info_t mappings[DID_COUNT])
     ADD_MAP(m, totalSize, "mag[0]", mag[0], 0, DataTypeFloat, float&, 0);
     ADD_MAP(m, totalSize, "mag[1]", mag[1], 0, DataTypeFloat, float&, 0);
     ADD_MAP(m, totalSize, "mag[2]", mag[2], 0, DataTypeFloat, float&, 0);
+	ADD_MAP(m, totalSize, "magTemp", magTemp, 0, DataTypeFloat, float, 0);
 
     ASSERT_SIZE(totalSize);
 }
