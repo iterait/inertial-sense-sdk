@@ -1282,6 +1282,7 @@ typedef struct PACKED
 	f_t						acc[3];         // (m/s^2)	Linear acceleration
 	f_t						mag[3];         // (uT)		Magnetometers
 	f_t						temp;			// (°C)		Temperature of MPU
+	// TODO: Add another temperature field for the Magnetometers? OR split this data set into sensors_imu_w_temp_t and sensors_mag_w_temp_t
 } sensors_mpu_w_temp_t;
 
 typedef struct PACKED
