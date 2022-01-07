@@ -982,7 +982,7 @@ int serSetBaudRate( int serialNum, int baudrate )
 	{
 		// Update baudrate setting
 #ifndef __INERTIAL_SENSE_EVB_2__
-		if (0 == comManagervalidateBaudRate(baudrate))
+		if (0 == validateBaudRate(baudrate))
 #endif
 			ser->usart_options.baudrate = baudrate;
 	}
