@@ -55,7 +55,7 @@ int main(int argc, char* argv[])
 	const char* firmware_file_path = argv[1];
 	printf("firmware path: %s\n", firmware_file_path);
 
-	uins_device_uri_list uri_list;
+	uins_device_uri_list uri_list = {0};
 	uins_probe_device_list(&uri_list, listCallback);
 
 	if (uri_list.size < 1)
