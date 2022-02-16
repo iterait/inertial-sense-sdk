@@ -9,6 +9,7 @@ add_library(SDK_test
 	test_com_manager.cpp
 	test_com_manager_2.cpp
 	test_math.cpp
+	test_mutex.cpp
 	test_ring_buffer.cpp
 	test_InertialSense.cpp
 	test_ISDataMappings.cpp
@@ -67,6 +68,13 @@ add_executable(run_tests
 	)
 
 target_link_libraries(run_tests gtest_main ${GTEST_LIBRARIES} pthread)
+
+add_executable(run_mutex_tests 
+	test_mutex.cpp
+	../ISUtilities.cpp
+)
+
+target_link_libraries(run_mutex_tests gtest_main ${GTEST_LIBRARIES} pthread)
 
 #    target_include_directories(run_tests PUBLIC ${CMAKE_CURRENT_LIST_DIR})
 #    add_test(NAME run_tests

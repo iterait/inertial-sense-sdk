@@ -546,21 +546,21 @@ void* mutexCreate(void)
 {
 
 #if PLATFORM_IS_EMBEDDED
-
+		printf("\tskipping create, PLATFORM_IS_EMBEDDED\n");
     return NULLPTR;
 
 #elif CPP11_IS_ENABLED
-
+	printf("\tcreating cpp11 mutex\n");
 	return new mutex();
 
 #elif PLATFORM_IS_WINDOWS
-
+	printf("\tcreating critical section PLATFORM_IS_WINDOWS\n");
 	CRITICAL_SECTION* c = (CRITICAL_SECTION*)MALLOC(sizeof(CRITICAL_SECTION));
 	InitializeCriticalSection(c);
 	return c;	
 
 #else
-
+	printf("\tcreating pthread_mutex_t\n");
 	pthread_mutex_t* m = (pthread_mutex_t*)MALLOC(sizeof(pthread_mutex_t));
 	pthread_mutex_init(m, NULL);
 	return m;
@@ -571,21 +571,25 @@ void* mutexCreate(void)
 
 void mutexLock(void* handle)
 {
+	printf("locking\n");
 
 #if PLATFORM_IS_EMBEDDED
-
+		printf("\tskipping lock, PLATFORM_IS_EMBEDDED\n");
     return;
 
 #elif CPP11_IS_ENABLED
-
+	printf("\tCPP11_IS_ENABLED\n");
 	((mutex*)handle)->lock();
 
-#elif PLATFORM_IS_WINDOWS
+	// bool locked = ((mutex*)handle)->lock();
+	// assert(locked);
 
+#elif PLATFORM_IS_WINDOWS
+	printf("\tPLATFORM_IS_WINDOWS\n");
 	EnterCriticalSection((CRITICAL_SECTION*)handle);
 
 #else
-
+	printf("\tpthreads fallback\n");
 	pthread_mutex_lock((pthread_mutex_t*)handle);
 
 #endif
@@ -594,21 +598,22 @@ void mutexLock(void* handle)
 
 void mutexUnlock(void* handle)
 {
+	printf("unlocking\n");
 
 #if PLATFORM_IS_EMBEDDED
-
+		printf("\tskipping unlock, PLATFORM_IS_EMBEDDED\n");
     return;
 
 #elif CPP11_IS_ENABLED
-
+	printf("\tCPP11_IS_ENABLED\n");
 	((mutex*)handle)->unlock();
 
 #elif PLATFORM_IS_WINDOWS
-
+	printf("\tPLATFORM_IS_WINDOWS\n");
 	LeaveCriticalSection((CRITICAL_SECTION*)handle);
 
 #else
-
+	printf("\tpthreads fallback\n");
 	pthread_mutex_unlock((pthread_mutex_t*)handle);
 
 #endif
@@ -619,24 +624,25 @@ void mutexFree(void* handle)
 {
 	if (handle == NULL)
 	{
+		printf("skipping free, null handle\n");
 		return;
 	}
 
 #if PLATFORM_IS_EMBEDDED
-
+		printf("skipping free, PLATFORM_IS_EMBEDDED\n");
     return;
 
 #elif CPP11_IS_ENABLED
-
+	printf("deleting cpp11 mutex\n");
 	delete (mutex*)handle;
 
 #elif PLATFORM_IS_WINDOWS
-
+	printf("deleting critical section PLATFORM_IS_WINDOWS\n");
 	DeleteCriticalSection((CRITICAL_SECTION*)handle);
 	FREE(handle);
 
 #else
-
+	printf("destroying pthread mutex\n");
 	pthread_mutex_destroy((pthread_mutex_t*)handle);
 	FREE(handle);
 
