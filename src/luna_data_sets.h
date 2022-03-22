@@ -23,7 +23,8 @@ extern "C" {
 #define DID_EVB_LUNA_WHEEL_CONTROLLER   (eDataIDs)114 /** (evb_luna_wheel_controller_t) EVB wheel control information */
 #define DID_EVB_LUNA_WHEEL_COMMAND      (eDataIDs)115 /** (evb_luna_wheel_command_t) EVB velocity command */
 #define DID_EVB_LUNA_AUX_COMMAND        (eDataIDs)116 /** (evb_luna_aux_command_t) EVB auxillary commands */
-#define DID_LUNA_COUNT					117				/** Make larger than all Luna DIDs */
+#define DID_EVB_LUNA_CURTIS_TUNE        (eDataIDs)117 /** (evb_luna_curtis_tune)*/
+#define DID_LUNA_COUNT					          118 /** Make larger than all Luna DIDs */
 
 
 PUSH_PACK_1
@@ -339,6 +340,24 @@ typedef struct evb_luna_aux_command_t
     uint32_t                    command;	// (see eLunaAuxCommands)
 
 }evb_luna_aux_command_t;
+
+typedef struct
+{
+    /** Controller Identifier 'L' for left 'R' for right*/
+    char nodeId;
+
+    /** Index of parameter */
+    uint16_t index;
+    
+    /** Subindex of parameter */
+    uint8_t subindex;
+
+    /** Data */
+    uint64_t data;
+
+    /** Data Size */
+    size_t DLC;
+} evb_luna_curtis_tune_t;
 
 typedef enum
 {
