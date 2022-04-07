@@ -417,6 +417,9 @@ typedef struct
 	/** Duty cycle control effort at actuator (-1.0 to 1.0) */
 	float 					effDuty_l;
 	float 					effDuty_r;
+	
+	//** Motor controller error codes*/
+	uint32_t				errorCode;
 
 } evb_luna_wheel_controller_t;
 
