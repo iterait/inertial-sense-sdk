@@ -419,10 +419,18 @@ typedef struct
 	float 					effDuty_r;
 	
 	//** Motor controller error codes*/
-	uint64_t				errorCode;
+	uint32_t				errorCode;
 
 } evb_luna_wheel_controller_t;
 
+typedef enum
+{
+	/** Parameter value invalid*/
+	EVB_LUNA_ERROR_CODE_INVALID_VALUE   = 0x00000001,
+	
+	EVB_LUNA_ERROR_CODE_POWER_CYCLE_REQUIRED = 0x00000002,
+
+} eEvbLunaMotorControllerErrorCode;
 
 POP_PACK
 
