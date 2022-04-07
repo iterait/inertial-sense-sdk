@@ -1198,7 +1198,7 @@ static void PopulateEvbLunaWheelControllerMappings(map_name_to_info_t mappings[D
 	ADD_MAP(m, totalSize, "effInt_r", effInt_r, 0, DataTypeFloat, float, 0);
 	ADD_MAP(m, totalSize, "effDuty_l", effDuty_l, 0, DataTypeFloat, float, 0);
 	ADD_MAP(m, totalSize, "effDuty_r", effDuty_r, 0, DataTypeFloat, float, 0);
-	ADD_MAP(m, totalSize, "errorCode", errorCode, 0, DataTypeInt32, int32_t, 0);
+	ADD_MAP(m, totalSize, "errorCode", errorCode, 0, DataTypeUInt64, uint64_t, DataFlagsDisplayHex);
 
 	ASSERT_SIZE(totalSize);
 }
