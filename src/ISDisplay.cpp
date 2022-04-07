@@ -1475,7 +1475,7 @@ string cInertialSenseDisplay::DataToStringSensorsADC(const sys_sensors_adc_t &se
 	}
 
 	return ss.str();
-
+}
 
 string cInertialSenseDisplay::DataToStringWheelEncoder(const wheel_encoder_t &wheel, const p_data_hdr_t& hdr)
 {
