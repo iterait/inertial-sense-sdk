@@ -298,19 +298,20 @@ typedef enum
 	RUNMODE_AUTONOMOUS_SKIP_WAYPOINT     	= 6,
 	RUNMODE_FAULT                        	= 7,
 	RUNMODE_STOP							= 8,
+    RUNMODE_INIT                            = 9,
 
 	// Velocity TESTS
-	RUNMODE_TEST_VEL_DUAL_CMD				= 9,	// Use left vel cmd to drive left and right together
-	RUNMODE_TEST_VEL_CMD				    = 10,
-	RUNMODE_TEST_VEL_SWEEP				    = 11,
+	RUNMODE_TEST_VEL_DUAL_CMD				= 10,	// Use left vel cmd to drive left and right together
+	RUNMODE_TEST_VEL_CMD				    = 11,
+	RUNMODE_TEST_VEL_SWEEP				    = 12,
 
 	// Effort TESTS
-	RUNMODE_TEST_EFFORT					    = 12,	// (Keep as first effort test)
+	RUNMODE_TEST_EFFORT					    = 13,	// (Keep as first effort test)
 
 	// Duty TESTS	
-	RUNMODE_TEST_DUTY			    		= 13,	// (Keep as first duty cycle test)
-	RUNMODE_TEST_DUTY_SWEEP				    = 14,	// Watchdog disabled in testing
-	RUNMODE_TEST_WHL_ANG_VEL_SWEEP          = 15,
+	RUNMODE_TEST_DUTY			    		= 14,	// (Keep as first duty cycle test)
+	RUNMODE_TEST_DUTY_SWEEP				    = 15,	// Watchdog disabled in testing
+	RUNMODE_TEST_WHL_ANG_VEL_SWEEP          = 16,
 
 	RUNMODE_COUNT
 } eLunaWheelCmdRunmode;
