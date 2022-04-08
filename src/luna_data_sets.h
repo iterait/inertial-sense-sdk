@@ -419,7 +419,8 @@ typedef struct
 	float 					effDuty_r;
 	
 	//** Motor controller error codes*/
-	uint32_t				errorCode;
+	uint32_t				errorCode_l;
+	uint32_t				errorCode_r;
 
 } evb_luna_wheel_controller_t;
 
