@@ -17,6 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // #include "ISConstants.h"
 
 #include "ISEarth.h"
+#include "globals.h"
 
 //_____ M A C R O S ________________________________________________________
 
@@ -57,6 +58,8 @@ static const double Rb = 6356752.31424518;	// (m) Earth polar radius Rb = Ra * (
 /* Coordinate transformation from ECEF coordinates to latitude/longitude/altitude (rad,rad,m) */
 void ecef2lla(const double *Pe, double *LLA, const int method)
 {
+
+
     int i, iter = 0;
     double p, p2, z2, Rn, sinmu, beta, k, c, zeta, rho, s, t, u, v = 0.0, w,
            F, G, G2, P, Q, val, U, V, z0, r0, err = 1.0e6, z_i;
@@ -73,6 +76,8 @@ void ecef2lla(const double *Pe, double *LLA, const int method)
     // Longitude
     LLA[1] = atan2(Pe[1], Pe[0]);
 
+    uint32_t time_usec_now = time_usec();
+
     // The original Bowring's irrational geodetic-latitude (mu) equation:
     // k - 1 - e^2 * R * k / sqrt(p^2 + (1 - e^2) * z^2 * k^2) = 0
     // where k = p / z * tan(mu)
@@ -82,9 +87,9 @@ void ecef2lla(const double *Pe, double *LLA, const int method)
     // k0 = 1 / (1 - e^2)
     // Various methods can be used to solve Bowring's equation.
 
-    switch (method)
-    {
-    case 0:
+//    switch (method)
+//    {
+//    case 0:
         // Original Bowring's iterative procedure with additional trigonometric functions
         // which typically converges after 2 or 3 iterations
         beta = atan2(Pe[2], ONE_MINUS_F * p); // reduced latitude, initial guess
@@ -104,9 +109,12 @@ void ecef2lla(const double *Pe, double *LLA, const int method)
         Rn = REQ / sqrt(1.0 - E_SQ * sinmu * sinmu);
         // Altitude above planetary ellipsoid
         LLA[2] = p * cos(LLA[0]) + (Pe[2] + E_SQ * Rn * sinmu) * sinmu - Rn;
-        break;
+//        break;
 
-    case 1:
+        g_debug.i[0] = time_usec() - time_usec_now;
+                   time_usec_now = time_usec();
+
+//    case 1:
         // The equation can be solved by Newton - Raphson iteration method :
         // k_next = (c + (1 - e ^ 2) * z ^ 2 * k ^ 3) / (c - p ^ 2) =
         // = 1 + (p ^ 2 + (1 - e ^ 2) * z ^ 2 * k ^ 3) / (c - p ^ 2)
@@ -124,9 +132,12 @@ void ecef2lla(const double *Pe, double *LLA, const int method)
         LLA[0] = atan2(k * Pe[2], p);
         // Altitude above planetary ellipsoid
         LLA[2] = ONE_DIV_E_SQ * (1.0 / k - ONE_MINUS_E_SQ) * sqrt(p2 + z2 * k * k);
-        break;
+//        break;
 
-    case 2:
+        g_debug.i[1] = time_usec() - time_usec_now;
+                   time_usec_now = time_usec();
+
+//    case 2:
         // The Bowring's quartic equation of k can be solved by Ferrari's
         // solution.Then compute latitude and height as above.
         zeta = ONE_MINUS_E_SQ * z2 / POWA2;
@@ -141,9 +152,12 @@ void ecef2lla(const double *Pe, double *LLA, const int method)
         LLA[0] = atan2(k * Pe[2], p);
         // Altitude above planetary ellipsoid :
         LLA[2] = ONE_DIV_E_SQ * (1. / k - ONE_MINUS_E_SQ) * sqrt(p2 + z2 * k * k);
-        break;
+//        break;
 
-    case 3:
+        g_debug.i[2] = time_usec() - time_usec_now;
+                   time_usec_now = time_usec();
+
+//    case 3:
         // The Heikkinen's procedure using Ferrari's solution(see case 2 above)
         F = 54.0 * POWB2 * z2;
         G = p2 + ONE_MINUS_E_SQ * z2 - E_SQ * (POWA2 - POWB2);
@@ -167,9 +181,12 @@ void ecef2lla(const double *Pe, double *LLA, const int method)
             LLA[0] = LLA[0] < 0.0 ? -0.5 * M_PI : 0.5 * M_PI;
             LLA[2] = fabs(Pe[2]) - Rb;
         }
-        break;
+//        break;
 
-    case 4:
+        g_debug.i[3] = time_usec() - time_usec_now;
+                   time_usec_now = time_usec();
+
+//    case 4:
         beta = atan2(Ra * Pe[2], Rb * p);
         LLA[0] = atan2(Pe[2] + E_PRIME_SQ * Rb * pow(sin(beta), 3), p - E_SQ * Ra * pow(cos(beta), 3));
         c = Ra / sqrt(1.0 - E_SQ * pow(sin(LLA[0]), 2));
@@ -178,9 +195,12 @@ void ecef2lla(const double *Pe, double *LLA, const int method)
         // After this correction, error is about 2 millimeters, which is about the same as the numerical precision of the overall function
         if (fabs(Pe[1]) < 1.0 && fabs(Pe[2]) < 1.0)
             LLA[2] = fabs(Pe[2]) - Rb;
-        break;
+//        break;
 
-    case 5:
+        g_debug.i[4] = time_usec() - time_usec_now;
+           time_usec_now = time_usec();
+
+//    case 5:
         z_i = Pe[2];
         while (fabs(err) > 1e-4 && iter < 10)
         {
@@ -198,8 +218,11 @@ void ecef2lla(const double *Pe, double *LLA, const int method)
         }
         LLA[2] = sqrt(p2 + z_i * z_i) - v;
 
-        break;
-    }
+//        break;
+//    }
+
+    g_debug.i[5] = time_usec() - time_usec_now;
+    time_usec_now = time_usec();
 }
 
 
