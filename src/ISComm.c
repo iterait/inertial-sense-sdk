@@ -628,7 +628,7 @@ protocol_type_t is_comm_parse(is_comm_instance_t* instance)
 int is_comm_get_data(is_comm_instance_t* instance, uint32_t dataId, uint32_t offset, uint32_t size, uint32_t periodMultiple)
 {
 	p_data_get_t request;
-
+	
 	request.id = dataId;
 	request.offset = offset;
 	request.size = size;

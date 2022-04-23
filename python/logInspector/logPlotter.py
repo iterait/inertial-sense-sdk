@@ -789,7 +789,7 @@ class logPlot:
                             ax[i, n].plot(time, pqr[:, i] * 180.0/np.pi, label=self.log.serials[d])
 
                 if len(refTime) != 0:
-                    ax[i].plot(refTime, refPqr[:, i] * 180.0/np.pi, color='red', label="reference")
+                    ax[i][0].plot(refTime, refPqr[:, i] * 180.0/np.pi, color='red', label="reference")
 
         for i in range(pqrCount):
             ax[0][i].legend(ncol=2)
