@@ -453,6 +453,9 @@ typedef struct
 	/** Duty cycle control effort at actuator (-1.0 to 1.0) */
 	float 					effDuty;
 
+    /**Encoder response time */
+    uint32_t                wheelVelRequestDt;
+
 } evb_luna_velocity_control_wheel_t;
 
 /**

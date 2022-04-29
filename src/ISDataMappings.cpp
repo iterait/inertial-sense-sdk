@@ -1214,6 +1214,7 @@ static void PopulateEvbLunaWheelControllerMappings(map_name_to_info_t mappings[D
 	ADD_MAP(m, totalSize, "wheel_l.eff",                wheel_l.eff, 0, DataTypeFloat, float, 0);
 	ADD_MAP(m, totalSize, "wheel_l.effInt",             wheel_l.effInt, 0, DataTypeFloat, float, 0);
 	ADD_MAP(m, totalSize, "wheel_l.effDuty",            wheel_l.effDuty, 0, DataTypeFloat, float, 0);
+	ADD_MAP(m, totalSize, "wheel_l.wheelVelRequestDt",  wheel_l.wheelVelRequestDt, 0, DataTypeUInt32, uint32_t, 0);
 
 	ADD_MAP(m, totalSize, "wheel_r.velCmd",             wheel_r.velCmd, 0, DataTypeFloat, float, 0);
 	ADD_MAP(m, totalSize, "wheel_r.velCmdSlew",         wheel_r.velCmdSlew, 0, DataTypeFloat, float, 0);
@@ -1225,6 +1226,7 @@ static void PopulateEvbLunaWheelControllerMappings(map_name_to_info_t mappings[D
 	ADD_MAP(m, totalSize, "wheel_r.eff",                wheel_r.eff, 0, DataTypeFloat, float, 0);
 	ADD_MAP(m, totalSize, "wheel_r.effInt",             wheel_r.effInt, 0, DataTypeFloat, float, 0);
 	ADD_MAP(m, totalSize, "wheel_r.effDuty",            wheel_r.effDuty, 0, DataTypeFloat, float, 0);
+	ADD_MAP(m, totalSize, "wheel_r.wheelVelRequestDt",  wheel_r.wheelVelRequestDt, 0, DataTypeUInt32, uint32_t, 0);
 
 	ASSERT_SIZE(totalSize);
 }
