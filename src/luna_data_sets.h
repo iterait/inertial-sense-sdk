@@ -49,9 +49,17 @@ typedef enum
 	EVB_WHEEL_CONTROL_CONFIG_TYPE_HOVERBOT              = 1,
 	EVB_WHEEL_CONTROL_CONFIG_TYPE_ZERO_TURN             = 2,
 	EVB_WHEEL_CONTROL_CONFIG_TYPE_PWM                   = 3,
-	EVB_WHEEL_CONTROL_CONFIG_TYPE_Z1R					= 4,
+	EVB_WHEEL_CONTROL_CONFIG_TYPE_Z1R_CURTIS            = 4,
+    EVB_WHEEL_CONTROL_CONFIG_TYPE_Z1R_BAC4000           = 5,
 	EVB_WHEEL_CONTROL_CONFIG_TYPE_MASK                  = 0x00000007,
 } eEvbLunaWheelControlConfig_t;
+
+typedef enum
+{
+    UNDEFINED                                           = 0,
+    CURTIS_CONTROLLER                                   = 1,
+    BAC4000_CONTROLLER                                  = 2,
+} eZ1RControlSelection_t;
 
 
 typedef struct
