@@ -64,7 +64,7 @@ int flash_maintenance(void)
 	// Look for rising edges
 	if(g_frdy == 1 || !(EFC->EEFC_FSR & EEFC_FSR_FRDY))
 	{
-		return;
+		return 0;
 	}
 	
 	g_frdy = 1;
@@ -153,8 +153,8 @@ uint32_t flash_update_block(uint32_t address, const void *newData, int dataSize,
 		watchdog_maintenance_force();
 
 		// Delay until we think the flash operation will be done.
-		uint32_t start = time_ticks();
-		uint32_t ticktarget = (flashMain.estimatedOpTimeMs + 50) * TIME_TICKS_PER_MS;
+		start = time_ticks();
+		ticktarget = (flashMain.estimatedOpTimeMs + 50) * TIME_TICKS_PER_MS;
 		while (time_ticks() - start < ticktarget) if(flash_maintenance() != 0) break;
 
 		if(flashMain.status == FLASH_ERROR || trycounter <= 0)
@@ -186,9 +186,9 @@ uint32_t flash_update_block_from_rtos(uint32_t address, const void *newData, int
 	flash_update_block_interrupt();
 
 	// Delay until we think the flash operation will be done. Write/erase time is "guaranteed by design"
-	for(size_t i=0; i < flashMain.estimatedOpTimeMs + 50; i++)
+	for(size_t i=0; i < ((flashMain.estimatedOpTimeMs + 100) / 10); i++)
 	{
-		vTaskDelay(1);		// Yield for other tasks
+		vTaskDelay(10);		// Yield for other tasks
 		if(flash_maintenance() != 0) break;
 	}
 
@@ -197,7 +197,7 @@ uint32_t flash_update_block_from_rtos(uint32_t address, const void *newData, int
 	while(flashMain.status != FLASH_IDLE)
 	{
 		// Delay until we think the flash operation will be done. Write/erase time is "guaranteed by design"
-		for(size_t i=0; i < flashMain.estimatedOpTimeMs + 50; i++)
+		for(size_t i=0; i < ((flashMain.estimatedOpTimeMs + 100) / 10); i++)
 		{
 			vTaskDelay(1);		// Yield for other tasks
 			if(flash_maintenance() != 0) break;
@@ -404,7 +404,7 @@ static void flash_disable_cache(void)
 static void flash_flush_cache_and_enable(void)
 {
 //	SCB_EnableDCache();
-	SCB_CleanInvalidateDCache();
+//	SCB_CleanInvalidateDCache();
 //	SCB_InvalidateICache();
 }
 
