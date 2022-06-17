@@ -428,7 +428,7 @@ void RTC_Handler    (void) { for (;;); }
 //void RTT_Handler    (void) { for (;;); }
 void WDT_Handler    (void) { for (;;); }
 void PMC_Handler    (void) { for (;;); }
-void EFC_Handler    (void) { for (;;); }
+//void EFC_Handler    (void) { for (;;); }
 //void UART0_Handler  (void) { for (;;); }
 //void UART1_Handler  (void) { for (;;); }
 //void USART0_Handler (void) { for (;;); }

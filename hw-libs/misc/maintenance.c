@@ -1,7 +1,7 @@
 #include <asf.h>
 #include "misc/rtos.h"
 #include "maintenance.h"
-#include "d_flash.h"
+#include "d_flash_v2.h"
 #include "bootloaderApp.h"
 #include "globals.h"
 
