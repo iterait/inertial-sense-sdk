@@ -37,12 +37,12 @@ typedef struct
 
 	// Erase state
 	uint32_t 		eraseCurrentPage;
-	uint32_t 		erasePagesRemaining;
+	int32_t 		erasePagesRemaining;
 
 	// Program state
 	uint32_t		*writeCurrentSource;		// The current start of the data, at DOUBLE word granularity, including padding words if present
 	uint32_t		*writeCurrentDestination;	// The current start of the destination, at DOUBLE word granularity, including padding words if present
-	uint32_t 		writeWordsRemaining;		// The number of words pending, with DOUBLE word granularity, including padding words if present
+	int32_t 		writeWordsRemaining;		// The number of words pending, with DOUBLE word granularity, including padding words if present
 	uint64_t 		writeFirstDWord;			// Holds first WORD if it is not aligned to start of first DWORD. 0xFFFF'FFFF'FFFF'FFFFF is reset
 	uint64_t 		writeLastDWord;				// Holds last WORD if it is not aligned to second half of last DWORD. 0xFFFF'FFFF'FFFF'FFFFF is reset
 } s_flash;
@@ -65,8 +65,6 @@ typedef struct
 #define FLASH_TRIES							10U						// Try up to this many times to write to flash before giving up,
 #define FLASH_TIME_MAX						300U					// for this many milliseconds each
 
-
-void EFC_Handler(void);
 
 void flash_init_v2(void);
 uint32_t flash_write_v2(uint32_t address, const void* newData, int dataSize, int noPageErase);

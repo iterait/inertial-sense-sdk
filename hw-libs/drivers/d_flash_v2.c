@@ -52,11 +52,23 @@ static uint32_t flash_lock_v2(void);
 static void flash_disable_cache(void);
 static void flash_flush_cache_and_enable(void);
 
+int flash_maintenance(void);
+
+static uint32_t g_frdy = 1;
+
 /*
  * FLASH peripheral interrupt handler. Called when a FLASH erase or write operation finishes, or there is an error.
  */
-void EFC_Handler(void)
+int flash_maintenance(void)
 {
+	// Look for rising edges
+	if(g_frdy == 1 || !(EFC->EEFC_FSR & EEFC_FSR_FRDY))
+	{
+		return;
+	}
+	
+	g_frdy = 1;
+
 	uint32_t status = flash_check_errors();
 
 	// Check whether we finished an operation
@@ -67,13 +79,13 @@ void EFC_Handler(void)
 		opstatus = flash_erase_page_interrupt();
 		if(opstatus == FLASH_RET_BUSY)
 		{
-			return;		// We successfully started a programming sequence
+			return 0;		// We successfully started a programming sequence
 		}
 
 		opstatus = flash_program_word_normal_interrupt();
 		if(opstatus == FLASH_RET_BUSY)
 		{
-			return;		// We successfully started a programming sequence
+			return 0;		// We successfully started a programming sequence
 		}
 
 		// verify flash write
@@ -84,27 +96,31 @@ void EFC_Handler(void)
 			flash_lock_v2();
 			flash_flush_cache_and_enable();
 
-			return;
+			return 1;
 		}
 	}
 	else if(flashMain.status != FLASH_IDLE)
 	{
 		flashMain.status = FLASH_ERROR;
 		flash_flush_cache_and_enable();
+		
+		return -1;
 	}
+	
+	return 0;
 }
 
 void flash_init_v2(void)
 {
 	flash_unlock_v2();
 
-	NVIC_DisableIRQ(EFC_IRQn);
-
-	EFC->EEFC_FMR |= EEFC_FMR_FRDY;					// Enable interrupt in peripheral
-
-	NVIC_ClearPendingIRQ(EFC_IRQn);
-	NVIC_SetPriority(EFC_IRQn, 1);
-	NVIC_EnableIRQ(EFC_IRQn);
+// 	NVIC_DisableIRQ(EFC_IRQn);
+// 
+// 	EFC->EEFC_FMR |= EEFC_FMR_FRDY;					// Enable interrupt in peripheral
+// 
+// 	NVIC_ClearPendingIRQ(EFC_IRQn);
+// 	NVIC_SetPriority(EFC_IRQn, 1);
+// 	NVIC_EnableIRQ(EFC_IRQn);
 
 	flash_check_errors();							// Clear existing error bits, set genFaultCode if needed
 	flashMain.status = FLASH_IDLE;
@@ -124,9 +140,11 @@ uint32_t flash_update_block(uint32_t address, const void *newData, int dataSize,
 	flashMain.noPageErase = noPageErase != 0;
 
 	flash_update_block_interrupt();
-
-	// Delay until we think the flash operation will be done. Write/erase time is "guaranteed by design"
-	time_delay(flashMain.estimatedOpTimeMs + 50);
+	
+	// Delay until we think the flash operation will be done.
+	volatile uint32_t start = time_ticks();
+	volatile uint32_t ticktarget = (flashMain.estimatedOpTimeMs + 50) * TIME_TICKS_PER_MS;
+	while (time_ticks() - start < ticktarget) if(flash_maintenance() != 0) break;
 
 	int trycounter = FLASH_TRIES;
 
@@ -134,8 +152,10 @@ uint32_t flash_update_block(uint32_t address, const void *newData, int dataSize,
 	{
 		watchdog_maintenance_force();
 
-		// Delay until we think the flash operation will be done. Write/erase time is "guaranteed by design"
-		time_delay(flashMain.estimatedOpTimeMs + 50);
+		// Delay until we think the flash operation will be done.
+		uint32_t start = time_ticks();
+		uint32_t ticktarget = (flashMain.estimatedOpTimeMs + 50) * TIME_TICKS_PER_MS;
+		while (time_ticks() - start < ticktarget) if(flash_maintenance() != 0) break;
 
 		if(flashMain.status == FLASH_ERROR || trycounter <= 0)
 		{
@@ -166,14 +186,22 @@ uint32_t flash_update_block_from_rtos(uint32_t address, const void *newData, int
 	flash_update_block_interrupt();
 
 	// Delay until we think the flash operation will be done. Write/erase time is "guaranteed by design"
-	vTaskDelay(flashMain.estimatedOpTimeMs/portTICK_PERIOD_MS + 50);
+	for(size_t i=0; i < flashMain.estimatedOpTimeMs + 50; i++)
+	{
+		vTaskDelay(1);		// Yield for other tasks
+		if(flash_maintenance() != 0) break;
+	}
 
 	int trycounter = FLASH_TRIES;
 
 	while(flashMain.status != FLASH_IDLE)
 	{
 		// Delay until we think the flash operation will be done. Write/erase time is "guaranteed by design"
-		vTaskDelay(flashMain.estimatedOpTimeMs/portTICK_PERIOD_MS + 50);
+		for(size_t i=0; i < flashMain.estimatedOpTimeMs + 50; i++)
+		{
+			vTaskDelay(1);		// Yield for other tasks
+			if(flash_maintenance() != 0) break;
+		}
 
 		if(flashMain.status == FLASH_ERROR || trycounter <= 0)
 		{
@@ -254,6 +282,7 @@ static uint32_t flash_update_block_interrupt(void)
 	}
 
 	flashMain.writeCurrentDestination = flashMain.writeStartDestination;
+	flashMain.writeCurrentSource = flashMain.writeStartSource;
 	flashMain.writeWordsRemaining = flashMain.writeBytesNum / sizeof(uint32_t);
 
 	// Calculate how much time the operation will take, so we can delay until then
@@ -262,6 +291,8 @@ static uint32_t flash_update_block_interrupt(void)
 	// We are going to erase, then write to the flash block repeatedly until success or FLASH_TRIES times
 
 	flashMain.status = FLASH_BUSY;
+	
+	g_nvr_manage_config.flash_write_count++;
 
 	flash_unlock_v2();
 	
@@ -379,12 +410,12 @@ static void flash_flush_cache_and_enable(void)
 
 static uint32_t flash_program_word_normal_interrupt(void)
 {
-	if(flashMain.writeWordsRemaining == 0)	// Clean exit
+	if(flashMain.writeWordsRemaining <= 0)	// Clean exit
 	{
 		return FLASH_RET_OK;
 	}
 	
-	if((uint32_t)flashMain.writeCurrentDestination % 512U)
+	if((uint32_t)flashMain.writeCurrentDestination % 512U && !flashMain.noPageErase)
 	{
 		return FLASH_RET_ERROR;
 	}
@@ -404,13 +435,15 @@ static uint32_t flash_program_word_normal_interrupt(void)
 	
 	// Execute the write
 	EFC->EEFC_FCR = EEFC_FCR_FCMD(EFC_FCMD_WP) | writePage << 8 | EFC_PASSWORD;
+	
+	g_frdy = 0;
 
 	return FLASH_RET_BUSY;
 }
 
 static uint32_t flash_erase_page_interrupt(void)
 {
-	if(flashMain.erasePagesRemaining == 0)	// Clean exit
+	if(flashMain.erasePagesRemaining <= 0)	// Clean exit
 	{
 		return FLASH_RET_OK;
 	}
@@ -425,6 +458,8 @@ static uint32_t flash_erase_page_interrupt(void)
 	flash_disable_cache();
 
 	EFC->EEFC_FCR = EEFC_FCR_FCMD(EFC_FCMD_EPA) | (0x2 << 8) | ((flashMain.eraseCurrentPage / 16) << 12) | EFC_PASSWORD;
+	
+	g_frdy = 0;
 
 	flashMain.erasePagesRemaining -= 16U;
 	flashMain.eraseCurrentPage += 16U;
