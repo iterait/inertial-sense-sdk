@@ -39,7 +39,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #define BOOTLOADER_RETRIES          30
 #define BOOTLOADER_RESPONSE_DELAY   10
-#define BOOTLOADER_REFRESH_DELAY    500
+#define BOOTLOADER_REFRESH_DELAY    1000
 #define MAX_VERIFY_CHUNK_SIZE       1024
 #define BOOTLOADER_TIMEOUT_DEFAULT  1000
 #define MAX_SEND_COUNT              510
@@ -96,8 +96,8 @@ is_operation_result is_isb_negotiate_version(is_device_context* ctx)
 
 void is_isb_restart_rom(serial_port_t* s)
 {
-    // USE WITH CAUTION! This will put in bootloader ROM mode allowing a new bootloader to be put on
-    // In some cases, the device may become unrecoverable because of interferece on its ports.
+    // USE WITH CAUTION! This will put  device in ROM bootloader mode allowing a new ISB bootloader to be put on.
+    // In some cases, the device may become unrecoverable because of interference on its ports.
 
     // restart bootloader assist command
     serialPortWrite(s, (unsigned char*)":020000040700F3", 15);
@@ -137,6 +137,13 @@ static uint32_t is_isb_closest_baudrate(uint32_t baudRate)
 static is_operation_result is_isb_sync(serial_port_t* s)
 {
     static const uint8_t handshakerChar = 'U';
+
+    serialPortClose(s);
+    if (serialPortOpenRetry(s, s->port, IS_BAUD_RATE_BOOTLOADER, 1) == 0)
+    {
+        // can't open the port, fail
+        return IS_OP_ERROR;
+    }
 
     // Try to reboot the device in case it is stuck
     is_isb_restart(s);
@@ -188,8 +195,7 @@ is_operation_result is_isb_handshake(is_device_context* ctx)
         serialPortClose(port);
         if (serialPortOpenRetry(port, port->port, IS_BAUD_RATE_BOOTLOADER, 1) == 0)
         {
-            // can't open the port, fail
-            return IS_OP_ERROR;
+            // can't open the port, fail at end of function
         }
         else if (is_isb_sync(port) == IS_OP_OK)
         {
@@ -198,9 +204,8 @@ is_operation_result is_isb_handshake(is_device_context* ctx)
         }
     }
 
-    ctx->info_callback(ctx, "(ISB) Failed to handshake with bootloader", IS_LOG_LEVEL_ERROR);
-
     // Failed to handshake
+    ctx->info_callback(ctx, "(ISB) Failed to handshake with bootloader", IS_LOG_LEVEL_ERROR);
     return IS_OP_ERROR;
 }
 
@@ -303,12 +308,18 @@ static is_operation_result is_isb_erase_flash(serial_port_t* s)
     // Write location to erase at
     memcpy(selectFlash, ":03000006030000F4CC\0\0\0\0\0", 24);
     is_isb_checksum(0, selectFlash, 1, 17, 17, 1);
-    if (serialPortWriteAndWaitForTimeout(s, selectFlash, 19, (unsigned char*)".\r\n", 3, BOOTLOADER_TIMEOUT_DEFAULT) == 0) return IS_OP_ERROR;
+    if (serialPortWriteAndWaitForTimeout(s, selectFlash, 19, (unsigned char*)".\r\n", 3, BOOTLOADER_TIMEOUT_DEFAULT) == 0)
+    {
+        return IS_OP_ERROR;
+    }
 
     // Erase
     memcpy(selectFlash, ":0200000400FFFBCC\0", 18);
     is_isb_checksum(0, selectFlash, 1, 15, 15, 1);
-    if (serialPortWriteAndWaitForTimeout(s, selectFlash, 17, (unsigned char*)".\r\n", 3, eraseFlashTimeoutMilliseconds) == 0) return IS_OP_ERROR;
+    if (serialPortWriteAndWaitForTimeout(s, selectFlash, 17, (unsigned char*)".\r\n", 3, eraseFlashTimeoutMilliseconds) == 0) 
+    {
+        return IS_OP_ERROR;
+    }
 
     return IS_OP_OK;
 }
@@ -597,7 +608,7 @@ static is_operation_result is_isb_verify(int lastPage, int checkSum, is_device_c
                 if (actualPageOffset != pageOffset)
                 {
                     ctx->info_callback(ctx, "(ISB) Unexpected offset during verify", IS_LOG_LEVEL_ERROR);
-                    return 0;
+                    return IS_OP_ERROR;
                 }
                 pageChars = 0;
                 chunkIndex++;

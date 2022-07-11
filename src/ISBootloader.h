@@ -51,6 +51,13 @@ is_operation_result is_jump_to_bootloader(is_device_context* ctx);
  */
 void is_update_flash(void* context);
 
+is_image_signature is_get_hex_image_signature(is_device_context* ctx);
+is_image_signature is_get_bin_image_signature(is_device_context* ctx);
+
+is_operation_result is_app_get_version(is_device_context* ctx);
+
+const char* get_file_ext(const char *filename);
+
 #ifdef __cplusplus
 }
 #endif

@@ -41,15 +41,24 @@ public:
     ~ISBootloader() {};
 
     /**
-     * @brief get_num_devices
-     * @param comPorts
-     * @return
+     * @brief Specify which devices to update, and other parameters. Adds 
+     *  devices to a list of known devices based on their serial numbers. This 
+     *  function creates the device contexts used later on.
+     * @note Call once at start.
+     * 
+     * @param comPorts list of serial port names, i.e. `COM1` or `/dev/ttyACM0`.
+     * @param baudRate 
+     * @param firmware full path to firmware image. Must be .hex, unless you are
+     *  updating uINS-3/EVB-2 bootloader, in which case it must be .bin.
+     * @param uploadProgress callback to get percentage.
+     * @param verifyProgress callback to get percentage.
+     * @param infoProgress Callback to get messages about progress.
+     * @param user_data Unused.
+     * @param waitAction Callback to update UI and do other things while waiting for update.
+     * @return is_operation_result 
      */
-    static size_t get_num_devices(vector<string>& comPorts);
-
-    static is_operation_result update(
+    static is_operation_result init(
         vector<string>&             comPorts,
-        vector<string>&             uids,
         int                         baudRate,
         const char*                 firmware,
         pfnBootloadProgress         uploadProgress, 
@@ -58,12 +67,31 @@ public:
         void*                       user_data,
         void						(*waitAction)()
     );
+    
+    
+
+    static is_operation_result update();
 
     static vector<is_device_context*> ctx;
 
 private:
     static void update_thread(void* context);
+    static void mode_thread(void* context);
+    static void (*waitAction)();
     
+    /**
+     * @brief Changes the mode of devices in the list of devices. This function 
+     *  also follows up to see where the devices went, as their port numbers
+     *  may change. Call twice if you are updating the ISB bootloader to ensure
+     *  devices get into ROM mode. Changes mode to whatever is needed to bootload
+     *  the firmware file specified in `init()`
+     * 
+     * @param all_connected if true, all connected devices will be affected 
+     *  instead of just those specified. All DFU devices are affected regardless 
+     *  of this option.
+     * @return is_operation_result 
+     */
+    static is_operation_result change_mode_devices(bool all_connected = false);
 };
 
 #endif // __IS_BOOTLOADER_H_

@@ -475,9 +475,7 @@ static is_operation_result is_samba_verify(is_device_context* ctx, uint32_t chec
 
     for (uint32_t address = SAMBA_FLASH_START_ADDRESS; address < (SAMBA_FLASH_START_ADDRESS + SAMBA_BOOTLOADER_SIZE_24K); )
     {
-        serialPortFlush(&ctx->handle.port);
         nextAddress = address + SAMBA_PAGE_SIZE;
-        serialPortFlush(&ctx->handle.port);
         while (address < nextAddress)
         {
             count = SNPRINTF((char*)buf, sizeof(buf), "w%08x,#", address);
@@ -488,7 +486,7 @@ static is_operation_result is_samba_verify(is_device_context* ctx, uint32_t chec
 
             //serialPortWaitForTimeout(&ctx->handle.port, "\n\r", 2, 100);
             
-            //serialPortSleep(&ctx->handle.port, 100); // give device time to process command
+            serialPortSleep(&ctx->handle.port, 1); // give device time to process command
         }
         count = serialPortReadTimeout(&ctx->handle.port, buf, SAMBA_PAGE_SIZE, SAMBA_TIMEOUT_DEFAULT);
         if (count == SAMBA_PAGE_SIZE)

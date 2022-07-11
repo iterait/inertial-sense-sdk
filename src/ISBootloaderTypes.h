@@ -29,10 +29,14 @@ extern "C" {
 #include <stdint.h>
 #include <stdbool.h>
 
+#if PLATFORM_IS_WINDOWS
 #pragma warning( push )
 #pragma warning( disable : 4200 )
+#endif
 #include "libusb/libusb.h"
+#if PLATFORM_IS_WINDOWS
 #pragma warning( pop )
+#endif
 
 #include "serialPort.h"
 
@@ -84,6 +88,13 @@ typedef struct
 
     char enable_command[5];         // "EBLE" (EVB) or "BLEN" (uINS)
 } is_bootloader_properties;
+
+typedef enum {
+    IS_BOOTLOADER_STATE_APP = 0,
+    IS_BOOTLOADER_STATE_ISB,
+    IS_BOOTLOADER_STATE_ROM,
+    IS_BOOTLOADER_STATE_NONE,
+} is_bootloader_state;
 
 typedef struct
 {
@@ -178,6 +189,7 @@ typedef struct
     float update_progress;
     float verify_progress;
     bool success;
+    bool enter;     //Enables switching of bootloader modes (ISB, SAMBA, DFU, etc.)
 } is_device_context;
 
 #ifdef __cplusplus

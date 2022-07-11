@@ -372,8 +372,6 @@ void cltool_bootloadUpdateInfo(void* obj, const char* str, is_log_level level)
 
 void cltool_firmwareUpdateWaiter()
 {
-	SLEEP_MS(10);
-
 	float progress = 0.0;
 	size_t num_devices = ISBootloader::ctx.size();
 

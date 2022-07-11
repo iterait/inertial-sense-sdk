@@ -98,7 +98,7 @@ void is_destroy_context(is_device_context* ctx)
  * @param filename
  * @return const char* 
  */
-static const char* get_file_ext(const char *filename) 
+const char* get_file_ext(const char *filename) 
 {
     const char *dot = strrchr(filename, '.');   // Find last '.' in file name
     if(!dot || dot == filename) return "";
@@ -111,7 +111,7 @@ static const char* get_file_ext(const char *filename)
  * @param ctx Device context, with configured serial port
  * @return is_operation_result IS_OP_OK if it successfully read parameters
  */
-static is_operation_result is_app_get_version(is_device_context* ctx)
+is_operation_result is_app_get_version(is_device_context* ctx)
 {
      serialPortClose(&ctx->handle.port);
      if (serialPortOpenRetry(&ctx->handle.port, ctx->handle.port_name, ctx->handle.baud, 1) == 0)
@@ -196,7 +196,7 @@ static is_operation_result is_app_get_version(is_device_context* ctx)
  * @param firmware 
  * @return is_device_type 
  */
-static is_image_signature is_get_hex_image_signature(is_device_context* ctx)
+is_image_signature is_get_hex_image_signature(is_device_context* ctx)
 {
     ihex_image_section_t image;
     size_t sections = ihex_load_sections(ctx->firmware_path, &image, 1);
@@ -241,7 +241,7 @@ static is_image_signature is_get_hex_image_signature(is_device_context* ctx)
     return 0;
 }
 
-static is_image_signature is_get_bin_image_signature(is_device_context* ctx)
+is_image_signature is_get_bin_image_signature(is_device_context* ctx)
 {
     return IS_IMAGE_SIGN_ISB_SAMx70_16K | IS_IMAGE_SIGN_ISB_SAMx70_24K;
 }
@@ -391,11 +391,11 @@ void is_update_flash(void* context)
     // In case we are updating using the inertial sense bootloader (ISB), set the entry command based on the signature
     if(file_signature & (IS_IMAGE_SIGN_EVB_2_16K | IS_IMAGE_SIGN_EVB_2_24K))
     {
-        strncpy(ctx->props.isb.enable_command, "EBLE", 4);
+        strncpy(ctx->props.isb.enable_command, "EBLE", 5);
     }
     else
     {
-        strncpy(ctx->props.isb.enable_command, "BLEN", 4);
+        strncpy(ctx->props.isb.enable_command, "BLEN", 5);
     }
     
     if(ctx->handle.status == IS_HANDLE_TYPE_LIBUSB)
