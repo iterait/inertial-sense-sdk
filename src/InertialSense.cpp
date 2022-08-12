@@ -113,6 +113,7 @@ InertialSense::InertialSense(
 {
 	m_logThread = NULLPTR;
 	m_lastLogReInit = time(0);
+	m_clientReconnectOnFailure = false;
 	m_clientStream = NULLPTR;
 	m_clientBufferBytesToSend = 0;
 	m_clientServerByteCount = 0;
@@ -305,10 +306,12 @@ bool InertialSense::SetLoggerEnabled(
 }
 
 // [type]:[protocol]:[ip/url]:[port]:[mountpoint]:[username]:[password]
-bool InertialSense::OpenConnectionToServer(const string& connectionString)
+bool InertialSense::OpenConnectionToServer(const string& connectionString, bool reconnectOnFailure)
 {
 	CloseServerConnection();
 
+	m_clientConnectionString = connectionString;
+	m_clientReconnectOnFailure = reconnectOnFailure;
 	// calls new cISTcpClient or new cISSerialPort
 	m_clientStream = cISClient::OpenConnectionToServer(connectionString, &m_forwardGpgga);
 
@@ -317,6 +320,11 @@ bool InertialSense::OpenConnectionToServer(const string& connectionString)
 
 void InertialSense::CloseServerConnection()
 {
+	if (m_clientStreamReconnector.valid())
+	{
+		m_clientStream = m_clientStreamReconnector.get();
+	}
+
 	m_tcpServer.Close();
 	m_serialServer.Close();
 
@@ -480,8 +488,25 @@ bool InertialSense::UpdateServer()
 
 bool InertialSense::UpdateClient()
 {
+	// Reconnection in progress
+	if (m_clientStreamReconnector.valid())
+	{
+		std::future_status status = m_clientStreamReconnector.wait_for(std::chrono::seconds{0});
+		if (status != std::future_status::ready) return false;
+		m_clientStream = m_clientStreamReconnector.get();
+	}
+
 	if (m_clientStream == NULLPTR)
 	{
+		return false;
+	}
+
+	if (!m_clientStream->IsOpen() && m_clientReconnectOnFailure)
+	{
+		CloseServerConnection();
+		m_clientStreamReconnector = std::async(std::launch::async, [this]() {
+			return cISClient::OpenConnectionToServer(m_clientConnectionString, &m_forwardGpgga);
+		});
 		return false;
 	}
 
