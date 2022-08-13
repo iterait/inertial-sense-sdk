@@ -488,7 +488,7 @@ bool InertialSense::UpdateServer()
 
 bool InertialSense::UpdateClient()
 {
-	// Reconnection in progress
+	// Reconnection in progress, retrieve the connection if ready, otherwise do nothing
 	if (m_clientStreamReconnector.valid())
 	{
 		std::future_status status = m_clientStreamReconnector.wait_for(std::chrono::seconds{0});
@@ -496,17 +496,19 @@ bool InertialSense::UpdateClient()
 		m_clientStream = m_clientStreamReconnector.get();
 	}
 
-	if (m_clientStream == NULLPTR)
-	{
-		return false;
-	}
-
-	if (!m_clientStream->IsOpen() && m_clientReconnectOnFailure)
+	// Reconnect if disconnected or the initial connection failed
+	if ((m_clientStream == NULLPTR || !m_clientStream->IsOpen()) && m_clientReconnectOnFailure)
 	{
 		CloseServerConnection();
 		m_clientStreamReconnector = std::async(std::launch::async, [this]() {
 			return cISClient::OpenConnectionToServer(m_clientConnectionString, &m_forwardGpgga);
 		});
+		return false;
+	}
+
+	// Client connection disabled
+	if (m_clientStream == NULLPTR)
+	{
 		return false;
 	}
 
