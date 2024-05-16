@@ -236,6 +236,7 @@ static bool cltool_setupCommunications(InertialSense& inertialSenseInterface)
     {   // Issue software reset
 		cout << "Sending software reset." << endl;
         inertialSenseInterface.SendRaw((uint8_t*)NMEA_CMD_SOFTWARE_RESET, NMEA_CMD_SIZE);
+        return false;
     }
     if (g_commandLineOptions.softwareResetEvb)
     {   // Issue software reset to EVB
