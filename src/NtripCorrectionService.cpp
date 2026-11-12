@@ -134,9 +134,14 @@ bool NtripCorrectionService::connect(const std::string& connectUrl, std::string 
     }
     requestMsg += "Accept: */*\r\nConnection: close\r\n\r\n";
 
+    // A previous connect() may have left us a port; it is ours, so close and release it rather than leak it.
+    releaseOwnedSourcePort();
+
     // extract the host & port, and make the socket/port connection
     std::string serverUrl = "tcp://" + host + ":" + std::to_string(port);
-    source = TcpPortFactory::getInstance().bindPort(serverUrl, PORT_TYPE__TCP | PORT_TYPE__COMM);
+    TcpPortFactory& tcpFactory = TcpPortFactory::getInstance();
+    source = tcpFactory.bindPort(serverUrl, PORT_TYPE__TCP | PORT_TYPE__COMM);
+    takeSourcePortOwnership(&tcpFactory);   // we created it, so the destructor / next connect() must close & release it
 
     // Remember, binding a port doesn't open it - it just creates the underlying instance that references the underlying hardware.
     // tcpPort uses a non-blocking connect: portOpen() returns PORT_ERROR__NONE while the TCP handshake is still in flight and

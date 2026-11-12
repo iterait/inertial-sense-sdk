@@ -64,13 +64,7 @@ public:
         // Don't actually close down any ports for the base CorrectionService - extended services can choose to, if they need but don't do it here
         // for (auto a : ports)  portClose(a);
 
-        if (source && localSrcPort) {
-            portClose(source);
-            if (srcPortFactory)
-                srcPortFactory->releasePort(source);
-            else
-                PortManager::getInstance().releasePort(source);
-        }
+        releaseOwnedSourcePort();
     }
 
     /**
@@ -210,6 +204,19 @@ public:
 
 
 protected:
+    /**
+     * Marks the current source port as created by this service (through factory), so that it is closed and
+     * released by releaseOwnedSourcePort() / the destructor rather than leaked.
+     * @param factory the factory that bound the port (nullptr: release it through PortManager)
+     */
+    void takeSourcePortOwnership(PortFactory* factory) { localSrcPort = (source != nullptr); srcPortFactory = factory; }
+
+    /**
+     * If the source port was created by this service, detaches, closes and releases it and clears the source.
+     * A source port that was passed in by the caller is left untouched.
+     */
+    void releaseOwnedSourcePort();
+
     port_handle_t source {};                  //!< The bound source port from which correction data is read
     std::vector<port_handle_t> ports;          //!< Downstream ports to which correction data is forwarded
     uint32_t lastConnAttemptTs = 0;            //!< timestamp (ms) after which the next source (re)connection attempt is allowed (reconnect backoff)
