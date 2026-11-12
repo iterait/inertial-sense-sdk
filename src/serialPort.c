@@ -110,9 +110,8 @@ int serialPortOpenRetry(port_handle_t port, const char* portName, int baudRate, 
 {
     IS_PORT_FUNCTION_SUPPORTED(port, pfnOpen, "serialPortOpen() is not supported for this port.");
 
-    if (serialPortIsOpen(port))
-        return PORT_ERROR__NONE;
-
+    // No early-out when already open: serialPortOpen() is a no-op for an already-open port with the same
+    // settings, and reopens it when the name, baud rate or blocking mode differ.
     int resultCode = PORT_ERROR__NONE;
     for (int retry = 0; retry < 5; retry++)
     {
