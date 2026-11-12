@@ -1472,9 +1472,9 @@ void cltool_outputUsage()
 	cout << "            -rover=tcp://192.168.1.100:7777                                  (raw RTCM3 over TCP)" << endl;
 	cout << "            -rover=/dev/" << EXAMPLE_PORT << ":57600        (port, baud rate)" << endlbOn;
 	cout << "    -base=" << boldOff << "tcp://[IP]:[port]   As a Base (server), send RTK corrections.  Examples:" << endl;
-	cout << "            -base=tcp://:7777                           (IP is optional)" << endl;
+	cout << "            -base=tcp://:7777                           (IP is optional, defaults to 127.0.0.1: local clients only)" << endl;
+	cout << "            -base=tcp://0.0.0.0:7777                    (all IPv4 interfaces)" << endl;
 	cout << "            -base=tcp://192.168.1.43:7777" << endl;
-	cout << "            -base=tcp://[::1]:7777                      (IPv6 host in brackets)" << endl;
 	cout << endlbOn;	
 	cout << "CLTool - " << boldOff << cltool_version() << endl;
 
