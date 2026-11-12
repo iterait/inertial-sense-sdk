@@ -79,6 +79,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 typedef struct
 {
     int blocking;
+    int baudRate;   //!< baud rate the port was actually opened/configured with
 
 #if PLATFORM_IS_WINDOWS
 
@@ -123,6 +124,12 @@ static int serialPortFlushPlatform(port_handle_t port);
  * @return int 1 on success, 0 on failure.
  */
 static int serialPortDrainPlatform(port_handle_t port);
+/**
+ * @brief Close the serial port (see definition below).
+ * @param port The port handle.
+ * @return int 1 on success, 0 if the port was not open.
+ */
+static int serialPortClosePlatform(port_handle_t port);
 /**
  * @brief Read from the serial port with a timeout.
  * This function reads a specified number of bytes from the serial port, with a timeout.
@@ -467,11 +474,23 @@ static int serialPortOpenPlatform(port_handle_t port, const char* portName, int 
     log_debug(IS_LOG_PORT, "serialPortOpenPlatform(%s:B%d, %sblocking) called.", portName, baudRate, blocking ? "" : "non-");
 
     serial_port_t* serialPort = (serial_port_t*)port;
+    char reopenName[MAX_SERIAL_PORT_NAME_LENGTH + 1];
     if (serialPort->handle != 0)
     {
-        // already open --  FIXME: Should we be closing the port and then reopen??
-        // serialPortClose(serialPort);
-        return 1;
+        serialPortHandle* openHandle = (serialPortHandle*)serialPort->handle;
+        if ((openHandle->baudRate == baudRate) && (!openHandle->blocking == !blocking) &&
+            (strncmp(serialPort->portName, portName, MAX_SERIAL_PORT_NAME_LENGTH) == 0))
+        {   // already open with the requested settings
+            return 1;
+        }
+
+        // Already open, but with a different name, baud rate or blocking mode: close and reopen so the
+        // request actually takes effect. portName may alias serialPort->portName, so copy it first.
+        log_debug(IS_LOG_PORT, "[%s] serialPortOpenPlatform(): reopening (B%d -> B%d).", serialPort->portName, openHandle->baudRate, baudRate);
+        strncpy(reopenName, portName, MAX_SERIAL_PORT_NAME_LENGTH);
+        reopenName[MAX_SERIAL_PORT_NAME_LENGTH] = '\0';
+        portName = reopenName;
+        serialPortClosePlatform(port);
     }
 
     serialPortSetName(port, portName);
@@ -592,6 +611,7 @@ static int serialPortOpenPlatform(port_handle_t port, const char* portName, int 
 
     serialPortHandle* handle = (serialPortHandle*)calloc(sizeof(serialPortHandle), 1);
     handle->blocking = blocking;
+    handle->baudRate = baudRate;
     handle->platformHandle = platformHandle;
     if (!blocking)
     {
@@ -638,6 +658,7 @@ static int serialPortOpenPlatform(port_handle_t port, const char* portName, int 
     serialPortHandle* handle = (serialPortHandle*)calloc(sizeof(serialPortHandle), 1);
     handle->fd = fd;
     handle->blocking = blocking;
+    handle->baudRate = baudRate;
     serialPort->handle = handle;
 
     // we're doing a quick and dirty check to make sure we can even attempt to read data successfully.  Some bad devices will fail here if they aren't initialized correctly
@@ -754,6 +775,10 @@ static int serialPortClosePlatform(port_handle_t port)
         tty.c_cflag &= ~HUPCL;
         tcsetattr(handle->fd, TCSANOW, &tty);
     }
+
+    // Drop the exclusive mode set by TIOCEXCL on open. A tty that outlives this fd (e.g. a pty whose master
+    // is still open) would otherwise keep refusing every later open(), including our own reopen, with EBUSY.
+    ioctl(handle->fd, TIOCNXCL);
 
     close(handle->fd);
     handle->fd = -1;
