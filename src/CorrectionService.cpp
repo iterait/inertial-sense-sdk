@@ -44,6 +44,20 @@ CorrectionService::CorrectionService(const std::string& portName, const std::vec
     throw std::invalid_argument("Couldn't find port of given name to use as RCTM3 corrections source");
 }
 
+void CorrectionService::releaseOwnedSourcePort() {
+    if (source && localSrcPort) {
+        port_handle_t port = source;
+        setSourcePort(nullptr);         // restore the port's previous handlers and clear the source
+        portClose(port);
+        if (srcPortFactory)
+            srcPortFactory->releasePort(port);
+        else
+            PortManager::getInstance().releasePort(port);
+    }
+    localSrcPort = false;
+    srcPortFactory = nullptr;
+}
+
 bool CorrectionService::hasPort(port_handle_t port) {
     return std::find(this->ports.begin(), this->ports.end(), port) != this->ports.end();
 }
