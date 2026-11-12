@@ -306,13 +306,47 @@ bool InertialSense::HasReceivedDeviceInfoFromAllDevices()
     return true;
 }
 
+void InertialSense::TakeLogPackets(log_packet_queue_t& shared, log_packet_queue_t& pending)
+{
+    // Move, don't copy: the packets must leave the shared queue (and only be logged once), and the
+    // producer is blocked on m_logMutex while this runs.
+    for (auto& [port, pkts] : shared)
+    {
+        auto& dst = pending[port];
+        if (dst.empty())
+            dst.swap(pkts);
+        else
+            dst.insert(dst.end(), std::make_move_iterator(pkts.begin()), std::make_move_iterator(pkts.end()));
+    }
+
+    // clear shared memory
+    shared.clear();
+}
+
+size_t InertialSense::WriteLogPackets(log_packet_queue_t& pending, const std::function<bool(port_handle_t, p_data_buf_t&)>& write)
+{
+    size_t failed = 0;
+    for (auto& [port, pkts] : pending)
+    {
+        for (auto& pkt : pkts)
+        {
+            if (!write(port, pkt))
+                failed++;
+        }
+    }
+
+    // Every packet was handed to write() once; drop them all so nothing is logged again on the next pass.
+    pending.clear();
+    return failed;
+}
+
 void InertialSense::LoggerThread(void* info)
 {
     bool running = true;
     InertialSense* inertialSense = (InertialSense*)info;
 
     // gather packets in memory
-    map<port_handle_t, vector<p_data_buf_t>> packets;
+    log_packet_queue_t packets;
 
     while (running)
     {
@@ -320,13 +354,7 @@ void InertialSense::LoggerThread(void* info)
         {
             // lock so we can read and clear m_logPackets
             cMutexLocker logMutexLocker(&inertialSense->m_logMutex);
-            for (auto [port, pkts] : inertialSense->m_logPackets)
-            {
-                packets[port] = pkts;
-            }
-
-            // clear shared memory
-            inertialSense->m_logPackets.clear();
+            TakeLogPackets(inertialSense->m_logPackets, packets);
 
             // update running state
             running = inertialSense->m_logger.Enabled();
@@ -335,21 +363,17 @@ void InertialSense::LoggerThread(void* info)
         if (running)
         {
             // log the packets
-            for (auto [port, pkts] : packets)
-            {
-                if (inertialSense->m_logger.Type() != cISLogger::LOGTYPE_RAW) {
-                    for (auto& pkt : pkts) {
-                        auto device = inertialSense->getDevice(port);
-                        if (!inertialSense->m_logger.LogData(device->devLogger, &pkt.hdr, pkt.buf)) {
-                            // Failed to write to log
-                            SLEEP_MS(20); // FIXME:  This maybe problematic, as it may unnecessarily delay the thread, leading run-away memory usage.
-                        }
-                    }
-                }
-
-                // clear all log data for this port
-                pkts.clear();   // TODO: Make sure this clears the backing vector, not just the local instance
-            }
+            const bool rawLog = (inertialSense->m_logger.Type() == cISLogger::LOGTYPE_RAW);
+            size_t failed = WriteLogPackets(packets, [&](port_handle_t port, p_data_buf_t& pkt) {
+                if (rawLog)
+                    return true;
+                auto device = inertialSense->getDevice(port);
+                // No per-packet sleep on failure: it stalled this thread while StepLogger() kept filling
+                // m_logPackets, so memory grew without bound. Failed packets are dropped and reported below.
+                return device && inertialSense->m_logger.LogData(device->devLogger, &pkt.hdr, pkt.buf);
+            });
+            if (failed)
+                log_warn(IS_LOG_ISLOG, "LoggerThread(): failed to log %zu packet(s)", failed);
         }
 
         inertialSense->m_logger.Update();

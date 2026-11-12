@@ -627,6 +627,21 @@ public:
     static const int SYNC_FLASH_CFG_CHECK_PERIOD_MS =    200;     //!< (ms) interval between automatic flash-config synchronization checks
     static const int SYNC_FLASH_CFG_TIMEOUT_MS =        3000;     //!< (ms) default timeout for flash-config synchronization waits
 
+    /** Per-port queue of packets waiting to be written by LoggerThread() (filled by StepLogger()). */
+    typedef std::map<port_handle_t, std::vector<p_data_buf_t>> log_packet_queue_t;
+
+    /**
+     * @brief Moves the packets queued in @p shared into @p pending and leaves @p shared empty.
+     * LoggerThread() calls this with m_logMutex held, so it should only move data, not write it.
+     */
+    static void TakeLogPackets(log_packet_queue_t& shared, log_packet_queue_t& pending);
+
+    /**
+     * @brief Passes every packet in @p pending to @p write (per port, in order), then empties @p pending.
+     * @return the number of packets @p write failed to log
+     */
+    static size_t WriteLogPackets(log_packet_queue_t& pending, const std::function<bool(port_handle_t, p_data_buf_t&)>& write);
+
 protected:
     /** @brief Registered as the ComManager port-error callback; prints errMsg to stdout. @return 0 (always handled). */
     static int OnPortError(port_handle_t port, int errCode, const char *errMsg);
@@ -648,7 +663,7 @@ private:
     cISLogger m_logger;                                          //!< the logger instance used by EnableLogger()/SetLoggerEnabled()
     void* m_logThread;                                           //!< handle to the background logger thread, if logging is enabled
     cMutex m_logMutex;                                           //!< guards m_logPackets / logger state against concurrent access from LoggerThread()
-    std::map<port_handle_t, std::vector<p_data_buf_t>> m_logPackets;  //!< per-port queue of packets pending write by LoggerThread()
+    log_packet_queue_t m_logPackets;                             //!< per-port queue of packets pending write by LoggerThread()
     time_t m_lastLogReInit;                                     //!< last time the logger was (re)initialized
 
     char m_clientBuffer[512];                                   //!< unused legacy client buffer
