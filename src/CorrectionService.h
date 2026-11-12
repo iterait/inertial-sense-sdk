@@ -208,6 +208,15 @@ public:
      */
     MessageStats::mul_stats_t* getMessageStats() { return msgStats; }
 
+    /**
+     * Extracts the text of an RTCM3 Msg 1029 (Unicode text string) frame, bounds-checked against the frame size.
+     * @param frame the complete RTCM3 frame (header, payload and CRC)
+     * @param frameSize number of bytes in frame
+     * @param[out] text the message text (only written on success)
+     * @return true if the frame is long enough to hold the text it declares, false otherwise
+     */
+    static bool extractRtcm3Msg1029Text(const uint8_t* frame, uint32_t frameSize, std::string& text);
+
 
 protected:
     port_handle_t source {};                  //!< The bound source port from which correction data is read

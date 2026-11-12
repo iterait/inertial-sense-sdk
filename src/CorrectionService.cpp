@@ -69,6 +69,22 @@ bool CorrectionService::hasDevice(device_handle_t device) {
     return hasPort(device->port);
 }
 
+bool CorrectionService::extractRtcm3Msg1029Text(const uint8_t* frame, uint32_t frameSize, std::string& text) {
+    // RTCM3 frame: 3-byte header (preamble + 10-bit length), payload, 3-byte CRC.
+    // Msg 1029 payload: msg number (12 bits), station ID (12), MJD (16), UTC seconds of day (17),
+    // number of characters (7), number of UTF-8 code units (8) -- i.e. 9 bytes -- followed by the text.
+    // The code-unit count is the last of those 9 bytes, so it is frame byte 11 and the text starts at 12.
+    static constexpr uint32_t textOffset = 12;
+    static constexpr uint32_t crcSize = 3;
+    if (!frame || frameSize < textOffset + crcSize)
+        return false;
+    const uint32_t textLen = frame[textOffset - 1];
+    if (textOffset + textLen + crcSize > frameSize)
+        return false;
+    text.assign(reinterpret_cast<const char*>(frame + textOffset), textLen);
+    return true;
+}
+
 uint32_t CorrectionService::addRTCM3Msg1029Listeners(const std::function<void(std::string)>& callback) {
     rtcm3Msg1029Listeners.push_back(callback);
     return (uint32_t)rtcm3Msg1029Listeners.size()-1;
@@ -155,11 +171,13 @@ int CorrectionService::finalPacketFilter(const uint8_t *inputBuffer, const uint3
                     }
                     packetsProcessed++;
 
-                    if ((comm->rxPkt.id == 1029) && (comm->rxPkt.data.size < 1024))
+                    if (comm->rxPkt.id == 1029)
                     {
-                        std::string msg = std::string().assign(reinterpret_cast<char*>(comm->rxPkt.data.ptr + 12), comm->rxPkt.data.size - 12);
-                        for (const tRTCM3Msg1029ListenerCallback& callback: rtcm3Msg1029Listeners) {
-                            callback(msg);
+                        std::string msg;
+                        if (extractRtcm3Msg1029Text(comm->rxPkt.data.ptr, comm->rxPkt.data.size, msg)) {
+                            for (const tRTCM3Msg1029ListenerCallback& callback: rtcm3Msg1029Listeners) {
+                                callback(msg);
+                            }
                         }
                     }
                     break;
@@ -239,9 +257,9 @@ int CorrectionService::onRtcm3Handler(const unsigned char* msg, int msgSize, por
 
     if (msgStats) MessageStats::append("", *msgStats, _PTYPE_RTCM3, COMM_PORT(source)->comm.rxPkt.id, COMM_PORT(source)->comm.rxPkt.data.size, rtcm3PacketLastMs);
 
-    if ((COMM_PORT(source)->comm.rxPkt.id == 1029) && (COMM_PORT(source)->comm.rxPkt.data.size < 1024))
+    std::string notice;
+    if ((COMM_PORT(source)->comm.rxPkt.id == 1029) && extractRtcm3Msg1029Text(COMM_PORT(source)->comm.rxPkt.data.ptr, COMM_PORT(source)->comm.rxPkt.data.size, notice))
     {
-        const std::string notice = std::string().assign(reinterpret_cast<char*>(COMM_PORT(source)->comm.rxPkt.data.ptr + 12), COMM_PORT(source)->comm.rxPkt.data.size - 12);
         for (const tRTCM3Msg1029ListenerCallback& callback: rtcm3Msg1029Listeners) {
             callback(notice);
         }
