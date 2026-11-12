@@ -195,8 +195,21 @@ bool TcpServerPortFactory::startListening() {
     // build the server's Internet address
     memset((char *) &serveraddr, 0, sizeof(serveraddr));
     serveraddr.sin_family = AF_INET;                                            // this is an Internet address
-    serveraddr.sin_addr.s_addr = htonl(INADDR_ANY);                             // let the system figure out our IP address
+    serveraddr.sin_addr = factoryOptions.listeningAddr.sin_addr;                // the configured interface (127.0.0.1 by default; 0.0.0.0 for all)
     serveraddr.sin_port = htons((unsigned short)factoryOptions.listenerPort);   // this is the port we will listen on
+
+    // configure() marks an unusable listen address with INADDR_NONE. Linux would happily bind() that (it is the
+    // broadcast address), leaving a listener nobody can reach, so fail it explicitly.
+    if (serveraddr.sin_addr.s_addr == INADDR_NONE) {
+#ifdef PLATFORM_IS_WINDOWS
+        WSASetLastError(WSAEADDRNOTAVAIL);
+#else
+        errno = EADDRNOTAVAIL;
+#endif
+        recordListenError(TCP_LISTEN_CTX__BIND);
+        stopListening();
+        return false;
+    }
 
     // bind: associate the parent socket with a port
     if (bind(listen_fd, (struct sockaddr *) &serveraddr, sizeof(serveraddr)) < 0) {

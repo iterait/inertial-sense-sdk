@@ -207,11 +207,34 @@ protected:
         std::string ipAddr = listenAddr.substr(0, listenAddr.find_first_of(' '));
 
         struct in_addr addr = {};
-        if (inet_pton(AF_INET, ipAddr.c_str(), &addr) <= 0) {
-            // Handle error: invalid address or address not supported
-            factoryOptions.listeningAddr.sin_addr.s_addr = INADDR_NONE; // A common error indicator for in_addr_t
+        if (inet_pton(AF_INET, ipAddr.c_str(), &addr) == 1) {
+            factoryOptions.listeningAddr.sin_addr = addr;
+        } else if (!resolveIPv4(ipAddr, addr)) {
+            // Invalid address, or not an IPv4 one (the listener is IPv4-only). Keep INADDR_NONE so that bind()
+            // fails visibly (see getLastListenError()) instead of silently listening on every interface.
+            factoryOptions.listeningAddr.sin_addr.s_addr = INADDR_NONE;
+        } else {
+            factoryOptions.listeningAddr.sin_addr = addr;
         }
-        factoryOptions.listeningAddr.sin_addr = addr;
+    }
+
+    /**
+     * Resolves a host name (e.g. "localhost") to its first IPv4 address.
+     * @param host the host name to resolve
+     * @param[out] addr the resolved address, only written on success
+     * @return true if the host resolved to an IPv4 address
+     */
+    static bool resolveIPv4(const std::string& host, struct in_addr& addr) {
+        if (host.empty())
+            return false;
+        struct addrinfo hints = {}, *res = nullptr;
+        hints.ai_family = AF_INET;
+        hints.ai_socktype = SOCK_STREAM;
+        if (getaddrinfo(host.c_str(), nullptr, &hints, &res) != 0 || !res)
+            return false;
+        addr = reinterpret_cast<struct sockaddr_in*>(res->ai_addr)->sin_addr;
+        freeaddrinfo(res);
+        return true;
     }
 
     /**
